@@ -1,0 +1,334 @@
+{% extends 'Home/base.html' %}
+{% load static %}
+{% block body %}
+
+
+<div class="page-wrapper">
+   <div class="content container-fluid">
+      <div class="page-header">
+         <div class="row">
+            <div class="col-sm-12">
+               <h3 class="page-title">Bem vindo! [USERNAME]</h3>
+               <ul class="breadcrumb">
+                  <li class="breadcrumb-item active">Dashboard Geral</li>
+               </ul>
+            </div>
+         </div>
+      </div>
+      <div class="row">
+         <div class="col-xl-3 col-sm-6 col-12 d-flex">
+            <div class="card bg-one w-100">
+               <div class="card-body">
+                  <div class="db-widgets d-flex justify-content-between align-items-center">
+                     <div class="db-icon">
+                        <i class="fas fa-bell"></i>
+                     </div>
+                     <div class="db-info">
+                        <h3>125</h3>
+                        <h6>Reservas</h6>
+                     </div>
+                  </div>
+               </div>
+            </div>
+         </div>
+         <div class="col-xl-3 col-sm-6 col-12 d-flex">
+            <div class="card bg-three w-100">
+               <div class="card-body">
+                  <div class="db-widgets d-flex justify-content-between align-items-center">
+                     <div class="db-icon">
+                        <i class="fas fa-file-invoice-dollar"></i>
+                     </div>
+                     <div class="db-info">
+                        <h3>7</h3>
+                        <h6>Cancelamentos</h6>
+                     </div>
+                  </div>
+               </div>
+            </div>
+         </div>
+         <div class="col-xl-3 col-sm-6 col-12 d-flex">
+            <div class="card bg-two w-100">
+               <div class="card-body">
+                  <div class="db-widgets d-flex justify-content-between align-items-center">
+                     <div class="db-icon">
+                        <i class="fas fa-file-invoice-dollar"></i>
+                     </div>
+                     <div class="db-info">
+                        <h3>$ 9450.00</h3>
+                        <h6>Faturamento</h6>
+                     </div>
+                  </div>
+               </div>
+            </div>
+         </div>
+         <div class="col-xl-3 col-sm-6 col-12 d-flex">
+            <div class="card bg-four w-100">
+               <div class="card-body">
+                  <div class="db-widgets d-flex justify-content-between align-items-center">
+                     <div class="db-icon">
+                        <i class="fas fa-building"></i>
+                     </div>
+                     <div class="db-info">
+                        <h3>$ 6535.00</h3>
+                        <h6>Parceiros</h6>
+                     </div>
+                  </div>
+               </div>
+            </div>
+         </div>
+      </div>
+      <div class="row">
+         <div class="col-md-12 col-lg-6">
+            <div class="card card-chart">
+               <div class="card-header">
+                  <div class="row align-items-center">
+                     <div class="col-6">
+                        <h5 class="card-title">Reservas x Cancelamentos</h5>
+                     </div>
+                     <div class="col-6">
+                        <ul class="list-inline-group text-right mb-0 pl-0">
+                           <li class="list-inline-item">
+                              <div class="form-group mb-0 amount-spent-select">
+                                 <select class="form-control form-control-sm">
+                                    <option>Ano</option>
+                                    <option>Semestre</option>
+                                    <option>Trimestre</option>
+                                    <option>Mês</option>
+                                    <option>Semana</option>
+                                    <option>Hoje</option>
+                                 </select>
+                              </div>
+                           </li>
+                        </ul>
+                     </div>
+                  </div>
+               </div>
+               <div class="card-body">
+                  <div id="apexcharts-area"></div>
+               </div>
+            </div>
+         </div>
+         <div class="col-md-12 col-lg-6">
+            <div class="card card-chart">
+               <div class="card-header">
+                  <div class="row align-items-center">
+                     <div class="col-6">
+                        <h5 class="card-title">Faturamento x Parceiros</h5>
+                     </div>
+                     <div class="col-6">
+                        <ul class="list-inline-group text-right mb-0 pl-0">
+                           <li class="list-inline-item">
+                              <div class="form-group mb-0 amount-spent-select">
+                                 <select class="form-control form-control-sm">
+                                    <option>Ano</option>
+                                    <option>Semestre</option>
+                                    <option>Trimestre</option>
+                                    <option>Mês</option>
+                                    <option>Semana</option>
+                                    <option>Hoje</option>
+                                 </select>
+                              </div>
+                           </li>
+                        </ul>
+                     </div>
+                  </div>
+               </div>
+               <div class="card-body">
+                  <div id="bar"></div>
+               </div>
+            </div>
+         </div>
+      </div>
+      <div class="row">
+         <div class="col-md-6 d-flex">
+            <div class="card flex-fill">
+               <div class="card-header">
+                  <h5 class="card-title">Próximas Experiências</h5>
+               </div>
+               <div class="card-body">
+                  <div class="table-responsive">
+                     <table class="table table-hover table-center">
+                        <thead class="thead-light">
+                           <tr>
+                              <th>ID</th>
+                              <th>Cliente</th>
+                              <th class="text-center">Pessoas</th>
+                              <th class="text-center">Data</th>
+                              <th class="text-right">Valor</th>
+                           </tr>
+                        </thead>
+                        <tbody>
+                           <tr>
+                              <td class="text-nowrap">
+                                 <div>WTE2209</div>
+                              </td>
+                              <td class="text-nowrap">John Smith</td>
+                              <td class="text-center">8</td>
+                              <td class="text-right">
+                                 <div>2025-05-30</div>
+                              </td>
+                              <td class="text-right">$ 75.00</td>
+                           </tr>
+                           <tr>
+                              <td class="text-nowrap">
+                                 <div>WTE2210</div>
+                              </td>
+                              <td class="text-nowrap">Maria Oliveira</td>
+                              <td class="text-center">2</td>
+                              <td class="text-right">
+                                 <div>2025-06-01</div>
+                              </td>
+                              <td class="text-right">$ 150.00</td>
+                           </tr>
+                           <tr>
+                              <td class="text-nowrap">
+                                 <div>WTE2211</div>
+                              </td>
+                              <td class="text-nowrap">Carlos Mendes</td>
+                              <td class="text-center">4</td>
+                              <td class="text-right">
+                                 <div>2025-06-02</div>
+                              </td>
+                              <td class="text-right">$ 300.00</td>
+                           </tr>
+                           <tr>
+                              <td class="text-nowrap">
+                                 <div>WTE2212</div>
+                              </td>
+                              <td class="text-nowrap">Emma Dubois</td>
+                              <td class="text-center">3</td>
+                              <td class="text-right">
+                                 <div>2025-06-03</div>
+                              </td>
+                              <td class="text-right">$ 180.00</td>
+                           </tr>
+                           <tr>
+                              <td class="text-nowrap">
+                                 <div>WTE2213</div>
+                              </td>
+                              <td class="text-nowrap">Luís García</td>
+                              <td class="text-center">5</td>
+                              <td class="text-right">
+                                 <div>2025-06-04</div>
+                              </td>
+                              <td class="text-right">$ 250.00</td>
+                           </tr>
+                           <tr>
+                              <td class="text-nowrap">
+                                 <div>WTE2214</div>
+                              </td>
+                              <td class="text-nowrap">Anna Kowalska</td>
+                              <td class="text-center">6</td>
+                              <td class="text-right">
+                                 <div>2025-06-04</div>
+                              </td>
+                              <td class="text-right">$ 360.00</td>
+                           </tr>
+                           <tr>
+                              <td class="text-nowrap">
+                                 <div>WTE2215</div>
+                              </td>
+                              <td class="text-nowrap">David Müller</td>
+                              <td class="text-center">1</td>
+                              <td class="text-right">
+                                 <div>2025-06-05</div>
+                              </td>
+                              <td class="text-right">$ 90.00</td>
+                           </tr>
+                        </tbody>
+                     </table>
+                  </div>
+               </div>
+            </div>
+         </div>
+         <div class="col-md-6 d-flex">
+            <div class="card flex-fill">
+               <div class="card-header">
+                  <h5 class="card-title">Atividade Recente</h5>
+               </div>
+               <div class="card-body">
+                  <ul class="activity-feed">
+                     <li class="feed-item">
+                        <div class="feed-date">2025-06-06 13:59</div>
+                        <span class="feed-text"><a>João Silva</a> reservou <a>"Cruzeiro Régua - Pinhão"</a></span>
+                     </li>
+                     <li class="feed-item">
+                        <div class="feed-date">2025-06-06 14:10</div>
+                        <span class="feed-text"><a>Maria Fernandes</a> reservou <a>"Enoturismo Quinta da
+                              Pacheca"</a></span>
+                     </li>
+                     <li class="feed-item">
+                        <div class="feed-date">2025-06-06 13:45</div>
+                        <span class="feed-text"><a>Pedro Costa</a> reservou <a>"Cruzeiro Porto - Régua"</a></span>
+                     </li>
+                     <li class="feed-item">
+                        <div class="feed-date">2025-06-06 12:32</div>
+                        <span class="feed-text"><a>Sophie Dubois</a> reservou <a>"Degustação de Vinhos -
+                              Douro"</a></span>
+                     </li>
+                     <li class="feed-item">
+                        <div class="feed-date">2025-06-06 11:58</div>
+                        <span class="feed-text"><a>André Martins</a> reservou <a>"Passeio de Barco Sunset"</a></span>
+                     </li>
+                     <li class="feed-item">
+                        <div class="feed-date">2025-06-06 10:24</div>
+                        <span class="feed-text"><a>Katarina Novak</a> reservou <a>"Cruzeiro Régua - Barca
+                              D’Alva"</a></span>
+                     </li>
+                     <li class="feed-item">
+                        <div class="feed-date">2025-06-06 09:41</div>
+                        <span class="feed-text"><a>Luis Henrique</a> reservou <a>"Rota dos Vinhos Premium"</a></span>
+                     </li>
+                  </ul>
+               </div>
+            </div>
+         </div>
+      </div>
+      <div class="row">
+         <div class="col-xl-3 col-sm-6 col-12">
+            <div class="card flex-fill fb sm-box">
+               <i class="fab fa-facebook"></i>
+               <h6>50,095</h6>
+               <p>Likes</p>
+            </div>
+         </div>
+         <div class="col-xl-3 col-sm-6 col-12">
+            <div class="card flex-fill twitter sm-box">
+               <i class="fab fa-twitter"></i>
+               <h6>48,596</h6>
+               <p>Follows</p>
+            </div>
+         </div>
+         <div class="col-xl-3 col-sm-6 col-12">
+            <div class="card flex-fill insta sm-box">
+               <i class="fab fa-instagram"></i>
+               <h6>52,085</h6>
+               <p>Follows</p>
+            </div>
+         </div>
+         <div class="col-xl-3 col-sm-6 col-12">
+            <div class="card flex-fill linkedin sm-box">
+               <i class="fab fa-linkedin-in"></i>
+               <h6>69,050</h6>
+               <p>Follows</p>
+            </div>
+         </div>
+      </div>
+   </div>
+   <footer>
+      <p>Copyright © 2025 Winte Tour Experience.</p>
+   </footer>
+</div>
+</div>
+<script src="{%static 'assets/js/jquery-3.6.0.min.js' %}"></script>
+<script src="{%static 'assets/js/popper.min.js' %}"></script>
+<script src="{%static 'assets/plugins/bootstrap/js/bootstrap.min.js' %}"></script>
+<script src="{%static 'assets/plugins/slimscroll/jquery.slimscroll.min.js' %}"></script>
+<script src="{%static 'assets/plugins/apexchart/apexcharts.min.js' %}"></script>
+<script src="{%static 'assets/plugins/apexchart/chart-data.js' %}"></script>
+<script src="{%static 'assets/js/script.js' %}"></script>
+</body>
+
+</html>
+
+{% endblock %}
