@@ -20,17 +20,18 @@ $(document).ready(function () {
       },
       series: [
         {
-          name: "Recebido",
-          data: [45, 60, 75, 51, 42, 42, 30],
+          name: "Reservado",
+          color: "#27AE60",
+          data: [15, 20, 5, 7, 12, 16, 6, 8, 10, 11, 13, 9],
         },
         {
-          name: "Pago",
-          color: "#FFBC53",
-          data: [24, 48, 56, 32, 34, 52, 25],
+          name: "Cancelado",
+          color: "#C0392B",
+          data: [4, 0, 2, 3, 1, 0, 2, 1, 3, 4, 2, 1],
         },
       ],
       xaxis: {
-        categories: ["Jan", "Fev", "Mar", "Abr", "Mai", "Jun", "Jul"],
+        categories: ["Jan", "Fev", "Mar", "Abr", "Mai", "Jun", "Jul", "Ago", "Set", "Out", "Nov", "Dez"],
       },
     };
     var chart = new ApexCharts(
@@ -63,7 +64,7 @@ $(document).ready(function () {
       },
       series: [
         {
-          name: "Boys",
+          name: "Faturado",
           color: "#fdbb38",
           data: [
             420, 532, 516, 575, 519, 517, 454, 392, 262, 383, 446, 551, 563,
@@ -71,7 +72,7 @@ $(document).ready(function () {
           ],
         },
         {
-          name: "Girls",
+          name: "Parceiros",
           color: "#19affb",
           data: [
             336, 612, 344, 647, 345, 563, 256, 344, 323, 300, 455, 456, 526,

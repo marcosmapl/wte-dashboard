@@ -3,7 +3,7 @@ from django.contrib.auth.admin import UserAdmin as DefaultUserAdmin
 from .models import WineUser
 
 # Custom UserAdmin with conditional logic for superusers and staff
-class CustomUserAdmin(DefaultUserAdmin):
+class WineUserAdmin(DefaultUserAdmin):
     # Customize which fields are displayed in the admin form
     fieldsets = (
         (None, {'fields': ('username', 'password')}),  # Login details
@@ -38,4 +38,4 @@ class CustomUserAdmin(DefaultUserAdmin):
         return queryset.filter(is_superuser=False)  # Non-superuser staff won't see superusers
 
 # Register the CustomUser model with the custom admin
-admin.site.register(WineUser, CustomUserAdmin)
+admin.site.register(WineUser, WineUserAdmin)
