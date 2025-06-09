@@ -68,7 +68,7 @@ class ReservationStatus(models.IntegerChoices):
 
 
 class Reservation(models.Model):
-    reservation_code = models.CharField(max_length=20, unique=True, default=uuid.uuid4, editable=False)
+    reservation_code = models.CharField(max_length=13)
     client_name = models.CharField(max_length=100)
     client_email = models.EmailField(max_length=255, db_index=True)
     client_phone = models.CharField(max_length=15)
@@ -86,41 +86,49 @@ class Reservation(models.Model):
     status = models.CharField(max_length=30, choices=ReservationStatus.choices, default=ReservationStatus.PENDING)
 
     def __str__(self):
-        return f"Reservation for {self.experience.title} by {self.client_name} ({self.reservation_code})"
+        return f"Reserva para {self.experience.title}, do cliente {self.client_name} ({self.reservation_code})"
+
+
+class PaymentMethod(models.IntegerChoices):
+    BANK_TRANSFER = 0, 'Referência Multibanco'
+    CREDIT_CARD = 1, 'Cartão de Crédito'
+    DEBIT_CARD = 2, 'Cartão de Débito'
+    MBWAY = 3, 'MB WAY'
+    CASH = 4, 'Dinheiro'
+
+
+class InvoiceStatus(models.IntegerChoices):
+    PENDING = 0, 'Pendente'
+    PAID = 1, 'Paga'
+    CANCELLED = 2, 'Cancelada'
+    EXPIRED = 3, 'Expirada'
 
 
 class CustomerInvoice(models.Model):
-    invoice_number = models.CharField(max_length=20, unique=True, default=uuid.uuid4, editable=False)
+    invoice_number = models.CharField(max_length=13)
     reservation = models.ForeignKey(Reservation, on_delete=models.CASCADE, related_name='invoices_reservation')
     invoice_date = models.DateField(auto_now_add=True)
+    emission_date = models.DateField()
     payment_due_date = models.DateField()
+    paid_date = models.DateField(null=True)
     total_amount = models.DecimalField(max_digits=10, decimal_places=2)
-    payment_method = models.CharField(max_length=50, choices=[('Cartão', 'Cartão'), ('Transferência', 'Transferência'), ('Dinheiro', 'Dinheiro'), ('PIX', 'PIX')], default='Transferência')
-    status = models.CharField(max_length=30, choices=[('Pendente', 'Pendente'), ('Paga', 'Paga'), ('Cancelada', 'Cancelada'),], default='Pendente')
+    payment_method = models.CharField(max_length=50, choices=PaymentMethod.choices, default=PaymentMethod.BANK_TRANSFER)
+    status = models.CharField(max_length=30, choices=InvoiceStatus.choices, default=InvoiceStatus.PENDING)
 
     def __str__(self):
-        return f"Invoice {self.invoice_number} for {self.reservation.reserved_by.username}"
+        return f"Fatura Cliente: {self.invoice_number}, {self.reservation.client_name} ({self.reservation.reservation_code})"
 
 
-# class Student(models.Model):
-#     first_name = models.CharField(max_length=100)
-#     last_name = models.CharField(max_length=100)
-#     student_id = models.CharField(max_length=20)
-#     gender = models.CharField(max_length=10, choices=[('Male', 'Male'), ('Female', 'Female'), ('Others', 'Others')])
-#     date_of_birth = models.DateField()
-#     student_class = models.CharField(max_length=50)
-#     religion = models.CharField(max_length=50)
-#     joining_date = models.DateField()
-#     mobile_number = models.CharField(max_length=15)
-#     admission_number = models.CharField(max_length=20)
-#     section = models.CharField(max_length=10)
-#     student_image = models.ImageField(upload_to='students/', blank=True)
-#     parent = models.OneToOneField(Parent, on_delete=models.CASCADE)
-#     slug = models.SlugField(max_length=255, unique=True, blank=True)
+class PartnerInvoice(models.Model):
+    invoice_number = models.CharField(max_length=13)
+    reservation = models.ForeignKey(Reservation, on_delete=models.CASCADE, related_name='partner_invoices_reservation')
+    invoice_date = models.DateField(auto_now_add=True)
+    emission_date = models.DateField()
+    payment_due_date = models.DateField()
+    paid_date = models.DateField(null=True)
+    total_amount = models.DecimalField(max_digits=10, decimal_places=2)
+    payment_method = models.CharField(max_length=50, choices=PaymentMethod.choices, default=PaymentMethod.BANK_TRANSFER)
+    status = models.CharField(max_length=30, choices=InvoiceStatus.choices, default=InvoiceStatus.PENDING)
 
-#     def save(self, *args, **kwargs):
-#         if not self.slug:
-#             self.slug = slugify(f"{self.first_name}-{self.last_name}-{self.student_id}")
-#         super(Student, self).save(*args, **kwargs)
-#     def __str__(self):
-#         return f"{self.first_name} {self.last_name} ({self.student_id})"
+    def __str__(self):
+        return f"Fatura Parceiro: {self.invoice_number}, {self.reservation.partner.name} ({self.reservation.reservation_code})"

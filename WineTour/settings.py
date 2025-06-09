@@ -1,6 +1,3 @@
-
-
-
 import os
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
@@ -28,6 +25,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'fontawesomefree',  # Ensure this is installed via pip
     'dashboard',
     'experience',
     'home_auth'
@@ -146,3 +144,7 @@ MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media/')
 
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles/')
+
+# default uses locally shipped version at 'fontawesome/css/font-awesome.min.css'
+# FONTAWESOME_CSS_URL = '//cdn.example.com/fontawesome-min.css'  # absolute url
+# FONTAWESOME_CSS_URL = os.path.join(BASE_DIR, 'static', 'plugin', 'fontawesome', 'fontawesome.min.css') # relative url

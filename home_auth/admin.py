@@ -8,27 +8,25 @@ class WineUserAdmin(DefaultUserAdmin):
     fieldsets = (
         (None, {'fields': ('username', 'password')}),  # Login details
         ('Personal info', {'fields': ('first_name', 'last_name', 'email')}),  # Personal details
-        ('Roles', {'fields': ('is_student', 'is_teacher', 'is_admin')}),  # Role fields
-        ('Permissions', {'fields': ('is_active', 'is_staff', 'is_superuser', 'is_authorized',  # Add is_authorized here
-                                    'groups', 'user_permissions')}),  # Admin permissions
+        ('Roles', {'fields': ('is_admin', 'is_general_manager', 'is_operational_manager', 'is_booking_agent', 'is_read_only', 'is_it_manager')}),  # Role fields
+        ('Permissions', {'fields': ('is_active', 'groups', 'user_permissions')}),  # Admin permissions
     )
 
     # Customize fields in the user creation form (when creating a new user)
     add_fieldsets = (
         (None, {
             'classes': ('wide',),
-            'fields': ('username', 'email', 'password1', 'password2', 'is_authorized', 'is_student', 'is_teacher', 'is_admin')}
+            'fields': ('username', 'email', 'password1', 'password2', 'is_active', 'is_admin')}
          ),
     )
 
     # Customize what fields are displayed in the list view
     list_display = (
-        'username', 'email', 'first_name', 'last_name', 'is_authorized',
-        'is_student', 'is_teacher', 'is_admin', 'is_staff', 'is_superuser'
+        'username', 'email', 'first_name', 'last_name', 'is_active', 'is_general_manager', 'is_operational_manager', 'is_it_manager', 'is_booking_agent', 'is_read_only'
     )
 
     # Filter users based on role and authorization
-    list_filter = ('is_student', 'is_teacher', 'is_admin', 'is_authorized', 'is_staff', 'is_superuser')
+    list_filter = ('is_admin', 'is_general_manager', 'is_operational_manager', 'is_booking_agent', 'is_read_only', 'is_it_manager', 'is_active')
 
     # Customize queryset to separate superusers and staff in the admin list view
     def get_queryset(self, request):

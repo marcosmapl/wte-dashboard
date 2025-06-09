@@ -9,11 +9,11 @@ $(document).ready(function () {
         height: 350,
         type: "area",
         toolbar: {
-          show: false,
+          show: true,
         },
       },
       dataLabels: {
-        enabled: false,
+        enabled: true,
       },
       stroke: {
         curve: "smooth",
@@ -21,12 +21,12 @@ $(document).ready(function () {
       series: [
         {
           name: "Reservado",
-          color: "#27AE60",
+          color: "#2196F3",
           data: [15, 20, 5, 7, 12, 16, 6, 8, 10, 11, 13, 9],
         },
         {
           name: "Cancelado",
-          color: "#C0392B",
+          color: "#F44336",
           data: [4, 0, 2, 3, 1, 0, 2, 1, 3, 4, 2, 1],
         },
       ],
@@ -51,37 +51,35 @@ $(document).ready(function () {
         width: "100%",
         stacked: true,
         toolbar: {
-          show: false,
+          show: true,
         },
       },
       dataLabels: {
-        enabled: false,
+        enabled: true,
       },
       plotOptions: {
         bar: {
-          columnWidth: "45%",
+          columnWidth: "65%",
         },
       },
       series: [
         {
           name: "Faturado",
-          color: "#fdbb38",
+          color: "#4CAF50",
           data: [
-            420, 532, 516, 575, 519, 517, 454, 392, 262, 383, 446, 551, 563,
-            421, 563, 254, 452,
+            420, 532, 516, 575, 519, 517, 454, 392, 262, 383, 446, 551, 563, 421, 563, 254, 452,
           ],
         },
         {
           name: "Parceiros",
-          color: "#19affb",
+          color: "#9C27B0",
           data: [
-            336, 612, 344, 647, 345, 563, 256, 344, 323, 300, 455, 456, 526,
-            652, 325, 425, 436,
+            336, 612, 344, 647, 345, 563, 256, 344, 323, 300, 455, 456, 526, 652, 325, 425, 436,
           ],
         },
       ],
       labels: [
-        2009, 2010, 2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020,
+        'Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez',
       ],
       xaxis: {
         labels: {
@@ -102,6 +100,10 @@ $(document).ready(function () {
           show: false,
         },
         labels: {
+          show: true,
+          formatter: function (val) {
+            return "$ " + val;
+          },
           style: {
             colors: "#777",
           },

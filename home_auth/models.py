@@ -13,16 +13,19 @@ import uuid
 class WineUser(AbstractUser):
     username = models.CharField(max_length=100, unique=True)
     email = models.EmailField(max_length=255, unique=True, db_index=True)
-    is_authorized = models.BooleanField(default=False)
+    is_active = models.BooleanField(default=False)
     login_token = models.CharField(max_length=6, blank=True, null=True)
     first_name = models.CharField(max_length=30, blank=True)
     last_name = models.CharField(max_length=30, blank=True)
     date_joined = models.DateTimeField(auto_now_add=True)
     
        # Fields for user roles
-    is_student = models.BooleanField(default=False)
     is_admin = models.BooleanField(default=False)
-    is_teacher = models.BooleanField(default=False) 
+    is_general_manager = models.BooleanField(default=False)
+    is_operational_manager = models.BooleanField(default=False)
+    is_it_manager = models.BooleanField(default=False) 
+    is_booking_agent = models.BooleanField(default=False) 
+    is_read_only = models.BooleanField(default=False) 
 
     # Set related_name to None to prevent reverse relationship creation
     groups = models.ManyToManyField(
