@@ -4,16 +4,16 @@
 <html lang="en">
 
 <head>
-   <meta charset="utf-8">
-   <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0">
+   <meta charset="utf-8" />
+   <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0" />
    <title>WTE - Dashboard</title>
-   <link rel="shortcut icon" href="{%static 'assets/img/favicon.png' %}" type="image/x-icon">
+   <link rel="shortcut icon" href="{%static 'assets/img/favicon.png' %}" type="image/x-icon" />
    <link rel="stylesheet"
-      href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,500;0,600;0,700;1,400&amp;display=swap">
-   <link rel="stylesheet" href="{%static 'assets/plugins/bootstrap/css/bootstrap.min.css' %}">
-   <link rel="stylesheet" href="{%static 'assets/plugins/fontawesome/css/fontawesome.min.css' %}">
-   <link rel="stylesheet" href="{%static 'assets/plugins/fontawesome/css/all.min.css' %}">
-   <link rel="stylesheet" href="{%static 'assets/css/style.css' %}">
+      href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,500;0,600;0,700;1,400&amp;display=swap" />
+   <link rel="stylesheet" href="{%static 'assets/plugins/bootstrap/css/bootstrap.min.css' %}" />
+   <link rel="stylesheet" href="{%static 'assets/plugins/fontawesome/css/fontawesome.min.css' %}" />
+   <link rel="stylesheet" href="{%static 'assets/plugins/fontawesome/css/all.min.css' %}" />
+   <link rel="stylesheet" href="{%static 'assets/css/style.css' %}" />
    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
       integrity="sha512-..." , crossorigin="anonymous" referrerpolicy="no-referrer" />
 </head>
@@ -23,10 +23,10 @@
       <div class="header">
          <div class="header-left">
             <a href="index.html" class="logo">
-               <img src="{%static 'assets/img/logo.png' %}" alt="Logo">
+               <img src="{%static 'assets/img/logo.png' %}" alt="Logo" />
             </a>
             <a href="index.html" class="logo logo-small">
-               <img src="{%static 'assets/img/logo.png' %}" alt="Logo" width="30" height="30">
+               <img src="{%static 'assets/img/logo.png' %}" alt="Logo" width="30" height="30" />
             </a>
          </div>
          <a href="javascript:void(0);" id="toggle_btn">
@@ -34,8 +34,10 @@
          </a>
          <div class="top-nav-search">
             <form>
-               <input type="text" class="form-control" placeholder="Search here">
-               <button class="btn" type="submit"><i class="fas fa-search"></i></button>
+               <input type="text" class="form-control" placeholder="Search here" />
+               <button class="btn" type="submit">
+                  <i class="fas fa-search"></i>
+               </button>
             </form>
          </div>
          <a class="mobile_btn" id="mobile_btn">
@@ -84,12 +86,13 @@
             <li class="nav-item dropdown has-arrow">
                <a href="#" class="dropdown-toggle nav-link" data-toggle="dropdown">
                   <span class="user-img"><img class="rounded-circle" src="{%static 'assets/img/user.jpg' %}" width="31"
-                        alt="User Image"></span>
+                        alt="User Image" /></span>
                </a>
                <div class="dropdown-menu">
                   <div class="user-header">
                      <div class="avatar avatar-sm">
-                        <img src="{%static 'assets/img/user.jpg' %}" alt="User Image" class="avatar-img rounded-circle">
+                        <img src="{%static 'assets/img/user.jpg' %}" alt="User Image"
+                           class="avatar-img rounded-circle" />
                      </div>
                      <div class="user-text">
                         <h6>{{user.username}}</h6>
@@ -111,107 +114,108 @@
                   <li class="menu-title">
                      <span>Dashboards</span>
                   </li>
-                  <li><a href="{% url 'dashboard_general' %}"><i class="fas fa-columns"></i> <span>Geral</span></a></li>
-                  <li><a href="{% url 'dashboard_services' %}">Experiências</a></li>
+                  <li>
+                     <a href="{% url 'dashboard_general' %}">
+                        <i class="fas fa-chart-line"></i><span>Dashboard Principal</span></a>
+                  </li>
+                  <li>
+                     <a href="">
+                        <i class="fas fa-headset"></i><span>Dashboard Atendimento</span>
+                     </a>
+                  </li>
+                  <li>
+                     <a href="{% url 'dashboard_services' %}">
+                        <i class="fas fa-wine-glass-alt"></i><span>Dashboard Experiências</span>
+                     </a>
+                  </li>
+                  <li>
+                     <a href="">
+                        <i class="fas fa-money-bill-wave"></i><span>Dashboard Financeiro</span>
+                     </a>
+                  </li>
 
                   <li class="menu-title">
                      <span>Atendimento</span>
                   </li>
-                  <li><a href="">Calendário</a></li>
-                  <li><a href="">Faturas Cliente</a></li>
-                  <li><a href="">Faturas Parceiro</a></li>
-                  <li><a href="">Reservas</a></li>
-
-                  <li class="menu-title">
-                     <span>Experiências</span>
-                  </li>
-                  <li class="submenu">
-                     <a href="#"><i class="fas fa-columns"></i> <span>Dashboards</span> <span
-                           class="menu-arrow"></span></a>
-                     <ul>
-
-                        <li><a href="">Financeiro</a></li>
-                        <li><a href="">Parceiros</a></li>
-                        <li><a href="">Reservas</a></li>
-                        <li><a href="">Social</a></li>
-                     </ul>
+                  <li>
+                     <a href="">
+                        <i class="fas fa-calendar-days"></i><span>Calendário</span>
+                     </a>
                   </li>
 
-                  <li class="menu-title">
-                     <span>Gerenciamento</span>
-                  </li>
-                  <li class="submenu">
-                     <a href="#"><i class="fas fa-book"></i> <span>Experiências</span> <span
-                           class="menu-arrow"></span></a>
-                     <ul>
-                        <li><a href="">Cadastro</a></li>
-                        <li><a href="">Listar</a></li>
-                        <li><a href="">Relatório</a></li>
-                     </ul>
-                  </li>
-                  <li class="submenu">
-                     <a href="#"><i class="fas fa-calendar-day"></i> <span>Reservas</span> <span
-                           class="menu-arrow"></span></a>
-                     <ul>
-                        <li><a href="">Cadastro</a></li>
-                        <li><a href="">Listar</a></li>
-                        <li><a href="">Relatório</a></li>
-                     </ul>
-                  </li>
-                  <li class="submenu">
-                     <a href="#"><i class="fas fa-file"></i> <span>Parceiros</span> <span class="menu-arrow"></span></a>
-                     <ul>
-                        <li><a href="">Cadastro</a></li>
-                        <li><a href="">Listar</a></li>
-                        <li><a href="">Relatório</a></li>
-                     </ul>
-                  </li>
-                  <li class="submenu">
-                     <a href="#"><i class="fas fa-vector-square"></i> <span>Usuários</span> <span
-                           class="menu-arrow"></span></a>
-                     <ul>
-                        <li><a href="">Cadastro</a></li>
-                        <li><a href="">Listar</a></li>
-                        <li><a href="">Relatório</a></li>
-                     </ul>
+                  <li>
+                     <a href="">
+                        <i class="fas fa-calendar-check"></i><span>Reservas</span>
+                     </a>
                   </li>
 
                   <li class="menu-title">
                      <span>Financeiro</span>
                   </li>
-
                   <li>
-                     <a href="holiday.html"><i class="fas fa-comment-dollar"></i> <span>Faturas</span></a>
+                     <a href="">
+                        <i class="fas fa-receipt"></i><span>Faturas Cliente</span>
+                     </a>
                   </li>
                   <li>
-                     <a href="fees.html"><i class="fas fa-file"></i> <span>Tickets</span></a>
+                     <a href="">
+                        <i class="fas fa-file-invoice-dollar"></i><span>Faturas Parceiro</span>
+                     </a>
+                  </li>
+                  <li>
+                     <a href="">
+                        <i class="fas fa-wallet"></i><span>Despesas</span>
+                     </a>
+                  </li>
+
+
+                  <li class="menu-title">
+                     <span>Serviços</span>
+                  </li>
+                  <li>
+                     <a href="{% url 'list_experience' %}">
+                        <i class="fas fa-wine-glass-alt"></i><span>Experiências</span>
+                     </a>
+                  </li>
+                  <li>
+                     <a href="">
+                        <i class="fas fa-handshake"></i><span>Parceiros</span>
+                     </a>
                   </li>
 
                   <li class="menu-title">
-                     <span>Pages</span>
+                     <span>Administração</span>
                   </li>
-                  <li class="submenu">
-                     <a href="#"><i class="fas fa-shield-alt"></i> <span> Authentication </span> <span
-                           class="menu-arrow"></span></a>
+                  <li>
+                     <a href="">
+                        <i class="fas fa-user"></i><span>Usuários</span>
+                     </a>
+                  </li>
+                  <li>
+                     <a href="">
+                        <i class="fas fa-lock"></i><span>Permissões</span>
+                     </a>
+                  </li>
+
+
+                  <!-- <li class="submenu">
+                     <a href="#"><i class="fas fa-columns"></i> <span>Dashboards</span>
+                        <span class="menu-arrow"></span></a>
                      <ul>
-                        <li><a href="{% url 'login' %}">Login</a></li>
-                        <li><a href="{% url 'signup' %}">Register</a></li>
-                        <li><a href="{% url 'forgot-password' %}">Forgot Password</a></li>
+                        <li><a href="">Financeiro</a></li>
+                        <li><a href="">Parceiros</a></li>
+                        <li><a href="">Reservas</a></li>
+                        <li><a href="">Social</a></li>
                      </ul>
-                  </li>
+                  </li> -->
 
                </ul>
             </div>
          </div>
       </div>
 
-
-      {% block body %}
-
-      {% endblock %}
-
+      {% block body %} {% endblock %}
    </div>
-
 </body>
 
 </html>

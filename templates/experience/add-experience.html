@@ -1,0 +1,115 @@
+{% extends 'Home/base.html' %}
+{% load static %}
+{% block body %}
+
+<div class="page-wrapper">
+   <div class="content container-fluid">
+      <div class="page-header">
+         <div class="row align-items-center">
+            <div class="col">
+               <h3 class="page-title">Serviços</h3>
+               <ul class="breadcrumb">
+                  <li class="breadcrumb-item"><a href="{% url 'list_experience' %}">Experiências</a></li>
+                  <li class="breadcrumb-item active">Cadastro de Experiência</li>
+               </ul>
+            </div>
+         </div>
+      </div>
+      <div class="row">
+         <div class="col-sm-12">
+            <div class="card">
+               <div class="card-body">
+                  <form method="POST" action="{% url 'add_experience' %}" enctype="multipart/form-data">
+                     {% csrf_token %}
+                     <div class="row">
+                        <div class="col-12">
+                           <h5 class="form-title"><span>Informações Gerais</span></h5>
+                        </div>
+                        <div class="col-12 col-sm-6">
+                           <div class="form-group">
+                              <label>Título</label>
+                              <input type="text" class="form-control" name="title" placeholder="Título da experiência"
+                                 required>
+                           </div>
+                        </div>
+                        <div class="col-12 col-sm-3">
+                           <div class="form-group">
+                              <label>Categoria</label>
+                              <select class="form-control" name="category" required>
+                                 {% for value, label in category_options %}
+                                 <option value="{{ value }}">
+                                    {{ label }}
+                                 </option>
+                                 {% endfor %}
+                              </select>
+                           </div>
+                        </div>
+
+                        <div class="col-12">
+                           <h5 class="form-title"><span>Localização</span></h5>
+                        </div>
+                        <div class="col-12 col-sm-6">
+                           <div class="form-group">
+                              <label>Endereço</label>
+                              <div>
+                                 <input type="text" class="form-control" name="departure_place" required>
+                              </div>
+                           </div>
+                        </div>
+                        <div class="col-12 col-sm-3">
+                           <div class="form-group">
+                              <label>Latitude</label>
+                              <input type="number" class="form-control" name="latitude" placeholder="+00.000000000"
+                                 required>
+                           </div>
+                        </div>
+                        <div class="col-12 col-sm-6">
+                           <div class="form-group">
+                              <label>URL Maps</label>
+                              <div>
+                                 <input type="text" class="form-control" name="maps_url"
+                                    placeholder="https://maps.app.goo.gl/" required>
+                              </div>
+                           </div>
+                        </div>
+                        <div class="col-12 col-sm-3">
+                           <div class="form-group">
+                              <label>Logitude</label>
+                              <input type="number" class="form-control" name="longitude" placeholder="+000.000000000"
+                                 required>
+                           </div>
+                        </div>
+                        <div class="col-12">
+                           <h5 class="form-title"><span>Outras Informações</span></h5>
+                        </div>
+                        <div class="col-12 col-sm-6">
+                           <div class="form-group">
+                              <label>Anotações</label>
+                              <textarea class="form-control" name="notes" placeholder="..." rows="8"
+                                 required></textarea>
+                           </div>
+                        </div>
+                        <div class="col-12">
+                           <button type="submit" class="btn btn-primary">Salvar</button>
+                        </div>
+                     </div>
+                  </form>
+               </div>
+            </div>
+         </div>
+      </div>
+   </div>
+   <footer style="text-align: center;">
+      <p>Copyright © 2025 - Wine Tour Experience.</p>
+   </footer>
+</div>
+</div>
+<script src="{%static 'assets/js/jquery-3.6.0.min.js' %}"></script>
+<script src="{%static 'assets/js/popper.min.js' %}"></script>
+<script src="{%static 'assets/plugins/bootstrap/js/bootstrap.min.js' %}"></script>
+<script src="{%static 'assets/plugins/slimscroll/jquery.slimscroll.min.js' %}"></script>
+<script src="{%static 'assets/js/script.js' %}"></script>
+</body>
+
+</html>
+{% endblock %}

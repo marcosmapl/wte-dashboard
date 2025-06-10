@@ -1,5 +1,5 @@
 from django.db import models
-from django.utils.text import slugify
+from django.core.validators import MinValueValidator, MaxValueValidator, RegexValidator, EmailValidator, URLValidator
 # Create your models here.
 
 from django.db import models
@@ -8,21 +8,51 @@ from home_auth.models import WineUser
 import uuid
 
 class ExperienceStatus(models.IntegerChoices):
-    UNAVAILABLE = 0, 'Indisponível'
-    AVAILABLE = 1, 'Disponível'
-    DISCONTINUED = 2, 'Discontinuado'
+    AVAILABLE = 0, 'Disponível'
+    UNAVAILABLE = 1, 'Indisponível'
+
+
+class ExperienceCategory(models.IntegerChoices):
+    ALMOCOS_DE_DEGUSTACAO = 0, 'Almoços de Degustação'
+    CRUZEIROS_DE_2_DIAS = 1, 'Cruzeiros de 2 dias'
+    CRUZEIROS_NO_DOURO = 2, 'Cruzeiros no Douro'
+    CRUZEIROS_PRIVADOS_E_PREMIUM = 3, 'Cruzeiros Privados e Premium'
+    CRUZEIROS_TEMATICOS = 4, 'Cruzeiros Temáticos'
+    DESPEDIDAS_DE_SOLTEIRO = 5, 'Despedidas de Solteiro'
+    ESTADIA_E_ESCAPADINHAS = 6, 'Estadia & Escapadinhas'
+    EVENTOS_COM_HARMONIZACAO_VINICA = 7, 'Eventos com harmonização vínica'
+    EVENTOS_CORPORATIVOS = 8, 'Eventos Corporativos'
+    EXPERIENCIAS_PARA_2 = 9, 'Experiências para 2'
+    EXPERIENCIAS_VINICAS = 10, 'Experiências Vínicas'
+    FINS_DE_SEMANA_VINICOS = 11, 'Fins-de-semana Vínicos'
+    GASTRONOMIA_E_TRADICAO = 12, 'Gastronomia & Tradição'
+    GRUPOS_E_EMPRESAS = 13, 'Grupos & Empresas'
+    GRUPOS_PRIVADOS = 14, 'Grupos Privados'
+    JANTARES_E_ALMOCOS_VINICOS = 15, 'Jantares e Almoços Vínicos'
+    JANTARES_TEMATICOS = 16, 'Jantares Temáticos'
+    PACKS_ROMANTICOS = 17, 'Packs Românticos'
+    PIQUENIQUES_NAS_VINHAS = 18, 'Piqueniques nas Vinhas'
+    PRESENTES_DE_ULTIMA_HORA = 19, 'Presentes de Última Hora'
+    PRESENTES_E_VOUCHERS = 20, 'Presentes & Vouchers'
+    PROVAS_DE_VINHO = 21, 'Provas de Vinho'
+    ROTEIROS_PERSONALIZADOS = 22, 'Roteiros Personalizados'
+    SAIDAS_DA_REGUA = 23, 'Saídas da Régua'
+    SAIDAS_DO_PORTO = 24, 'Saídas do Porto'
+    SEM_CATEGORIA = 25, 'Sem categoria'
+    VINDIMAS_E_EVENTOS_SAZONAIS = 26, 'Vindimas & Eventos Sazonais'
+    VISITAS_A_QUINTAS_E_CAVAS = 27, 'Visitas a Quintas e Cavas'
     
 
 class Experience(models.Model):
-    title = models.CharField(max_length=180)
-    description = models.TextField()
-    duration = models.TimeField()
-    departure_place = models.CharField(max_length=255)
-    arrival_place = models.CharField(max_length=255)
-    category = models.CharField(max_length=100)
-    adult_price = models.DecimalField(max_digits=10, decimal_places=2)
-    child_price = models.DecimalField(max_digits=10, decimal_places=2) 
-    status = models.CharField(max_length=20, choices=ExperienceStatus.choices, default=ExperienceStatus.AVAILABLE)
+    title = models.CharField(max_length=180, blank=False, null=False)
+    # description = models.TextField(blank=False, null=False)
+    departure_place = models.CharField(max_length=255, blank=False, null=False)
+    latitude = models.DecimalField(max_digits=12, decimal_places=9, validators=[MinValueValidator(-90), MaxValueValidator(90)], blank=True, null=True)
+    longitude = models.DecimalField(max_digits=12, decimal_places=9, validators=[MinValueValidator(-90), MaxValueValidator(90)], blank=True, null=True)
+    maps_url = models.URLField(max_length=255, blank=True, null=True, validators=[URLValidator()])
+    category = models.IntegerField(choices=ExperienceCategory.choices, default=ExperienceCategory.SEM_CATEGORIA)
+    status = models.IntegerField(choices=ExperienceStatus.choices, default=ExperienceStatus.AVAILABLE)
+    notes = models.TextField(blank=True, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
     modified_at = models.DateTimeField(auto_now=True)
     
