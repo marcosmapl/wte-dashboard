@@ -60,11 +60,12 @@ def add_experience(request):
             messages.success(request, "Experiência adicionada com sucesso.")
             return redirect('list_experience')
         except ValidationError as e:
-            messages.error(request, "Erro de validação: verifique os dados informados.")
-            context['errors'] = e.message_dict
+            for field, errors in e.message_dict.items():
+                print(f"Erro de validação no campo '{field}': {errors}")        
+                messages.error(request, f"Erro de validação: {".".join(errors)}")
+                break            
         except Exception as e:
             messages.error(request, f"Erro inesperado: {str(e)}")
-            context['errors'] = e.message_dict
             # Preenche os campos do contexto para manter os valores
             context.update({
                 'form_data': request.POST,

@@ -6,12 +6,25 @@
    <div class="content container-fluid">
       <div class="page-header">
          <div class="row align-items-center">
-            <div class="col">
+            <div class="col-12 col-sm-6">
                <h3 class="page-title">Serviços</h3>
                <ul class="breadcrumb">
                   <li class="breadcrumb-item"><a href="{% url 'list_experience' %}">Experiências</a></li>
                   <li class="breadcrumb-item active">Cadastro de Experiência</li>
                </ul>
+            </div>
+            <!-- Error and success messages -->
+            {% if messages %}
+            <div class="col-12  col-sm-6">
+               <div class="alert alert-warning alert-dismissible fade show" role="alert">
+                  {% for message in messages %}
+                  <span>{{ message }}</span><br>
+                  {% endfor %}
+                  <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                     <span aria-hidden="true">&times;</span>
+                  </button>
+               </div>
+               {% endif %}
             </div>
          </div>
       </div>
@@ -85,8 +98,7 @@
                         <div class="col-12 col-sm-6">
                            <div class="form-group">
                               <label>Anotações</label>
-                              <textarea class="form-control" name="notes" placeholder="..." rows="8"
-                                 required></textarea>
+                              <textarea class="form-control" name="notes" placeholder="..." rows="8"></textarea>
                            </div>
                         </div>
                         <div class="col-12">
