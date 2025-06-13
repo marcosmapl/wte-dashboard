@@ -4,8 +4,8 @@ from . import views
 urlpatterns = [
    path('', views.experience_list, name='list_experience'),
    path('add/', views.add_experience, name='add_experience'),
-   # path('edit/<int:id>/', views.edit_experience, name='edit_experience'),
-   # path('delete/<int:id>/', views.delete_experience, name='delete_experience'),
+   path('edit/<int:id>/', views.edit_experience, name='edit_experience'),
+   path('delete/<int:id>/', views.delete_experience, name='delete_experience'),
    # path('detail/<int:id>/', views.detail_experience, name='detail_experience'),
    # path('search/', views.search_experience, name='search_experience'),
    # path('favoritar/<int:id>/', views.favoritar, name='favoritar_experiencia'),

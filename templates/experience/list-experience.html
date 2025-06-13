@@ -24,31 +24,32 @@
                 <div class="card card-table">
                     <div class="card-body">
                         <div class="table-responsive">
-                            <table class="table table-hover table-center mb-0 datatable">
+                            <table id="tableData" class="table table-hover table-center table-striped mb-0">
                                 <thead>
                                     <tr>
-                                        <th>ID</th>
+                                        <!-- <th>ID</th> -->
                                         <th>Título</th>
-                                        <th>Partida de</th>
                                         <th>Categoria</th>
                                         <th>Status</th>
+                                        <th>Wordpress</th>
                                         <th class="text-right">Ações</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     {% for experience in experience_list %}
                                     <tr>
-                                        <td>{{ experience.id }}</td>
+                                        <!-- <td>{{ experience.id }}</td> -->
                                         <td>{{ experience.title }}</td>
-                                        <td>{{ experience.departure_place }}</td>
-                                        <td>{{ experience.get_category_display }}</td>
-                                        <td>{{ experience.get_status_display }}</td>
+                                        <td>{{ experience.category }}</td>
+                                        <td>{{ experience.status }}</td>
+                                        <td><a href="{{ experience.wordpress_url }}" target="_blank">Link</a></td>
                                         <td class="text-right">
                                             <div class="actions">
-                                                <a href="" class="btn btn-sm bg-success-light mr-2">
+                                                <a href="{% url 'edit_experience' experience.id %}"
+                                                    class="btn btn-sm bg-success-light mr-2">
                                                     <i class="fas fa-pen"></i>
                                                 </a>
-                                                <form action="" method="POST" style="display:inline;">
+                                                <form action="{% url 'delete_experience' experience.id %}" method="POST" style="display:inline;">
                                                     {% csrf_token %}
                                                     <button type="submit" class="btn btn-sm bg-danger-light"
                                                         onclick="return confirm('Deseja realmente excluir esta experiência?');">
@@ -71,20 +72,10 @@
             </div>
         </div>
     </div>
-    <footer style="text-align: center;">
+    <footer>
         <p>Copyright © 2025 - Wine Tour Experience.</p>
     </footer>
 </div>
 </div>
-<script src="{%static 'assets/js/jquery-3.6.0.min.js' %}"></script>
-<script src="{%static 'assets/js/popper.min.js' %}"></script>
-<script src="{%static 'assets/plugins/bootstrap/js/bootstrap.min.js' %}"></script>
-<script src="{%static 'assets/plugins/slimscroll/jquery.slimscroll.min.js' %}"></script>
-<script src="{%static 'assets/plugins/datatables/datatables.min.js' %}"></script>
-<script src="{%static 'assets/js/script.js' %}"></script>
-</body>
-
-</html>
-
 
 {% endblock %}
