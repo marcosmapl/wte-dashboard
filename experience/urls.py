@@ -2,7 +2,7 @@ from django.urls import path, include
 from . import views
 
 urlpatterns = [
-   path('', views.experience_list, name='list_experience'),
+   path('', views.partner_list, name='list_experience'),
    path('add/', views.add_experience, name='add_experience'),
    path('edit/<int:id>/', views.edit_experience, name='edit_experience'),
    path('delete/<int:id>/', views.delete_experience, name='delete_experience'),

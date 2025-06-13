@@ -60,11 +60,11 @@ class Experience(models.Model):
     def __str__(self):
         return self.title
 
-class RegisterStatus(models.IntegerChoices):
-    INACTIVE = 0, 'Inativo'
-    ACTIVE = 1, 'Ativo'
-    BLOCKED = 2, 'Bloqueado'
-    EXCLUDED = 3, 'Excluído'
+class RegisterStatus(models.TextChoices):
+    INACTIVE = 'Inativo', 'Inativo'
+    ACTIVE = 'Ativo', 'Ativo'
+    BLOCKED = 'Bloqueado', 'Bloqueado'
+    EXCLUDED = 'Bloqueado', 'Excluído'
     
 
 class Partner(models.Model):

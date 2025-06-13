@@ -5,18 +5,27 @@ from django.contrib import messages
 from django.shortcuts import get_object_or_404
 
 # from .forms import ExperienceForm
-from .models import Experience, ExperienceStatus, ExperienceCategory
+from .models import Experience, ExperienceStatus, ExperienceCategory, Partner
 
-# Create your views here.
-def experience_list(request):
+
+def partner_list(request):
     experience_list = Experience.objects.all().order_by('title').values()
-    print(f"Experience list: {experience_list}")
+    # print(f"Experience list: {experience_list}")
     context = {
         'page_mode': 'list',
-        'experience_list': experience_list,
+        'page_data': experience_list,
     }
     return render(request, "experience/list-experience.html", context)
-         
+
+
+def partner_list(request):
+    partner_list = Partner.objects.all().order_by('name').values()
+    print(f"Partner list: {partner_list}")
+    context = {
+        'page_mode': 'list',
+        'page_data': partner_list,
+    }
+    return render(request, "experience/list-partner.html", context)         
               
 def add_experience(request):
     context = {
