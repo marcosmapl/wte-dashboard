@@ -10,7 +10,7 @@
                <h3 class="page-title">Serviços</h3>
                <ul class="breadcrumb">
                   <li class="breadcrumb-item"><a href="{% url 'list_experience' %}">Experiências</a></li>
-                  <li class="breadcrumb-item active">Cadastro de Experiência</li>
+                  <li class="breadcrumb-item active">Cadastro</li>
                </ul>
             </div>
             <!-- Error and success messages -->
@@ -126,7 +126,7 @@
                         </div>
                         <div class="col-sm-9">
                            <button type="submit" class="btn btn-primary">Salvar</button>
-                           <button onclick="history.back()" class="btn btn-secondary">Voltar</button>
+                           <button onclick="go_to_list_view()" class="btn btn-secondary">Voltar</button>
                         </div>
                      </div>
                   </form>
@@ -145,6 +145,11 @@
 <script src="{%static 'assets/plugins/bootstrap/js/bootstrap.min.js' %}"></script>
 <script src="{%static 'assets/plugins/slimscroll/jquery.slimscroll.min.js' %}"></script>
 <script src="{%static 'assets/js/script.js' %}"></script>
+<script type="text/javascript">
+   function go_to_list_view() {
+      document.location.href = "{% url 'list_experience' %}"
+   }
+</script>
 </body>
 
 </html>

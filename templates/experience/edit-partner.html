@@ -9,7 +9,7 @@
             <div class="col-12 col-sm-6">
                <h3 class="page-title">Serviços</h3>
                <ul class="breadcrumb">
-                  <li class="breadcrumb-item"><a href="{% url 'list_experience' %}">Experiências</a></li>
+                  <li class="breadcrumb-item"><a href="{% url 'list_partner' %}">Parceiros</a></li>
                   <li class="breadcrumb-item active">Edição</li>
                </ul>
             </div>
@@ -32,34 +32,22 @@
          <div class="col-sm-12">
             <div class="card">
                <div class="card-body">
-                  <form method="POST" action="{% url 'edit_experience' experience.id %}"
+                  <form method="POST" action="{% url 'edit_partner' partner.id %}"
                      enctype="multipart/form-data">
                      {% csrf_token %}
                      <div class="row">
                         <div class="col-12">
                            <h5 class="form-title"><span>Informações Gerais</span></h5>
                         </div>
-                        <div class="col-12 col-sm-6">
+                         <div class="col-12 col-sm-8">
                            <div class="form-group">
-                              <label>Título</label>
-                              <input type="text" class="form-control" name="title" placeholder="Título da experiência"
-                                 value="{{ experience.title|default_if_none:'' }}" required>
+                              <label>Nome</label>
+                              <input type="text" class="form-control" name="name" placeholder="Nome do parceiro"
+                                 value="{{ partner.name|default_if_none:'' }}" required>
                            </div>
                         </div>
+                        
                         <div class="col-12 col-sm-3">
-                           <div class="form-group">
-                              <label>Categoria</label>                              
-                              <select class="form-control" name="category" required>
-                                 {% for value, label in category_options %}
-                                 <p>{{value}} {{category_selected}}</p>
-                                 <option value="{{ value }}" {% if value|stringformat:"s" == category_selected|stringformat:"s" %}selected{% endif %}>
-                                    {{ label }}
-                                 </option>
-                                 {% endfor %}
-                              </select>
-                           </div>
-                        </div>
-                        <div class="col-12 col-sm-2">
                            <div class="form-group">
                               <label>Status</label>
                               <select class="form-control" name="status" required>
@@ -73,52 +61,59 @@
                         </div>
 
                         <div class="col-12">
-                           <h5 class="form-title"><span>Referência Web</span></h5>
+                           <h5 class="form-title"><span>Informações Contacto</span></h5>
                         </div>
-                        <div class="col-12 col-sm-8">
+                        <div class="col-12 col-sm-5">
                            <div class="form-group">
-                              <label>Wordpress</label>
+                              <label>Email</label>
                               <div>
-                                 <input type="text" class="form-control" name="wordpress_url"
-                                    placeholder="Endereço da página Wordpress"
-                                    value="{{ experience.wordpress_url|default_if_none:'' }}" required>
-                              </div>
-                           </div>
-                        </div>
-                        <!-- <div class="col-12 col-sm-3">
-                           <div class="form-group">
-                              <label>Latitude</label>
-                              <input type="number" class="form-control" name="latitude"
-                                 value="{{ experience.latitude|default_if_none:'' }}" placeholder="+00.000000000"
-                                 required>
-                           </div>
-                        </div>
-                        <div class="col-12 col-sm-6">
-                           <div class="form-group">
-                              <label>URL Maps</label>
-                              <div>
-                                 <input type="text" class="form-control" name="maps_url"
-                                    value="{{ experience.maps_url|default_if_none:'' }}"
-                                    placeholder="https://maps.app.goo.gl/" required>
+                                 <input type="text" class="form-control" name="contact_email"
+                                    placeholder="Endereço de email do parceiro"
+                                    value="{{ partner.contact_email|default_if_none:'' }}" required>
                               </div>
                            </div>
                         </div>
                         <div class="col-12 col-sm-3">
                            <div class="form-group">
-                              <label>Logitude</label>
-                              <input type="number" class="form-control" name="longitude"
-                                 value="{{ experience.longitude|default_if_none:'' }}" placeholder="+000.000000000"
-                                 required>
+                              <label>Contacto Fixo</label>
+                              <div>
+                                 <input type="text" class="form-control" name="contact_phone1"
+                                    placeholder="Contacto Fixo do parceiro"
+                                    value="{{ partner.contact_phone1|default_if_none:'' }}" required>
+                              </div>
                            </div>
-                        </div> -->
+                        </div>
+                        <div class="col-12 col-sm-3">
+                           <div class="form-group">
+                              <label>Contacto Móvel</label>
+                              <div>
+                                 <input type="text" class="form-control" name="contact_phone2"
+                                    placeholder="Contacto Móvel do parceiro"
+                                    value="{{ partner.contact_phone2|default_if_none:'' }}" >
+                              </div>
+                           </div>
+                        </div>
+                        <div class="col-12 col-sm-10">
+                           <div class="form-group">
+                              <label>Website</label>
+                              <div>
+                                 <input type="text" class="form-control" name="website"
+                                    placeholder="Website do parceiro" value="{{ partner.website|default_if_none:'' }}">
+                              </div>
+                           </div>
+                        </div>
+                        
                         <div class="col-12">
                            <h5 class="form-title"><span>Outras Informações</span></h5>
                         </div>
-                        <div class="col-12 col-sm-6">
+                        <div class="col-12 col-sm-9">
                            <div class="form-group">
-                              <label>Anotações</label>
-                              <textarea class="form-control" name="notes" placeholder="Observações sobre a experiência"
-                                 rows="8">{{ experience.notes|default_if_none:'' }}</textarea>
+                              <label>Morada</label>
+                              <div>
+                                 <input type="text" class="form-control" name="address"
+                                    placeholder="Morada do parceiro"
+                                    value="{{ partner.address|default_if_none:'' }}" required>
+                              </div>
                            </div>
                         </div>
                         <div class="col-12">
@@ -132,9 +127,9 @@
                         </div>
                         <div class="col-sm-3">
                            <strong>Cadastrado em:</strong>
-                           <span class="text-muted">{{ experience.created_at|default_if_none:'' }}</span><br>
+                           <span class="text-muted">{{ partner.created_at|default_if_none:'' }}</span><br>
                            <strong>Atualizado em:</strong>
-                           <span class="text-muted">{{ experience.modified_at|default_if_none:''}}</span>
+                           <span class="text-muted">{{ partner.modified_at|default_if_none:''}}</span>
                         </div>
                      </div>
                   </form>
@@ -155,7 +150,7 @@
 <script src="{%static 'assets/js/script.js' %}"></script>
 <script type="text/javascript">
    function go_to_list_view() {
-      document.location.href = "{% url 'list_experience' %}"
+      document.location.href = "{% url 'list_partner' %}"
    }
 </script>
 </body>

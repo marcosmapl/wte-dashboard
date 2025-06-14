@@ -7,10 +7,10 @@
         <div class="page-header">
             <div class="row align-items-center">
                 <div class="col">
-                    <h3 class="page-title">Seviços</h3>
+                    <h3 class="page-title">Serviços</h3>
                     <ul class="breadcrumb">
-                        <li class="breadcrumb-item"><a href="">Dashboard</a></li>
-                        <li class="breadcrumb-item active">Experiências</li>
+                        <li class="breadcrumb-item"><a href="">Experiências</a></li>
+                        <li class="breadcrumb-item active">Listagem</li>
                     </ul>
                 </div>
                 <div class="col-auto text-right float-right ml-auto">
@@ -36,7 +36,7 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    {% for experience in page_data %}
+                                    {% for experience in experience_list %}
                                     <tr>
                                         <!-- <td>{{ experience.id }}</td> -->
                                         <td>{{ experience.title }}</td>

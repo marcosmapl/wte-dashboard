@@ -61,27 +61,25 @@ class Experience(models.Model):
         return self.title
 
 class RegisterStatus(models.TextChoices):
-    INACTIVE = 'Inativo', 'Inativo'
     ACTIVE = 'Ativo', 'Ativo'
     BLOCKED = 'Bloqueado', 'Bloqueado'
-    EXCLUDED = 'Bloqueado', 'Excluído'
+    EXCLUDED = 'Excluído', 'Excluído'
+    INACTIVE = 'Inativo', 'Inativo'
     
 
 class Partner(models.Model):
     name = models.CharField(max_length=180)
-    nif = models.CharField(max_length=15, unique=True, db_index=True)
-    iban = models.CharField(max_length=34, unique=True, db_index=True)
-    contact_person = models.CharField(max_length=100, blank=True, null=True)
-    contact_email = models.EmailField(max_length=255, unique=True, db_index=True)
-    contact_phone = models.CharField(max_length=15, blank=True, null=True)
-    website = models.URLField(max_length=255, blank=True, null=True)
+    contact_email = models.EmailField(max_length=255, unique=True, db_index=True, validators=[EmailValidator(message="Email inválido! Certifique-se de que o email informado está correto.")])
+    contact_phone1 = models.CharField(max_length=15, blank=True, null=True)
+    contact_phone2 = models.CharField(max_length=15, blank=True, null=True)
+    website = models.URLField(max_length=255, blank=True, null=True, validators=[URLValidator(message="URL inválida! Certifique-se de que a URL está correta.")])
     address = models.CharField(max_length=255, blank=True, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
     modified_at = models.DateTimeField(auto_now=True)
     status = models.CharField(max_length=20, choices=RegisterStatus.choices, default=RegisterStatus.ACTIVE)
 
     def __str__(self):
-        return f"{self.name} - ({self.nif})"
+        return self.name
 
 
 class ReservationChannel(models.IntegerChoices):
