@@ -143,17 +143,22 @@
    </footer>
 </div>
 </div>
+
+
+<!-- jQuery (obrigatório) -->
 <script src="{%static 'assets/js/jquery-3.6.0.min.js' %}"></script>
+<script src="{%static 'assets/plugins/slimscroll/jquery.slimscroll.min.js' %}"></script>
+
+<!-- DataTables JS -->
 <script src="{%static 'assets/js/popper.min.js' %}"></script>
 <script src="{%static 'assets/plugins/bootstrap/js/bootstrap.min.js' %}"></script>
-<script src="{%static 'assets/plugins/slimscroll/jquery.slimscroll.min.js' %}"></script>
+
 <script src="{%static 'assets/js/script.js' %}"></script>
+
 <script type="text/javascript">
    function go_to_list_view() {
       document.location.href = "{% url 'list_partner' %}"
    }
 </script>
-</body>
 
-</html>
 {% endblock %}

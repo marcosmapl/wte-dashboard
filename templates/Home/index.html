@@ -320,15 +320,34 @@
    </footer>
 </div>
 </div>
+
+<!-- jQuery (obrigatório) -->
 <script src="{%static 'assets/js/jquery-3.6.0.min.js' %}"></script>
+<script src="{%static 'assets/plugins/slimscroll/jquery.slimscroll.min.js' %}"></script>
+
+<!-- DataTables JS -->
 <script src="{%static 'assets/js/popper.min.js' %}"></script>
 <script src="{%static 'assets/plugins/bootstrap/js/bootstrap.min.js' %}"></script>
-<script src="{%static 'assets/plugins/slimscroll/jquery.slimscroll.min.js' %}"></script>
+<script src="{%static 'assets/plugins/datatables/datatables.min.js' %}"></script>
+<!-- <script src="{%static 'assets/plugins/datatables/jquery.dataTables.min.js' %}"></script> -->
+
 <script src="{%static 'assets/plugins/apexchart/apexcharts.min.js' %}"></script>
 <script src="{%static 'assets/plugins/apexchart/chart-data.js' %}"></script>
 <script src="{%static 'assets/js/script.js' %}"></script>
-</body>
 
-</html>
+<script>
+    $(document).ready(function () {
+    $("#tableData").DataTable({
+        language: {
+        search: "Pesquisar:",
+        lengthMenu: "Exibir _MENU_ registros por página",
+        zeroRecords: "Nenhum registro encontrado",
+        info: "Mostrando página _PAGE_ de _PAGES_",
+        infoEmpty: "Nenhum registro disponível",
+        infoFiltered: "(filtrado de _MAX_ registros totais)",
+        },
+    });
+    });
+</script>
 
 {% endblock %}

@@ -1,0 +1,165 @@
+from django.forms import ValidationError
+from django.shortcuts import render, redirect
+from django.contrib import messages
+
+from django.shortcuts import get_object_or_404
+
+from booking.models import Booking, BookingChannel, BookingStatus
+from experience.models import Experience, Partner
+from home_auth.models import WineUser
+
+
+# Create your views here.
+def list_booking(request):
+    booking_list = Booking.objects.select_related('experience', 'partner').all()
+    # print(f"Booking list: {booking_list}")
+    context = {
+        'page_mode': 'list',
+        'booking_list': booking_list,
+    }
+    return render(request, "booking/list-booking.html", context)
+
+def add_booking(request):
+
+    context = {
+        'page_mode': 'add',
+        'channel_options': BookingChannel.choices,
+        'status_options': BookingStatus.choices,
+    }
+
+    if request.method == "POST":
+        # print(f"Request POST data: {request.POST}")
+        
+        # Criação do objeto
+        booking = Booking(
+            code=request.POST.get('booking_code'),
+            client_name=request.POST.get('booking_client_name'),
+            client_nif=request.POST.get('booking_client_nif'),
+            client_email=request.POST.get('booking_client_email'),
+            client_phone=request.POST.get('booking_client_phone'),
+            experience_date=request.POST.get('booking_experience_date'),
+            number_adults=request.POST.get('booking_number_adults'),
+            number_children=request.POST.get('booking_number_children'),
+            price_adults=request.POST.get('booking_price_adults'),
+            price_children=request.POST.get('booking_price_children'),
+            discount=request.POST.get('booking_discount'),
+            total=request.POST.get('booking_total'),
+            channel=request.POST.get('booking_channel', BookingChannel.WORDPRESS),
+            status=request.POST.get('booking_status', BookingStatus.PENDING),
+            experience=Experience.objects.get(id=request.POST.get('booking_experience')),
+            partner=Partner.objects.get(id=request.POST.get('booking_partner')),
+            reserved_by=WineUser.objects.get(id="1")
+        )
+        
+        try:
+            # Validação do objeto
+            booking.full_clean()
+            
+            # Salva o objeto no banco de dados
+            booking.save()
+            
+            #TODO: show message popup
+            messages.success(request, "Reserva realizada com sucesso.")
+            return redirect('list_booking')
+        except ValidationError as e:
+            for field, errors in e.message_dict.items():
+                messages.error(request, f"Erro de validação: {".".join(errors)}")
+                print(field)
+                print(errors)
+                break            
+        except Exception as e:
+            messages.error(request, f"Erro inesperado: {str(e)}")
+            print(e)
+            # Preenche os campos do contexto para manter os valores
+            context.update({
+                'form_data': request.POST,
+                'booking': booking,
+                'channel_selected': booking.channel,
+                'status_selected': booking.status,
+            })
+
+    e_list = Experience.objects.all().order_by('title')
+    p_list = Partner.objects.all().order_by('name')
+
+    context.update({
+        'experience_list': e_list,
+        'experience_selected': e_list[0],
+        'partner_list': p_list,
+        'partner_selected': p_list[0],
+    })
+    
+    # TODO: add error message popup
+    return render(request, "booking/add-booking.html", context)
+              
+
+def edit_booking(request, id):
+    booking = Booking.objects.get(id=id)
+    
+    if request.method == "POST":
+        # print(f"Request POST data: {request.POST}")
+
+        # Atualiza os campos do objeto
+        booking.code = request.POST.get('code')
+        booking.client_name = request.POST.get('client_name')
+        booking.client_nif = request.POST.get('client_nif')
+        booking.client_email = request.POST.get('client_email')
+        booking.client_phone = request.POST.get('client_phone')
+        booking.experience_date = request.POST.get('experience_date')
+        booking.number_adults = request.POST.get('number_adults')
+        booking.number_children = request.POST.get('number_children')
+        booking.price_adults = request.POST.get('price_adults')
+        booking.price_children = request.POST.get('price_children')
+        booking.total = request.POST.get('total')
+        booking.discount = request.POST.get('discount')
+        booking.channel = request.POST.get('channel')
+        booking.status = request.POST.get('status')
+        booking.experience = request.POST.get('experience')
+        booking.partner = request.POST.get('partner')
+        booking.reserved_by = request.POST.get('reserved_by')
+        booking.modified_at = None # Reseta o campo modified_at para que seja atualizado no save()
+        
+        try:
+            # Validação do objeto
+            booking.full_clean()
+            
+            # Salva o objeto no banco de dados
+            booking.save()
+            
+            messages.success(request, "Reserva atualizada com sucesso.")
+            return redirect('list_booking')
+        except ValidationError as e:
+            for field, errors in e.message_dict.items():
+                messages.error(request, f"Erro de validação: {".".join(errors)}")
+                break            
+        except Exception as e:
+            messages.error(request, f"Erro inesperado: {str(e)}")
+    
+    # print(f"Experience details: {experience.category}, {experience.status}")
+    
+    context = {
+        'page_mode': 'edit',
+        'booking': booking,
+        'category_options': Booking.choices,
+        'channel_selected': str(booking.channel),
+        'status_options': BookingStatus.choices,
+        'status_selected': str(booking.status),
+    }
+    
+    return render(request, "experience/edit-experience.html", context)
+
+def delete_booking(request, id):
+    if request.method == "POST":
+        booking = get_object_or_404(Booking, id=id)
+        # Verifica se o objeto existe
+        if not booking:
+            messages.error(request, "Reserva não encontrada.")
+        else:
+            # Exclui o objeto
+            messages.success(request, "Reserva excluída com sucesso.")    
+            booking.delete()
+    
+    return redirect('list_booking')
+
+
+def search_experience(request):
+    pass

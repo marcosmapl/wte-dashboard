@@ -27,8 +27,9 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'fontawesomefree',  # Ensure this is installed via pip
     'dashboard',
+    'home_auth',
     'experience',
-    'home_auth'
+    'booking',
 ]
 
 MIDDLEWARE = [

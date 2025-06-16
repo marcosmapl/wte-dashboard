@@ -22,5 +22,6 @@ urlpatterns = [
     path('dashboard/', include("dashboard.urls")),
     path('admin/', admin.site.urls),
     path('authentication/', include("home_auth.urls")),
-    path('experience/', include("experience.urls"))
+    path('experience/', include("experience.urls")),
+    path('booking/', include("booking.urls"))
 ]

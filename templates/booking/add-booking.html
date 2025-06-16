@@ -1,0 +1,292 @@
+{% extends 'Home/base.html' %}
+{% load static %}
+{% block body %}
+
+<div class="page-wrapper">
+   <div class="content container-fluid">
+      <div class="page-header">
+         <div class="row align-items-center">
+            <div class="col-12 col-sm-6">
+               <h3 class="page-title">Atendimento</h3>
+               <ul class="breadcrumb">
+                  <li class="breadcrumb-item"><a href="{% url 'list_booking' %}">Reservas</a></li>
+                  <li class="breadcrumb-item active">Cadastro</li>
+               </ul>
+            </div>
+            <!-- Error and success messages -->
+            <!-- {% if messages %}
+            <div class="col-12  col-sm-6">
+               <div class="alert alert-warning alert-dismissible fade show" role="alert">
+                  {% for message in messages %}
+                  <span>{{ message }}</span><br>
+                  {% endfor %}
+                  <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                     <span aria-hidden="true">&times;</span>
+                  </button>
+               </div>
+               {% endif %}
+            </div> -->
+         </div>
+      </div>
+      <div class="row">
+         <div class="col-sm-12">
+            <div class="card">
+               <div class="card-body">
+                  <form method="POST" action="{% url 'add_booking' %}" enctype="multipart/form-data">
+                     {% csrf_token %}
+                     <div class="row">
+                        <div class="col-12">
+                           <h5 class="form-title"><span>Indentificação da Reserva</span></h5>
+                        </div>
+                        <div class="col-12 col-sm-6">
+                           <div class="form-group">
+                              <label>Código da Reserva</label>
+                              <input id="booking_code" type="text" class="form-control" name="booking_code" placeholder="WTE9999999999"
+                                 value="{{ booking.code|default_if_none:'' }}" required>
+                           </div>
+                        </div>
+                        <div class="col-12 col-sm-3">
+                           <div class="form-group">
+                              <label>Status</label>
+                              <select id="booking_status" class="form-control" name="booking_status" required>
+                                 {% for value, label in status_options %}
+                                 <option value="{{ value }}" {% if value == status_selected %}selected{% endif %}>
+                                    {{ label }}
+                                 </option>
+                                 {% endfor %}
+                              </select>
+                           </div>
+                        </div>
+
+                        <div class="col-12">
+                           <h5 class="form-title"><span>Indentificação do Cliente</span></h5>
+                        </div>
+                        <div class="col-12 col-sm-6">
+                           <div class="form-group">
+                              <label>Nome do Cliente</label>
+                              <input id="booking_client_name" type="text" class="form-control" name="booking_client_name" placeholder="Nome do cliente"
+                                 value="{{ booking.client_name|default_if_none:'' }}" required>
+                           </div>
+                        </div>
+                        <div class="col-12 col-sm-3">
+                           <div class="form-group">
+                              <label>NIF do Cliente</label>
+                              <input id="booking_client_nif" type="text" class="form-control" name="booking_client_nif" placeholder="999999999"
+                                 value="{{ booking.client_nif|default_if_none:'' }}" required>
+                           </div>
+                        </div>
+                        <div class="col-12 col-sm-6">
+                           <div class="form-group">
+                              <label>Email Cliente</label>
+                              <input id="booking_client_email" type="email" class="form-control" name="booking_client_email" placeholder="cliente@email.com"
+                                 value="{{ booking.client_email|default_if_none:'' }}" required>
+                           </div>
+                        </div>
+                        <div class="col-12 col-sm-3">
+                           <div class="form-group">
+                              <label>Contacto Cliente</label>
+                              <input id="booking_client_phone" type="tel" class="form-control" name="booking_client_phone" placeholder="+999999999999"
+                                 value="{{ booking.client_phone|default_if_none:'' }}" required>
+                           </div>
+                        </div>
+                        
+                        <div class="col-12">
+                           <h5 class="form-title"><span>Informações Experiência</span></h5>
+                        </div>
+                        <div class="col-12 col-sm-9">
+                           <div class="form-group">
+                              <label>Experiência</label>
+                              <select id="booking_experience" class="form-control" name="booking_experience" required>
+                                 {% for e in experience_list %}
+                                 <option value="{{ e.id }}" {% if e == experience_selected %}selected{% endif %}>
+                                    {{ e }}
+                                 </option>
+                                 {% endfor %}
+                              </select>
+                           </div>
+                        </div>
+                        <div class="col-12 col-sm-6">
+                           <div class="form-group">
+                              <label>Parceiro</label>
+                              <select id="booking_partner" class="form-control" name="booking_partner" required>
+                                 {% for p in partner_list %}
+                                 <option value="{{ p.id }}" {% if p == partner_selected %}selected{% endif %}>
+                                    {{ p }}
+                                 </option>
+                                 {% endfor %}
+                              </select>
+                           </div>
+                        </div>
+                        <div class="col-12 col-sm-3">
+                           <div class="form-group">
+                              <label>Data Experiência</label>
+                              <input id="booking_experience_date" type="datetime-local" class="form-control" name="booking_experience_date" value="{{ booking.experience_date|default_if_none:'' }}" required>
+                           </div>
+                        </div>                   
+
+                        <div class="col-12">
+                           <h5 class="form-title"><span>Membros e Preços</span></h5>
+                        </div>
+                        <div class="col-12 col-sm-2">
+                           <div class="form-group">
+                              <label>Nº Adultos</label>
+                              <input id="booking_number_adults" type="number" class="form-control" name="booking_number_adults" value="{{ booking.number_adults|default_if_none:'' }}" required>
+                           </div>
+                        </div>
+                        
+                        <div class="col-12 col-sm-3">
+                           <div class="form-group">
+                              <label>Preço Adulto</label>
+                              <div class="input-group">
+                                 <div class="input-group-prepend">
+                                    <button class="btn btn-secondary dropdown-toggle" type="button" data-toggle="dropdown" aria-expanded="false">
+                                       €
+                                    </button>
+                                    <div class="dropdown-menu">
+                                       <a class="dropdown-item">€</a>
+                                       <a class="dropdown-item">$</a>
+                                       <a class="dropdown-item">R$</a>
+                                    </div>
+                                 </div>
+                                 <input id="booking_price_adults" type="number" step="0.01" min="0.00" class="form-control" name="booking_price_adults" value="{{ booking.price_adults|default_if_none:'' }}" required>
+                              </div>
+                           </div>
+                        </div>
+
+                        <div class="col-12">
+                        </div>
+                        <div class="col-12 col-sm-2">
+                           <div class="form-group">
+                              <label>Nº Crianças</label>
+                              <input id="booking_number_children" type="number" class="form-control" name="booking_number_children" value="{{ booking.number_children|default_if_none:'' }}" required>
+                           </div>
+                        </div>
+                        <div class="col-12 col-sm-3">
+                           <div class="form-group">
+                              <label>Preço Crianças</label>
+                              <div class="input-group">
+                                 <div class="input-group-prepend">
+                                    <button class="btn btn-secondary dropdown-toggle" type="button" data-toggle="dropdown" aria-expanded="false">
+                                       €
+                                    </button>
+                                    <div class="dropdown-menu">
+                                       <a class="dropdown-item">€</a>
+                                       <a class="dropdown-item">$</a>
+                                       <a class="dropdown-item">R$</a>
+                                    </div>
+                                 </div>
+                                 <input id="booking_price_children" type="number" step="0.01" min="0.00" class="form-control" name="booking_price_children" value="{{ booking.price_children|default_if_none:'' }}" required>
+                              </div>
+                           </div>
+                        </div>
+
+                        <div class="col-12">
+                        </div>
+                        <div class="col-12 col-sm-3">
+                           <div class="form-group">
+                              <label>Desconto</label>
+                              <div class="input-group">
+                                 <div class="input-group-prepend">
+                                    <button class="btn btn-secondary dropdown-toggle" type="button">
+                                       %
+                                    </button>
+                                 </div>
+                                 <input id="booking_discount" type="number" step="0.01" min="0.00" class="form-control" name="booking_discount" value="{{ booking.discount|default_if_none:'' }}" required>
+                              </div>
+                           </div>
+                        </div>
+
+                        <div class="col-12">
+                        </div>
+                        <div class="col-12 col-sm-4">
+                           <div class="form-group">
+                              <label>Total</label>
+                              <div class="input-group">
+                                 <div class="input-group-prepend">
+                                    <button class="btn btn-secondary dropdown-toggle" type="button">
+                                       €
+                                    </button>
+                                 </div>
+                              
+                                 <input id="booking_total" type="number" step="0.01" min="0.00" class="form-control" name="booking_total" value="{{ booking.total|default_if_none:'' }}" required readonly>
+                              
+                                 <!-- Botão com ícone de calculadora -->
+                                 <div class="input-group-append">
+                                    <button class="btn btn-primary" type="button" onclick="calculateTotal()" title="Calcular Total">
+                                       <i class="fas fa-calculator"></i>
+                                    </button>
+                                 </div>
+                              </div>
+                           </div>
+                        </div>                     
+                              
+                        <div class="col-12">
+                           <h5 class="form-title"><span>Outras Informações</span></h5>
+                        </div>
+                        <div class="col-12 col-sm-3">
+                           <div class="form-group">
+                              <label>Canal</label>
+                              <select id="booking_channel" class="form-control" name="booking_channel" required>
+                                 {% for value, label in channel_options %}
+                                 <option value="{{ value }}" {% if value == channel_selected %}selected{% endif %}>
+                                    {{ label }}
+                                 </option>
+                                 {% endfor %}
+                              </select>
+                           </div>
+                        </div>
+                        
+                        <div class="col-12">
+                           <h5 class="form-title"><span></span></h5>
+                        </div>
+                        <div class="col-12">
+                        </div>
+                        <div class="col-sm-9">
+                           <button type="submit" class="btn btn-primary">Salvar</button>
+                           <button onclick="go_to_list_view()" class="btn btn-secondary">Voltar</button>
+                        </div>
+                     </div>
+                  </form>
+               </div>
+            </div>
+         </div>
+      </div>
+   </div>
+   <footer style="text-align: center;">
+      <p>Copyright © 2025 - Wine Tour Experience.</p>
+   </footer>
+</div>
+</div>
+
+<!-- jQuery (obrigatório) -->
+<script src="{%static 'assets/js/jquery-3.6.0.min.js' %}"></script>
+<script src="{%static 'assets/plugins/slimscroll/jquery.slimscroll.min.js' %}"></script>
+
+<!-- DataTables JS -->
+<script src="{%static 'assets/js/popper.min.js' %}"></script>
+<script src="{%static 'assets/plugins/bootstrap/js/bootstrap.min.js' %}"></script>
+
+<script src="{%static 'assets/js/script.js' %}"></script>
+
+<script type="text/javascript">
+   function go_to_list_view() {
+      document.location.href = "{% url 'list_experience' %}"
+   }
+
+   function calculateTotal() {
+      const numAdults = parseFloat(document.getElementById('booking_number_adults').value) || 0;
+      const priceAdult = parseFloat(document.getElementById('booking_price_adults').value) || 0;
+      const numChildren = parseFloat(document.getElementById('booking_number_children').value) || 0;
+      const priceChild = parseFloat(document.getElementById('booking_price_children').value) || 0;
+      const discount = parseFloat(document.getElementById('booking_discount').value) || 0;
+      
+      const subtotal = (numAdults * priceAdult) + (numChildren * priceChild);
+      const total = subtotal - (subtotal * (discount / 100));
+      
+      console.log(total.toFixed(2));
+      document.getElementById('booking_total').value = total.toFixed(2);
+  }
+</script>
+
+
+{% endblock %}

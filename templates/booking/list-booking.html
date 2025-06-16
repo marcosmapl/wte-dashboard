@@ -1,0 +1,114 @@
+{% extends 'Home/base.html' %}
+{% load static %}
+{% block body %}
+
+<div class="page-wrapper">
+    <div class="content container-fluid">
+        <div class="page-header">
+            <div class="row align-items-center">
+                <div class="col">
+                    <h3 class="page-title">Atendimento</h3>
+                    <ul class="breadcrumb">
+                        <li class="breadcrumb-item"><a href="">Reservas</a></li>
+                        <li class="breadcrumb-item active">Listagem</li>
+                    </ul>
+                </div>
+                <div class="col-auto text-right float-right ml-auto">
+                    <a href="#" class="btn btn-outline-primary mr-2"><i class="fas fa-download"></i> Download</a>
+                    <a href="{% url 'add_booking' %}" class="btn btn-primary"><i class="fas fa-plus"></i></a>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="card card-table">
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table id="tableData" class="table table-hover table-center table-striped mb-0">
+                                <thead>
+                                    <tr>
+                                        <!-- <th>ID</th> -->
+                                        <th>Código</th>
+                                        <th>Cliente</th>
+                                        <th>Contacto</th>
+                                        <th>Email</th>
+                                        <th>Experiência</th>
+                                        <th>Parceiro</th>
+                                        <th>Data</th>
+                                        <th class="text-right">Ações</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for booking in booking_list %}
+                                    <tr>
+                                        <!-- <td>{{ partner.id }}</td> -->
+                                        <td>{{ booking.code }}</td>
+                                        <td>{{ booking.client_name }}</td>
+                                        <td><a href="mailto:{{ booking.client_email }}" target="_blank">{{ booking.client_email }}</a></td>
+                                        <td><a href="https://wa.me/{{ booking.client_phone }}" target="_blank">{{ booking.client_phone }}</a></td>
+                                        <td>{{ booking.experience.title }}</td>
+                                        <td>{{ booking.partner.name }}</td>
+                                        <td>{{ booking.experience_date }}</td>
+                                        <td class="text-right">
+                                            <div class="actions">
+                                                <a href="{% url 'edit_booking' booking.id %}"
+                                                    class="btn btn-sm bg-success-light mr-2">
+                                                    <i class="fas fa-pen"></i>
+                                                </a>
+                                                <form action="{% url 'delete_booking' booking.id %}" method="POST" style="display:inline;">
+                                                    {% csrf_token %}
+                                                    <button type="submit" class="btn btn-sm bg-danger-light"
+                                                        onclick="return confirm('Deseja realmente excluir esta reserva?');">
+                                                        <i class="fas fa-trash"></i>
+                                                    </button>
+                                                </form>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    {% empty %}
+                                    <tr>
+                                        <td colspan="6" class="text-center">Nenhuma reserva cadastrada.</td>
+                                    </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <footer>
+        <p>Copyright © 2025 - Wine Tour Experience.</p>
+    </footer>
+</div>
+</div>
+
+<!-- jQuery (obrigatório) -->
+<script src="{%static 'assets/js/jquery-3.6.0.min.js' %}"></script>
+<script src="{%static 'assets/plugins/slimscroll/jquery.slimscroll.min.js' %}"></script>
+
+<!-- DataTables JS -->
+<script src="{%static 'assets/js/popper.min.js' %}"></script>
+<script src="{%static 'assets/plugins/bootstrap/js/bootstrap.min.js' %}"></script>
+<script src="{%static 'assets/plugins/datatables/datatables.min.js' %}"></script>
+<!-- <script src="{%static 'assets/plugins/datatables/jquery.dataTables.min.js' %}"></script> -->
+
+<script src="{%static 'assets/js/script.js' %}"></script>
+
+<script>
+    $(document).ready(function () {
+    $("#tableData").DataTable({
+        language: {
+        search: "Pesquisar:",
+        lengthMenu: "Exibir _MENU_ registros por página",
+        zeroRecords: "Nenhum registro encontrado",
+        info: "Mostrando página _PAGE_ de _PAGES_",
+        infoEmpty: "Nenhum registro disponível",
+        infoFiltered: "(filtrado de _MAX_ registros totais)",
+        },
+    });
+    });
+</script>
+
+{% endblock %}
