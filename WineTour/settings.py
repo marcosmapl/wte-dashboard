@@ -1,4 +1,5 @@
 import os
+from decouple import config
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -8,12 +9,12 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # See https://docs.djangoproject.com/en/3.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'dep*qj^auc=#yoa_*x5s!bw76+e5y@v++(1_*sg6^j6167zzka'
+SECRET_KEY = config('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = config('DEBUG', default=False, cast=bool)
 
-ALLOWED_HOSTS = ["*"]
+ALLOWED_HOSTS = config('ALLOWED_HOSTS').split(',')
 
 
 # Application definition
@@ -76,13 +77,14 @@ WSGI_APPLICATION = 'WineTour.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql', 
-        'NAME': '[dbschema]',
-        'USER': '[dbuser]',
-        'PASSWORD': '[dbpassword]', 
-        'HOST': '[dbhost]',   # Or an IP Address that your DB is hosted on
-        'PORT': '[dbport]',
+        'NAME': config('DB_NAME'),
+        'USER': config('DB_USER'),
+        'PASSWORD': config('DB_PASSWORD'), 
+        'HOST': config('DB_HOST'),   # Or an IP Address that your DB is hosted on
+        'PORT': config('DB_PORT'),
     }
 }
+
 
 # Password validation
 # https://docs.djangoproject.com/en/3.0/ref/settings/#auth-password-validators
@@ -106,9 +108,9 @@ AUTH_PASSWORD_VALIDATORS = [
 # Internationalization
 # https://docs.djangoproject.com/en/3.0/topics/i18n/
 
-LANGUAGE_CODE = 'en-us'
+LANGUAGE_CODE = config('LANGUAGE_CODE')
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = config('TIME_ZONE') # 'UTC'
 
 USE_I18N = True
 
@@ -129,22 +131,19 @@ STATICFILES_DIRS = [
 #  add this for authentication
 
 AUTH_USER_MODEL = 'home_auth.WineUser'  # Adjust 'home_auth' to the app where WineUser is defined
+
 AUTHENTICATION_BACKENDS = (
     'django.contrib.auth.backends.ModelBackend',  # Default backend
 )
 
 
 # Use console email backend for local development
-EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
-
-# settings.py
-
-# EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-# EMAIL_HOST = 'smtp.gmail.com'
-# EMAIL_PORT = 587
-# EMAIL_USE_TLS = True
-# EMAIL_HOST_USER = 'your-email@gmail.com'  # Replace with your email
-# EMAIL_HOST_PASSWORD = 'your-email-password'  # Replace with your email password or app-specific password
+EMAIL_BACKEND = config('EMAIL_BACKEND')
+EMAIL_HOST = config('EMAIL_HOST')
+EMAIL_PORT = config('EMAIL_PORT', cast=int)
+EMAIL_USE_TLS = config('EMAIL_USE_TLS', cast=bool)
+EMAIL_HOST_USER = config('EMAIL_HOST_USER')
+EMAIL_HOST_PASSWORD = config('EMAIL_HOST_PASSWORD')
 
 
 # URL that handles the media served from MEDIA_ROOT

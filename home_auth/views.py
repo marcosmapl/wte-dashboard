@@ -10,60 +10,62 @@ from django.utils.crypto import get_random_string
 
 def signup_view(request):
     if request.method == 'POST':
-        # first_name = request.POST['first_name']
-        # last_name = request.POST['last_name']
-        # email = request.POST['email']
-        # password = request.POST['password']
-        # role = request.POST.get('role')  # Get role from the form (student, teacher, or admin)
+        first_name = request.POST['first_name']
+        last_name = request.POST['last_name']
+        email = request.POST['email']
+        password = request.POST['password']
+        role = request.POST.get('role')  # Get role from the form (student, teacher, or admin)
         
-        # # Create the user
-        # user = WineUser.objects.create_user(
-        #     username=email,
-        #     email=email,
-        #     first_name=first_name,
-        #     last_name=last_name,
-        #     password=password,
-        # )
+        # Create the user
+        user = WineUser.objects.create_user(
+            username=email,
+            email=email,
+            first_name=first_name,
+            last_name=last_name,
+            password=password,
+        )
         
-        # # Assign the appropriate role
-        # if role == 'student':
-        #     user.is_student = True
-        # elif role == 'teacher':
-        #     user.is_teacher = True
-        # elif role == 'admin':
-        #     user.is_admin = True
+        # Assign the appropriate role
+        if role == 'student':
+            user.is_student = True
+        elif role == 'teacher':
+            user.is_teacher = True
+        elif role == 'admin':
+            user.is_admin = True
 
-        # user.save()  # Save the user with the assigned role
-        # login(request, user)
-        # messages.success(request, 'Signup successful!')
+        user.save()  # Save the user with the assigned role
+        login(request, user)
+        messages.success(request, 'Signup successful!')
         return redirect('index')  # Redirect to the index or home page
     return render(request, 'authentication/register.html')  # Render signup template
 
 
 def login_view(request):
     if request.method == 'POST':
-        return redirect('dashboard_general')
-        # return render(request, 'dashboard/general')
-        # email = request.POST['email']
-        # password = request.POST['password']
+        username = request.POST['username']
+        password = request.POST['password']
+        print(username, password)
+        print(request)
         
-        # user = authenticate(request, username=email, password=password)
-        # if user is not None:
-        #     login(request, user)
-        #     messages.success(request, 'Login successful!')
+        user = authenticate(request, username=username, password=password)
+        print(user)
+        if user is not None:
+            login(request, user)
+            messages.success(request, 'Login successful!')
+            return redirect('dashboard_general')
             
-        #     # Redirect user based on their role
-        #     if user.is_admin:
-        #         return redirect('admin_dashboard')
-        #     elif user.is_teacher:
-        #         return redirect('teacher_dashboard')
-        #     elif user.is_student:
-        #         return redirect('dashboard')
-        #     else:
-        #         messages.error(request, 'Invalid user role')
-        #         return redirect('index')  # Redirect to index in case of error 
-        # else:
-        #     messages.error(request, 'Invalid credentials')
+            # # Redirect user based on their role
+            # if user.is_admin:
+            #     return redirect('admin_dashboard')
+            # elif user.is_teacher:
+            #     return redirect('teacher_dashboard')
+            # elif user.is_student:
+            #     return redirect('dashboard')
+            # else:
+            #     messages.error(request, 'Invalid user role')
+            #     return redirect('index')  # Redirect to index in case of error 
+        else:
+            messages.error(request, 'Invalid credentials')
     return render(request, 'authentication/login.html')  # Render login template
 
 
