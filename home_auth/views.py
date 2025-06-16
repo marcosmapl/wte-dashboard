@@ -10,32 +10,32 @@ from django.utils.crypto import get_random_string
 
 def signup_view(request):
     if request.method == 'POST':
-        first_name = request.POST['first_name']
-        last_name = request.POST['last_name']
-        email = request.POST['email']
-        password = request.POST['password']
-        role = request.POST.get('role')  # Get role from the form (student, teacher, or admin)
+        # first_name = request.POST['first_name']
+        # last_name = request.POST['last_name']
+        # email = request.POST['email']
+        # password = request.POST['password']
+        # role = request.POST.get('role')  # Get role from the form (student, teacher, or admin)
         
-        # Create the user
-        user = WineUser.objects.create_user(
-            username=email,
-            email=email,
-            first_name=first_name,
-            last_name=last_name,
-            password=password,
-        )
+        # # Create the user
+        # user = WineUser.objects.create_user(
+        #     username=email,
+        #     email=email,
+        #     first_name=first_name,
+        #     last_name=last_name,
+        #     password=password,
+        # )
         
-        # Assign the appropriate role
-        if role == 'student':
-            user.is_student = True
-        elif role == 'teacher':
-            user.is_teacher = True
-        elif role == 'admin':
-            user.is_admin = True
+        # # Assign the appropriate role
+        # if role == 'student':
+        #     user.is_student = True
+        # elif role == 'teacher':
+        #     user.is_teacher = True
+        # elif role == 'admin':
+        #     user.is_admin = True
 
-        user.save()  # Save the user with the assigned role
-        login(request, user)
-        messages.success(request, 'Signup successful!')
+        # user.save()  # Save the user with the assigned role
+        # login(request, user)
+        # messages.success(request, 'Signup successful!')
         return redirect('index')  # Redirect to the index or home page
     return render(request, 'authentication/register.html')  # Render signup template
 
