@@ -166,14 +166,27 @@
             </li>
             <li class="menu">
               <a href="">
-                <i class="fas fa-columns"></i><span>Agenda</span>
+                <i class="fas fa-columns"></i>
+                <span>Agenda</span>
               </a>
             </li>
             <li class="submenu">
-              <a href="#"><i class="fas fa-headset"></i><span>Reservas</span><span class="menu-arrow"></span></a>
+              <a href="#">
+                <i class="fas fa-headset"></i>
+                <span>Reservas</span>
+                <span class="menu-arrow"></span>
+              </a>
               <ul>
-                <li><a href="{% url 'add_booking' %}"><span>Nova Reserva</span></a></li>
-                <li><a href="{% url 'list_booking' %}"><span>Listar Reservas</span></a></li>
+                <li>
+                  <a href="{% url 'add_booking' %}">
+                    <span>Nova Reserva</span>
+                  </a>
+                </li>
+                <li>
+                  <a href="{% url 'list_booking' %}">
+                    <span>Listar Reservas</span>
+                  </a>
+                </li>
               </ul>
             </li>
 
@@ -188,12 +201,12 @@
               </a>
               <ul>
                 <li>
-                  <a href="{% url 'dashboard_general' %}">
+                  <a href="{% url 'add_customer_invoice' %}">
                     <span>Nova Fatura</span>
                   </a>
                 </li>
                 <li>
-                  <a href="{% url 'dashboard_general' %}">
+                  <a href="{% url 'list_customer_invoice' %}">
                     <span>Faturas Emitidas</span>
                   </a>
                 </li>
@@ -206,8 +219,16 @@
                 <span class="menu-arrow"></span>
               </a>
               <ul>
-                <li><a href="{% url 'dashboard_general' %}"><span>Nova Fatura</span></a></li>
-                <li><a href="{% url 'dashboard_general' %}"><span>Faturas Emitidas</span></a></li>
+                <li>
+                  <a href="{% url 'add_partner_invoice' %}">
+                    <span>Nova Fatura</span>
+                  </a>
+                </li>
+                <li>
+                  <a href="{% url 'list_partner_invoice' %}">
+                    <span>Faturas Emitidas</span>
+                  </a>
+                </li>
               </ul>
             </li>
             <li class="submenu">

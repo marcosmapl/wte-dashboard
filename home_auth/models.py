@@ -11,7 +11,7 @@ from django.utils import timezone
 import uuid
 
 class WineUser(AbstractUser):
-    username = models.CharField(max_length=100, unique=True)
+    username = models.CharField(max_length=100, unique=True, db_index=True)
     email = models.EmailField(max_length=255, unique=True, db_index=True)
     login_token = models.CharField(max_length=6, blank=True, null=True)
     first_name = models.CharField(max_length=30, blank=True)
@@ -45,8 +45,8 @@ class WineUser(AbstractUser):
 
 
 class PasswordResetRequest(models.Model):
-    user = models.ForeignKey('WineUser', on_delete=models.CASCADE)
-    email = models.EmailField()
+    user = models.ForeignKey(WineUser, on_delete=models.CASCADE)
+    email = models.EmailField(max_length=255, unique=True, db_index=True)
     token = models.CharField(max_length=32, default=get_random_string(32), editable=False, unique=True)
     created_at = models.DateTimeField(auto_now_add=True)
     

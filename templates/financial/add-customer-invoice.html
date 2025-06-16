@@ -1,0 +1,155 @@
+{% extends 'Home/base.html' %}
+{% load static %}
+{% block body %}
+
+<div class="page-wrapper">
+   <div class="content container-fluid">
+      <div class="page-header">
+         <div class="row align-items-center">
+            <div class="col-12 col-sm-6">
+               <h3 class="page-title">Financeiro</h3>
+               <ul class="breadcrumb">
+                  <li class="breadcrumb-item"><a href="{% url 'list_experience' %}">Faturas (Cliente)</a></li>
+                  <li class="breadcrumb-item active">Nova Fatura</li>
+               </ul>
+            </div>
+            <!-- Error and success messages -->
+            <!-- {% if messages %}
+            <div class="col-12  col-sm-6">
+               <div class="alert alert-warning alert-dismissible fade show" role="alert">
+                  {% for message in messages %}
+                  <span>{{ message }}</span><br>
+                  {% endfor %}
+                  <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                     <span aria-hidden="true">&times;</span>
+                  </button>
+               </div>
+               {% endif %}
+            </div> -->
+         </div>
+      </div>
+      <div class="row">
+         <div class="col-sm-12">
+            <div class="card">
+               <div class="card-body">
+                  <form method="POST" action="{% url 'add_partner' %}" enctype="multipart/form-data">
+                     {% csrf_token %}
+                     <div class="row">
+                        <div class="col-12">
+                           <h5 class="form-title"><span>Dados da Fatura</span></h5>
+                        </div>
+                        <div class="col-12 col-sm-8">
+                           <div class="form-group">
+                              <label>Nome</label>
+                              <input type="text" class="form-control" name="name" placeholder="Nome do parceiro"
+                                 value="{{ partner.name|default_if_none:'' }}" required>
+                           </div>
+                        </div>
+                        <div class="col-12 col-sm-3">
+                           <div class="form-group">
+                              <label>Status</label>
+                              <select class="form-control" name="status" required>
+                                 {% for value, label in status_options %}
+                                 <option value="{{ value }}" {% if value==status_selected %}selected{% endif %}>
+                                    {{ label }}
+                                 </option>
+                                 {% endfor %}
+                              </select>
+                           </div>
+                        </div>
+
+                        <div class="col-12">
+                           <h5 class="form-title"><span>Informações Contacto</span></h5>
+                        </div>
+                        <div class="col-12 col-sm-5">
+                           <div class="form-group">
+                              <label>Email</label>
+                              <div>
+                                 <input type="text" class="form-control" name="contact_email"
+                                    placeholder="Endereço de email do parceiro"
+                                    value="{{ partner.contact_email|default_if_none:'' }}" required>
+                              </div>
+                           </div>
+                        </div>
+                        <div class="col-12 col-sm-3">
+                           <div class="form-group">
+                              <label>Contacto Fixo</label>
+                              <div>
+                                 <input type="text" class="form-control" name="contact_phone1"
+                                    placeholder="Contacto Fixo do parceiro"
+                                    value="{{ partner.contact_phone1|default_if_none:'' }}" required>
+                              </div>
+                           </div>
+                        </div>
+                        <div class="col-12 col-sm-3">
+                           <div class="form-group">
+                              <label>Contacto Móvel</label>
+                              <div>
+                                 <input type="text" class="form-control" name="contact_phone2"
+                                    placeholder="Contacto Móvel do parceiro"
+                                    value="{{ partner.contact_phone2|default_if_none:'' }}">
+                              </div>
+                           </div>
+                        </div>
+                        <div class="col-12 col-sm-10">
+                           <div class="form-group">
+                              <label>Website</label>
+                              <div>
+                                 <input type="text" class="form-control" name="website"
+                                    placeholder="Website do parceiro" value="{{ partner.website|default_if_none:'' }}">
+                              </div>
+                           </div>
+                        </div>
+
+                        <div class="col-12">
+                           <h5 class="form-title"><span>Outras Informações</span></h5>
+                        </div>
+                        <div class="col-12 col-sm-9">
+                           <div class="form-group">
+                              <label>Morada</label>
+                              <div>
+                                 <input type="text" class="form-control" name="address" placeholder="Morada do parceiro"
+                                    value="{{ partner.address|default_if_none:'' }}" required>
+                              </div>
+                           </div>
+                        </div>
+
+                        <div class="col-12">
+                           <h5 class="form-title"><span></span></h5>
+                        </div>
+                        <div class="col-12">
+                        </div>
+                        <div class="col-sm-9">
+                           <button type="submit" class="btn btn-primary">Salvar</button>
+                           <button onclick="go_to_list_view()" class="btn btn-secondary">Voltar</button>
+                        </div>
+                     </div>
+                  </form>
+               </div>
+            </div>
+         </div>
+      </div>
+   </div>
+   <footer style="text-align: center;">
+      <p>Copyright © 2025 - Wine Tour Experience.</p>
+   </footer>
+</div>
+</div>
+
+<!-- jQuery (obrigatório) -->
+<script src="{%static 'assets/js/jquery-3.6.0.min.js' %}"></script>
+<script src="{%static 'assets/plugins/slimscroll/jquery.slimscroll.min.js' %}"></script>
+
+<!-- DataTables JS -->
+<script src="{%static 'assets/js/popper.min.js' %}"></script>
+<script src="{%static 'assets/plugins/bootstrap/js/bootstrap.min.js' %}"></script>
+
+<script src="{%static 'assets/js/script.js' %}"></script>
+
+<script type="text/javascript">
+   function go_to_list_view() {
+      document.location.href = "{% url 'list_partner' %}"
+   }
+</script>
+
+{% endblock %}

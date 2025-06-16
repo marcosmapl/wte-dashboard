@@ -55,7 +55,9 @@ class Experience(models.Model):
     status = models.CharField(max_length=50, choices=ExperienceStatus.choices, default=ExperienceStatus.AVAILABLE)
     notes = models.TextField(blank=True, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
-    modified_at = models.DateTimeField(auto_now=True)
+    created_by = models.ForeignKey(WineUser, on_delete=models.SET_NULL, null=True, db_index=True, related_name='exp_created_by')
+    updated_at = models.DateTimeField(auto_now=True)
+    updated_by = models.ForeignKey(WineUser, on_delete=models.SET_NULL, null=True, db_index=True, related_name='exp_updated_by')
     
     def __str__(self):
         return self.title
@@ -74,9 +76,11 @@ class Partner(models.Model):
     contact_phone2 = models.CharField(max_length=15, blank=True, null=True)
     website = models.URLField(max_length=255, blank=True, null=True, validators=[URLValidator(message="URL inválida! Certifique-se de que a URL está correta.")])
     address = models.CharField(max_length=255, blank=True, null=True)
-    created_at = models.DateTimeField(auto_now_add=True)
-    modified_at = models.DateTimeField(auto_now=True)
     status = models.CharField(max_length=20, choices=RegisterStatus.choices, default=RegisterStatus.ACTIVE)
+    created_at = models.DateTimeField(auto_now_add=True)
+    created_by = models.ForeignKey(WineUser, on_delete=models.SET_NULL, null=True, db_index=True, related_name='part_created_by')
+    updated_at = models.DateTimeField(auto_now=True)
+    updated_by = models.ForeignKey(WineUser, on_delete=models.SET_NULL, null=True, db_index=True, related_name='part_updated_by')
 
     def __str__(self):
         return self.name

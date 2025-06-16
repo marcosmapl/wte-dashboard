@@ -23,5 +23,6 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('authentication/', include("home_auth.urls")),
     path('experience/', include("experience.urls")),
-    path('booking/', include("booking.urls"))
+    path('booking/', include("booking.urls")),
+    path('financial/', include("financial.urls")),
 ]

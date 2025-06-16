@@ -21,7 +21,6 @@ def list_booking(request):
 
 
 def add_booking(request):
-
     if request.method == "POST":
         # print(f"Request POST data: {request.POST}")
         
@@ -107,7 +106,7 @@ def edit_booking(request, id):
         booking.status = request.POST.get('booking_status', BookingStatus.PENDING)
         booking.experience = Experience.objects.get(id=request.POST.get('booking_experience'))
         booking.partner = Partner.objects.get(id=request.POST.get('booking_partner'))
-        booking.reserved_by = WineUser.objects.get(id="1")
+        booking.created_by = WineUser.objects.get(id="1")
         booking.modified_at = None # Reseta o campo modified_at para que seja atualizado no save()
         
         try:
