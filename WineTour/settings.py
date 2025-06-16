@@ -31,6 +31,7 @@ INSTALLED_APPS = [
     'home_auth',
     'experience',
     'booking',
+    'financial',
 ]
 
 MIDDLEWARE = [

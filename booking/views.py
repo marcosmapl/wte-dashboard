@@ -71,9 +71,9 @@ def add_booking(request):
 
     context = {
         'experience_list': e_list,
-        'experience_selected': e_list[0],
+        'experience_selected': e_list[0] if e_list else None,
         'partner_list': p_list,
-        'partner_selected': p_list[0],
+        'partner_selected': p_list[0] if p_list else None,
         'channel_options': BookingChannel.choices,
         'channel_selected': BookingChannel.WORDPRESS,
         'status_options': BookingStatus.choices,

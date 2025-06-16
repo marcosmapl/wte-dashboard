@@ -21,10 +21,10 @@
   <div class="main-wrapper">
     <div class="header">
       <div class="header-left">
-        <a href="index.html" class="logo">
+        <a href="{% url 'dashboard_general' %}" class="logo">
           <img src="{%static 'assets/img/logo.png' %}" alt="Logo" />
         </a>
-        <a href="index.html" class="logo logo-small">
+        <a href="{% url 'dashboard_general' %}" class="logo logo-small">
           <img src="{%static 'assets/img/favicon.png' %}" alt="Logo" width="30" height="30" />
         </a>
       </div>
@@ -126,18 +126,18 @@
                   </a>
                 </li>
                 <li>
-                  <a href="{% url 'dashboard_general' %}"><i class="fas fa-headset"></i>
+                  <a href="{% url 'dashboard_booking' %}"><i class="fas fa-headset"></i>
                     <span>Atendimento</span>
                   </a>
                 </li>
                 <li>
-                  <a href="{% url 'dashboard_services' %}">
+                  <a href="{% url 'dashboard_general' %}">
                     <i class="fas fa-wine-glass-alt"></i>
                     <span>Experiências</span>
                   </a>
                 </li>
                 <li>
-                  <a href="{% url 'dashboard_services' %}">
+                  <a href="{% url 'dashboard_general' %}">
                     <i class="fas fa-money-bill-wave"></i>
                     <span>Financeiro</span>
                   </a>

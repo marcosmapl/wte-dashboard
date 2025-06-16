@@ -18,7 +18,7 @@ from django.urls import path, include
 from home_auth import views
 
 urlpatterns = [
-    path('', views.login_view, name='home'), 
+    path('', views.login_view, name='index'), 
     path('dashboard/', include("dashboard.urls")),
     path('admin/', admin.site.urls),
     path('authentication/', include("home_auth.urls")),

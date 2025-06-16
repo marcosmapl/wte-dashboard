@@ -23,20 +23,19 @@ def signup_view(request):
             first_name=first_name,
             last_name=last_name,
             password=password,
+            is_active=True,
         )
-        
-        # Assign the appropriate role
-        if role == 'student':
-            user.is_student = True
-        elif role == 'teacher':
-            user.is_teacher = True
-        elif role == 'admin':
-            user.is_admin = True
+        user.is_staff =False
+        user.is_superuser = False
+        user.is_booking_agent = True
+        user.is_general_manager = False
+        user.is_it_manager = False
+        user.is_read_only = False
 
         user.save()  # Save the user with the assigned role
         login(request, user)
         messages.success(request, 'Signup successful!')
-        return redirect('index')  # Redirect to the index or home page
+        return redirect('dashboard_general')  # Redirect to the index or home page
     return render(request, 'authentication/register.html')  # Render signup template
 
 
@@ -44,12 +43,10 @@ def login_view(request):
     if request.method == 'POST':
         username = request.POST['username']
         password = request.POST['password']
-        print(username, password)
-        print(request)
         
         user = authenticate(request, username=username, password=password)
-        print(user)
         if user is not None:
+            print(user)
             login(request, user)
             messages.success(request, 'Login successful!')
             return redirect('dashboard_general')
@@ -97,7 +94,7 @@ def reset_password_view(request, token):
         reset_request.user.set_password(new_password)
         reset_request.user.save()
         messages.success(request, 'Password reset successful')
-        return redirect('login')
+        return redirect('index')
 
     return render(request, 'authentication/reset_password.html', {'token': token})  # Render reset password template
 
