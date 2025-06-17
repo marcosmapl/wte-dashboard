@@ -4,15 +4,13 @@ from django.contrib import messages
 
 from django.shortcuts import get_object_or_404
 
-from home_auth.models import WineUser
-
 # from .forms import ExperienceForm
-from .models import Experience, ExperienceStatus, ExperienceCategory, Partner, RegisterStatus
+from .models import Experience, ExperienceStatus, ExperienceCategory, Partner, PartnerStatus
 
 # EXPERIENCE VIEWS
 def list_experience(request):
-    experience_list = Experience.objects.all().order_by('title').values()
-    # print(f"Experience list: {experience_list}")
+    experience_list = Experience.objects.all().order_by('title')
+
     context = {
         'page_mode': 'list',
         'experience_list': experience_list,
@@ -21,12 +19,6 @@ def list_experience(request):
        
               
 def add_experience(request):
-    context = {
-        'page_mode': 'add',
-        'category_options': ExperienceCategory.choices,
-        'status_options': ExperienceStatus.choices,
-    }
-
     if request.method == "POST":
         # print(f"Request POST data: {request.POST}")
 
@@ -64,15 +56,12 @@ def add_experience(request):
         except Exception as e:
             print(e)
             messages.error(request, f"Erro inesperado: {str(e)}")
-            # Preenche os campos do contexto para manter os valores
-            context.update({
-                'form_data': request.POST,
-                'experience': experience,
-                'category_selected': experience.category,
-                'status_selected': experience.status,
-            })
+    
+    context = {
+        'category_options': ExperienceCategory.choices,
+        'status_options': ExperienceStatus.choices,
+    }
 
-    # Renderiza o template com o contexto
     # TODO: add error message popup
     return render(request, "experience/add-experience.html", context)
               
@@ -134,14 +123,10 @@ def delete_experience(request, id):
     return redirect('list_experience')
 
 
-def search_experience(request):
-    pass
-
-
 # PARTNER VIEWS
 def list_partner(request):
-    partner_list = Partner.objects.all().order_by('name').values()
-    # print(f"Partner list: {partner_list}")
+    partner_list = Partner.objects.all().order_by('name')
+    
     context = {
         'page_mode': 'list',
         'partner_list': partner_list,
@@ -150,11 +135,6 @@ def list_partner(request):
        
               
 def add_partner(request):
-    context = {
-        'page_mode': 'add',
-        'status_options': RegisterStatus.choices,
-    }
-
     if request.method == "POST":
         # print(f"Request POST data: {request.POST}")
 
@@ -166,7 +146,7 @@ def add_partner(request):
             contact_phone2=request.POST.get('contact_phone2'),
             website=request.POST.get('website'),
             address=request.POST.get('address'),
-            status=request.POST.get('status', RegisterStatus.ACTIVE),
+            status=request.POST.get('status', PartnerStatus.ACTIVE),
             created_by=request.user,
             updated_by=request.user,
         )
@@ -187,14 +167,12 @@ def add_partner(request):
                 break            
         except Exception as e:
             messages.error(request, f"Erro inesperado: {str(e)}")
-            # Preenche os campos do contexto para manter os valores
-            context.update({
-                'form_data': request.POST,
-                'partner': partner,
-                'status_selected': partner.status,
-            })
 
-    # Renderiza o template com o contexto
+    context = {
+        'status_options': PartnerStatus.choices,
+        'status_selected': PartnerStatus.ACTIVE,
+    }
+
     # TODO: add error message popup
     return render(request, "experience/add-partner.html", context)
 
@@ -235,7 +213,7 @@ def edit_partner(request, id):
     context = {
         'page_mode': 'edit',
         'partner': partner,
-        'status_options': RegisterStatus.choices,
+        'status_options': PartnerStatus.choices,
         'status_selected': str(partner.status),
     }
     

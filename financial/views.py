@@ -179,12 +179,9 @@ def add_partner_invoice_view(request):
         except ValidationError as e:
             for field, errors in e.message_dict.items():
                 messages.error(request, f"Erro de validação: {".".join(errors)}")
-                print(field)
-                print(errors)
                 break            
         except Exception as e:
             messages.error(request, f"Erro inesperado: {str(e)}")
-            print(e)
 
     b_list = Booking.objects.all().order_by('code')
 

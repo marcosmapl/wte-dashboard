@@ -25,7 +25,7 @@ db.sqlite3
 secrets.json
 
 # Ignore migrations
-*/migrations/*.py[cod]
+# */migrations/*.py[cod]
 */migrations/__pycache__/
 
 # Byte-compiled / optimized / DLL files

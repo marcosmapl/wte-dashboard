@@ -6,6 +6,7 @@ from home_auth.models import WineUser
 # Create your models here.
 
 class BookingChannel(models.TextChoices):
+    EMAIL = 'Email', 'Email'
     FACEBOOK = 'Facebook', 'Facebook'
     INSTAGRAM = 'Instagram', 'Instagram'
     WORDPRESS = 'Wordpress', 'Wordpress'
@@ -14,9 +15,9 @@ class BookingChannel(models.TextChoices):
 
 class BookingStatus(models.TextChoices):
     PENDING = 'Pendente', 'Pendente'
-    CONFIRMED = 'Confirmada', 'Confirmada'
-    CANCELLED_BY_CLIENT = 'Cancelada (Cliente)', 'Cancelada (Cliente)'
-    CANCELLED_BY_PARTNER = 'Cancelada (Parceiro)', 'Cancelada (Parceiro)'
+    CONFIRMED = 'Confirmado', 'Confirmado'
+    CANCELLED_BY_CLIENT = 'Cancelado (Cliente)', 'Cancelado (Cliente)'
+    CANCELLED_BY_PARTNER = 'Cancelado (Parceiro)', 'Cancelado (Parceiro)'
 
 
 class Booking(models.Model):
@@ -72,3 +73,11 @@ class Booking(models.Model):
     def discount_str(self):
         return str(self.discount).replace(',', '.')
     
+    @property
+    def status_color(self):
+        return {
+            'Pendente': '#f9e79f',
+            'Confirmado': '#abebc6',
+            'Cancelado (Cliente)': '#f5b7b1',
+            'Cancelado (Parceiro)': '#d5d8dc',
+        }.get(self.status, '#e5e7e9')

@@ -13,92 +13,57 @@ class PaymentMethod(models.TextChoices):
 
 class InvoiceStatus(models.TextChoices):
     PENDING = 'Pendente', 'Pendente'
-    PAID = 'Paga', 'Paga'
-    CANCELLED = 'Cancelada', 'Cancelada'
-    OVERDUE = 'Vencida', 'Vencida'
+    PAID = 'Pago', 'Pago'
+    CANCELLED = 'Cancelado', 'Cancelado'
+    OVERDUE = 'Vencido', 'Vencido'
 
 
-class CustomerInvoice(models.Model):
+class BaseInvoice(models.Model):
     code = models.CharField(max_length=13, db_index=True, unique=True)
     emission_date = models.DateTimeField()
     payment_date = models.DateTimeField()
     paid_date = models.DateTimeField()
-    total_amount = models.DecimalField(max_digits=10, decimal_places=2)
     file_link = models.TextField()
+    total_amount = models.DecimalField(max_digits=10, decimal_places=2)
     payment_method = models.CharField(max_length=50, choices=PaymentMethod.choices, default=PaymentMethod.BANK_TRANSFER)
     status = models.CharField(max_length=30, choices=InvoiceStatus.choices, default=InvoiceStatus.PENDING)
     booking = models.ForeignKey(Booking, on_delete=models.SET_NULL, null=True, db_index=True)
     created_at = models.DateTimeField(auto_now_add=True)
-    created_by = models.ForeignKey(WineUser, on_delete=models.SET_NULL, null=True, db_index=True, related_name='civc_created_by')
+    created_by = models.ForeignKey(WineUser, on_delete=models.SET_NULL, null=True, db_index=True, related_name="%(class)s_created_by")
     updated_at = models.DateTimeField(auto_now=True)
-    updated_by = models.ForeignKey(WineUser, on_delete=models.SET_NULL, null=True, db_index=True, related_name='civc_updated_by')
+    updated_by = models.ForeignKey(WineUser, on_delete=models.SET_NULL, null=True, db_index=True, related_name="%(class)s_updated_by")
+
+    class Meta:
+        abstract = True
+
+    @property
+    def emission_date_str(self):
+        return self.emission_date.strftime("%Y-%m-%d")
+
+    @property
+    def payment_date_str(self):
+        return self.payment_date.strftime("%Y-%m-%d")
+
+    @property
+    def paid_date_str(self):
+        return self.paid_date.strftime("%Y-%m-%d")
+
+    @property
+    def total_amount_str(self):
+        return str(self.total_amount).replace(",", ".")
+
+    @property
+    def total_amount_money(self):
+        return "Є " + str(self.total_amount).replace(",", ".")
+
+
+class CustomerInvoice(BaseInvoice):
     
     def __str__(self):
         return f"{self.code} - {self.booking.client_name}"
-    
-    @property
-    def emission_date_str(self):
-        return self.emission_date.strftime("%Y-%m-%d")
-    
-    @property
-    def payment_date_str(self):
-        return self.payment_date.strftime("%Y-%m-%d")
-    
-    @property
-    def paid_date_str(self):
-        return self.paid_date.strftime("%Y-%m-%d")
-
-    @property
-    def total_amount_str(self):
-        return str(self.total_amount).replace(",", ".")
-    
-    @property
-    def total_amount_money(self):
-        return "Є " + str(self.total_amount).replace(",", ".")
 
 
-class PartnerInvoice(models.Model):
-    code = models.CharField(max_length=13, db_index=True, unique=True)
-    emission_date = models.DateTimeField()
-    payment_date = models.DateTimeField()
-    paid_date = models.DateTimeField()
-    file_link = models.TextField()
-    total_amount = models.DecimalField(max_digits=10, decimal_places=2)
-    payment_method = models.CharField(max_length=50, choices=PaymentMethod.choices, default=PaymentMethod.BANK_TRANSFER)
-    status = models.CharField(max_length=30, choices=InvoiceStatus.choices, default=InvoiceStatus.PENDING)
-    booking = models.ForeignKey(Booking, on_delete=models.SET_NULL, null=True, db_index=True, related_name='partner_invoices')
-    created_at = models.DateTimeField(auto_now_add=True)
-    created_by = models.ForeignKey(WineUser, on_delete=models.SET_NULL, null=True, db_index=True, related_name='pivc_created_by')
-    updated_at = models.DateTimeField(auto_now=True)
-    updated_by = models.ForeignKey(WineUser, on_delete=models.SET_NULL, null=True, db_index=True, related_name='pivc_updated_by')
-
+class PartnerInvoice(BaseInvoice):
+    
     def __str__(self):
         return f"{self.code} - {self.booking.partner.name}"
-    
-    @property
-    def created_at_str(self):
-        return self.created_at.strftime("%Y-%m-%d")
-    
-    @property
-    def updated_at_str(self):
-        return self.updated_at.strftime("%Y-%m-%d")
-    
-    @property
-    def emission_date_str(self):
-        return self.emission_date.strftime("%Y-%m-%d")
-    
-    @property
-    def payment_date_str(self):
-        return self.payment_date.strftime("%Y-%m-%d")
-    
-    @property
-    def paid_date_str(self):
-        return self.paid_date.strftime("%Y-%m-%d")
-    
-    @property
-    def total_amount_str(self):
-        return str(self.total_amount).replace(",", ".")
-    
-    @property
-    def total_amount_money(self):
-        return "Є " + str(self.total_amount).replace(",", ".")

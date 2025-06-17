@@ -42,18 +42,34 @@
                                     <tr>
                                         <!-- <td>{{ partner.id }}</td> -->
                                         <td>{{ partner.name }}</td>
-                                        <td><a href="mailto:{{ partner.contact_email }}" target="_blank">{{ partner.contact_email }}</a></td>
+                                        <td>
+                                            <a href="mailto:{{ partner.contact_email }}" target="_blank">
+                                                {{ partner.contact_email }}
+                                            </a>
+                                        </td>
                                         <td>{{ partner.contact_phone1 }}</td>
-                                        <td><a href="https://wa.me/{{ partner.contact_phone2 }}" target="_blank">{{ partner.contact_phone2 }}</a></td>
-                                        <td><a href="{{ partner.website }}" target="_blank">Website</a></td>
-                                        <td>{{ partner.status }}</td>
+                                        <td>
+                                            <a href="https://wa.me/{{ partner.contact_phone2 }}" target="_blank">
+                                                {{ partner.contact_phone2 }}
+                                            </a>
+                                        </td>
+                                        <td>
+                                            <a href="{{ partner.website }}" target="_blank">Website</a>
+                                        </td>
+                                        <td>
+                                            <span
+                                                style="background-color: {{ partner.status_color }}; padding: 5px 10px; border-radius: 5px; font-weight: bold;">
+                                                {{ partner.status }}
+                                            </span>
+                                        </td>
                                         <td class="text-right">
                                             <div class="actions">
                                                 <a href="{% url 'edit_partner' partner.id %}"
                                                     class="btn btn-sm bg-success-light mr-2">
                                                     <i class="fas fa-pen"></i>
                                                 </a>
-                                                <form action="{% url 'delete_partner' partner.id %}" method="POST" style="display:inline;">
+                                                <form action="{% url 'delete_partner' partner.id %}" method="POST"
+                                                    style="display:inline;">
                                                     {% csrf_token %}
                                                     <button type="submit" class="btn btn-sm bg-danger-light"
                                                         onclick="return confirm('Deseja realmente excluir este parceiro?');">
@@ -65,7 +81,7 @@
                                     </tr>
                                     {% empty %}
                                     <tr>
-                                        <td colspan="6" class="text-center">Nenhuma parceiro cadastrado.</td>
+                                        <td colspan="7" class="text-center">Nenhuma parceiro cadastrado.</td>
                                     </tr>
                                     {% endfor %}
                                 </tbody>
@@ -79,7 +95,6 @@
     <footer>
         <p>Copyright © 2025 - Wine Tour Experience.</p>
     </footer>
-</div>
 </div>
 
 <!-- jQuery (obrigatório) -->
@@ -96,16 +111,16 @@
 
 <script>
     $(document).ready(function () {
-    $("#tableData").DataTable({
-        language: {
-        search: "Pesquisar:",
-        lengthMenu: "Exibir _MENU_ registros por página",
-        zeroRecords: "Nenhum registro encontrado",
-        info: "Mostrando página _PAGE_ de _PAGES_",
-        infoEmpty: "Nenhum registro disponível",
-        infoFiltered: "(filtrado de _MAX_ registros totais)",
-        },
-    });
+        $("#tableData").DataTable({
+            language: {
+                search: "Pesquisar:",
+                lengthMenu: "Exibir _MENU_ registros por página",
+                zeroRecords: "Nenhum registro encontrado",
+                info: "Mostrando página _PAGE_ de _PAGES_",
+                infoEmpty: "Nenhum registro disponível",
+                infoFiltered: "(filtrado de _MAX_ registros totais)",
+            },
+        });
     });
 </script>
 

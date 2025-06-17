@@ -5,8 +5,6 @@ from django.core.validators import MinValueValidator, MaxValueValidator, RegexVa
 from django.db import models
 from home_auth.models import WineUser
 
-import uuid
-
 class ExperienceStatus(models.TextChoices):
     AVAILABLE = 'Disponível', 'Disponível'
     UNAVAILABLE = 'Indisponível', 'Indisponível'
@@ -56,8 +54,16 @@ class Experience(models.Model):
     
     def __str__(self):
         return self.title
+    
+    @property
+    def status_color(self):
+        return {
+            'Disponível': '#abebc6',
+            'Indisponível': '#f5b7b1',
+        }.get(self.status, '#e5e7e9')
 
-class RegisterStatus(models.TextChoices):
+
+class PartnerStatus(models.TextChoices):
     ACTIVE = 'Ativo', 'Ativo'
     BLOCKED = 'Bloqueado', 'Bloqueado'
     EXCLUDED = 'Excluído', 'Excluído'
@@ -71,11 +77,21 @@ class Partner(models.Model):
     contact_phone2 = models.CharField(max_length=15, blank=True, null=True)
     website = models.URLField(max_length=255, blank=True, null=True, validators=[URLValidator(message="URL inválida! Certifique-se de que a URL está correta.")])
     address = models.CharField(max_length=255, blank=True, null=True)
-    status = models.CharField(max_length=20, choices=RegisterStatus.choices, default=RegisterStatus.ACTIVE)
+    status = models.CharField(max_length=30, choices=PartnerStatus.choices, default=PartnerStatus.ACTIVE)
     created_at = models.DateTimeField(auto_now_add=True)
     created_by = models.ForeignKey(WineUser, on_delete=models.SET_NULL, null=True, db_index=True, related_name='part_created_by')
     updated_at = models.DateTimeField(auto_now=True)
     updated_by = models.ForeignKey(WineUser, on_delete=models.SET_NULL, null=True, db_index=True, related_name='part_updated_by')
-
+    
+    @property
+    def status_color(self):
+        print(self)
+        return {
+            'Ativo': '#abebc6',
+            'Bloqueado': '#f9e79f',
+            'Excluído': '#f5b7b1',
+            'Inativo': '#d5d8dc',
+        }.get(self.status, '#abebc6')
+        
     def __str__(self):
         return self.name

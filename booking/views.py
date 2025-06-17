@@ -59,12 +59,9 @@ def add_booking(request):
         except ValidationError as e:
             for field, errors in e.message_dict.items():
                 messages.error(request, f"Erro de validação: {".".join(errors)}")
-                print(field)
-                print(errors)
                 break            
         except Exception as e:
             messages.error(request, f"Erro inesperado: {str(e)}")
-            print(e)
 
     e_list = Experience.objects.all().order_by('title')
     p_list = Partner.objects.all().order_by('name')
