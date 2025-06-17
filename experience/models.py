@@ -45,11 +45,6 @@ class ExperienceCategory(models.TextChoices):
 
 class Experience(models.Model):
     title = models.CharField(max_length=180, blank=False, null=False)
-    # description = models.TextField(blank=False, null=False)
-    # departure_place = models.CharField(max_length=255, blank=False, null=False)
-    # latitude = models.DecimalField(max_digits=11, decimal_places=9, validators=[MinValueValidator(-90.0, "Valor de latitude não pode ser inferior a -90!"), MaxValueValidator(90.0, "Valor de latitude não pode ser superior a 90!")], blank=True, null=True)
-    # longitude = models.DecimalField(max_digits=12, decimal_places=9, validators=[MinValueValidator(-180.0, "Valor de longitude não pode ser inferior a -180!"), MaxValueValidator(180.0, "Valor de longitude não pode ser inferior a -180!")], blank=True, null=True)
-    # maps_url = models.URLField(max_length=255, blank=True, null=True, validators=[URLValidator(message="URL inválida! Certifique-se de que a URL está correta.")])
     wordpress_url = models.URLField(max_length=255, blank=True, null=True, validators=[URLValidator(message="URL inválida! Certifique-se de que a URL está correta.")])
     category = models.CharField(max_length=50, choices=ExperienceCategory.choices, default=ExperienceCategory.SEM_CATEGORIA)
     status = models.CharField(max_length=50, choices=ExperienceStatus.choices, default=ExperienceStatus.AVAILABLE)
