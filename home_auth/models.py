@@ -42,6 +42,23 @@ class WineUser(AbstractUser):
 
     def __str__(self):
         return self.username
+    
+    @property
+    def highest_role(self):
+        roles = [
+            ("is_superuser", "Super Usuário"),
+            ("is_staff", "Administrador"),
+            ("is_general_manager", "Gerente Geral"),
+            ("is_it_manager", "Gerente de TI"),
+            ("is_booking_agent", "Agente de Reservas"),
+            ("is_read_only", "Visitante"),
+        ]
+
+        for attr, name in roles:
+            if getattr(self, attr):
+                return name
+        return "Nenhuma Função"
+        
 
 
 class PasswordResetRequest(models.Model):

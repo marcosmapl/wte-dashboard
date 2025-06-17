@@ -10,7 +10,7 @@ from home_auth.models import WineUser
 
 
 # Create your views here.
-def list_booking(request):
+def list_booking_view(request):
     booking_list = Booking.objects.select_related('experience', 'partner').all()
     # print(f"Booking list: {booking_list}")
     context = {
@@ -20,7 +20,7 @@ def list_booking(request):
     return render(request, "booking/list-booking.html", context)
 
 
-def add_booking(request):
+def add_booking_view(request):
     if request.method == "POST":
         # print(f"Request POST data: {request.POST}")
         
@@ -81,7 +81,7 @@ def add_booking(request):
     return render(request, "booking/add-booking.html", context)
               
 
-def edit_booking(request, id):
+def edit_booking_view(request, id):
     booking = Booking.objects.select_related('experience', 'partner').get(id=id)
     
     if request.method == "POST":
@@ -142,7 +142,7 @@ def edit_booking(request, id):
     return render(request, "booking/edit-booking.html", context)
 
 
-def delete_booking(request, id):
+def delete_booking_view(request, id):
     if request.method == "POST":
         booking = get_object_or_404(Booking, id=id)
         # Verifica se o objeto existe
