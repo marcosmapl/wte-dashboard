@@ -4,6 +4,8 @@ from django.contrib import messages
 
 from django.shortcuts import get_object_or_404
 
+from home_auth.models import WineUser
+
 # from .forms import ExperienceForm
 from .models import Experience, ExperienceStatus, ExperienceCategory, Partner, RegisterStatus
 
@@ -39,7 +41,9 @@ def add_experience(request):
             wordpress_url=request.POST.get('wordpress_url'),
             category=request.POST.get('category', ExperienceCategory.SEM_CATEGORIA),
             status=request.POST.get('status', ExperienceStatus.AVAILABLE),
-            notes=request.POST.get('notes')
+            notes=request.POST.get('notes'),
+            created_by=request.user,
+            updated_by=request.user
         )
         
         try:
@@ -54,9 +58,11 @@ def add_experience(request):
             return redirect('list_experience')
         except ValidationError as e:
             for field, errors in e.message_dict.items():
+                print(field, errors)
                 messages.error(request, f"Erro de validação: {".".join(errors)}")
                 break            
         except Exception as e:
+            print(e)
             messages.error(request, f"Erro inesperado: {str(e)}")
             # Preenche os campos do contexto para manter os valores
             context.update({
@@ -71,23 +77,19 @@ def add_experience(request):
     return render(request, "experience/add-experience.html", context)
               
 def edit_experience(request, id):
-    experience = Experience.objects.get(id=id)
+    experience = Experience.objects.select_related('created_by', 'updated_by').get(id=id)
     
     if request.method == "POST":
         # print(f"Request POST data: {request.POST}")
 
         # Atualiza os campos do objeto
         experience.title = request.POST.get('title')
-        # experience.description = request.POST.get('description')
-        # experience.departure_place = request.POST.get('departure_place')
-        # experience.latitude = request.POST.get('latitude')
-        # experience.longitude = request.POST.get('longitude')
-        # experience.maps_url = request.POST.get('maps_url')
         experience.wordpress_url = request.POST.get('wordpress_url')
         experience.category = request.POST.get('category')
         experience.status = request.POST.get('status')
         experience.notes = request.POST.get('notes')
-        experience.modified_at = None # Reseta o campo modified_at para que seja atualizado no save()
+        experience.updated_by = request.user
+        experience.updated_at = None # Reseta o campo modified_at para que seja atualizado no save()
         
         try:
             # Validação do objeto
@@ -165,6 +167,8 @@ def add_partner(request):
             website=request.POST.get('website'),
             address=request.POST.get('address'),
             status=request.POST.get('status', RegisterStatus.ACTIVE),
+            created_by=request.user,
+            updated_by=request.user,
         )
         
         try:
@@ -209,7 +213,8 @@ def edit_partner(request, id):
         partner.website = request.POST.get('website')
         partner.status = request.POST.get('status')
         partner.address = request.POST.get('address')
-        partner.modified_at = None # Reseta o campo modified_at para que seja atualizado no save()
+        partner.updated_by = request.user
+        partner.updated_at = None # Reseta o campo modified_at para que seja atualizado no save()
         
         try:
             # Validação do objeto

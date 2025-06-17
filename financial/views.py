@@ -20,7 +20,7 @@ def list_customer_invoice_view(request):
 def add_customer_invoice_view(request):
     if request.method == "POST":
         # print(f"Request POST data: {request.POST}")
-        
+        print(request.POST)
         # Criação do objeto
         invoice = CustomerInvoice(
             code=request.POST.get('customer_invoice_code'),
@@ -31,8 +31,9 @@ def add_customer_invoice_view(request):
             file_link=request.POST.get('customer_invoice_file_link'),
             payment_method=request.POST.get('customer_invoice_payment_method', PaymentMethod.BANK_TRANSFER),
             status=request.POST.get('customer_invoice_status', InvoiceStatus.PENDING),
-            booking=request.POST.get('customer_invoice_booking'),
-            created_by=WineUser.objects.get(id="1"),
+            booking=Booking.objects.get(id=request.POST.get('customer_invoice_booking')),
+            created_by=request.user,
+            updated_by=request.user,
         )
         
         try:
@@ -44,7 +45,7 @@ def add_customer_invoice_view(request):
             
             #TODO: show message popup
             messages.success(request, "Fatura cadastrada com sucesso.")
-            return redirect('list_customer_invoices')
+            return redirect('list_customer_invoice')
         except ValidationError as e:
             for field, errors in e.message_dict.items():
                 messages.error(request, f"Erro de validação: {".".join(errors)}")
@@ -83,11 +84,11 @@ def edit_customer_invoice_view(request, id):
         invoice.paid_date = request.POST.get('customer_invoice_paid_date')
         invoice.total_amount = request.POST.get('customer_invoice_total_amount')
         invoice.file_link = request.POST.get('customer_invoice_file_link')
-        invoice.payment_method = request.POST.get('customer_invoice_payment_method', 1)
+        invoice.payment_method = request.POST.get('customer_invoice_payment_method')
         invoice.status = request.POST.get('customer_invoice_status')
         invoice.booking = Booking.objects.get(id=request.POST.get('customer_invoice_booking'))
-        invoice.created_by = WineUser.objects.get(id="1")
-        invoice.updated_by = WineUser.objects.get(id="1")
+        invoice.created_by = request.user
+        invoice.updated_by = request.user
         invoice.updated_at = None # Reseta o campo modified_at para que seja atualizado no save()
         
         try:
@@ -98,7 +99,7 @@ def edit_customer_invoice_view(request, id):
             invoice.save()
             
             messages.success(request, "Reserva atualizada com sucesso.")
-            return redirect('list_booking')
+            return redirect('list_customer_invoice')
         except ValidationError as e:
             for field, errors in e.message_dict.items():
                 messages.error(request, f"Erro de validação: {".".join(errors)}")
@@ -149,7 +150,7 @@ def list_partner_invoice_view(request):
 def add_partner_invoice_view(request):
     if request.method == "POST":
         # print(f"Request POST data: {request.POST}")
-        
+        print(request.POST)
         # Criação do objeto
         invoice = PartnerInvoice(
             code=request.POST.get('partner_invoice_code'),
@@ -160,8 +161,9 @@ def add_partner_invoice_view(request):
             file_link=request.POST.get('partner_invoice_file_link'),
             payment_method=request.POST.get('partner_invoice_payment_method', PaymentMethod.BANK_TRANSFER),
             status=request.POST.get('partner_invoice_status', InvoiceStatus.PENDING),
-            booking=request.POST.get('partner_invoice_booking'),
-            created_by=WineUser.objects.get(id="1"),
+            booking=Booking.objects.get(id=request.POST.get('partner_invoice_booking')),
+            created_by=request.user,
+            updated_by=request.user,
         )
         
         try:
@@ -173,7 +175,7 @@ def add_partner_invoice_view(request):
             
             #TODO: show message popup
             messages.success(request, "Fatura cadastrada com sucesso.")
-            return redirect('list_partner_invoices')
+            return redirect('list_partner_invoice')
         except ValidationError as e:
             for field, errors in e.message_dict.items():
                 messages.error(request, f"Erro de validação: {".".join(errors)}")
@@ -212,11 +214,11 @@ def edit_partner_invoice_view(request, id):
         invoice.paid_date = request.POST.get('partner_invoice_paid_date')
         invoice.total_amount = request.POST.get('partner_invoice_total_amount')
         invoice.file_link = request.POST.get('partner_invoice_file_link')
-        invoice.payment_method = request.POST.get('partner_invoice_payment_method', 1)
+        invoice.payment_method = request.POST.get('partner_invoice_payment_method')
         invoice.status = request.POST.get('partner_invoice_status')
         invoice.booking = Booking.objects.get(id=request.POST.get('partner_invoice_booking'))
-        invoice.created_by = WineUser.objects.get(id="1")
-        invoice.updated_by = WineUser.objects.get(id="1")
+        invoice.created_by = request.user
+        invoice.updated_by = request.user
         invoice.updated_at = None # Reseta o campo modified_at para que seja atualizado no save()
         
         try:
@@ -263,4 +265,3 @@ def delete_partner_invoice_view(request, id):
             messages.success(request, "Fatura excluída com sucesso.")    
     
     return redirect('list_partner_invoice')
-

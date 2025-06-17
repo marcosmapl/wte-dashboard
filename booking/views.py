@@ -42,7 +42,8 @@ def add_booking(request):
             status=request.POST.get('booking_status', BookingStatus.PENDING),
             experience=Experience.objects.get(id=request.POST.get('booking_experience')),
             partner=Partner.objects.get(id=request.POST.get('booking_partner')),
-            reserved_by=WineUser.objects.get(id="1")
+            created_by=request.user,
+            updated_by=request.user
         )
         
         try:
@@ -106,8 +107,8 @@ def edit_booking(request, id):
         booking.status = request.POST.get('booking_status', BookingStatus.PENDING)
         booking.experience = Experience.objects.get(id=request.POST.get('booking_experience'))
         booking.partner = Partner.objects.get(id=request.POST.get('booking_partner'))
-        booking.created_by = WineUser.objects.get(id="1")
-        booking.modified_at = None # Reseta o campo modified_at para que seja atualizado no save()
+        booking.updated_by = request.user
+        booking.updated_at = None # Reseta o campo modified_at para que seja atualizado no save()
         
         try:
             # Validação do objeto
@@ -152,8 +153,8 @@ def delete_booking(request, id):
             messages.error(request, "Reserva não encontrada.")
         else:
             # Exclui o objeto
-            messages.success(request, "Reserva excluída com sucesso.")    
             booking.delete()
+            messages.success(request, "Reserva excluída com sucesso.")    
     
     return redirect('list_booking')
 

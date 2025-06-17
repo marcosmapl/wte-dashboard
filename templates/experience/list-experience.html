@@ -30,8 +30,8 @@
                                         <!-- <th>ID</th> -->
                                         <th>Título</th>
                                         <th>Categoria</th>
-                                        <th>Status</th>
                                         <th>Wordpress</th>
+                                        <th>Situação</th>
                                         <th class="text-center">Ações</th>
                                     </tr>
                                 </thead>
@@ -41,22 +41,22 @@
                                         <!-- <td>{{ experience.id }}</td> -->
                                         <td>{{ experience.title }}</td>
                                         <td>{{ experience.category }}</td>
-                                        <td>{{ experience.status }}</td>
                                         <td><a href="{{ experience.wordpress_url }}" target="_blank">Link</a></td>
+                                        <td>{{ experience.status }}</td>
                                         <td class="text-right">
                                             <div class="actions">
                                                 <a href="{% url 'edit_experience' experience.id %}"
-                                                    class="btn btn-sm bg-success-light mr-2">
-                                                    <i class="fas fa-pen"></i>
-                                                </a>
-                                                <form action="{% url 'delete_experience' experience.id %}" method="POST" style="display:inline;">
-                                                    {% csrf_token %}
-                                                    <button type="submit" class="btn btn-sm bg-danger-light"
-                                                        onclick="return confirm('Deseja realmente excluir esta experiência?');">
-                                                        <i class="fas fa-trash"></i>
-                                                    </button>
-                                                </form>
-                                            </div>
+                                                class="btn btn-sm bg-success-light mr-2">
+                                                <i class="fas fa-pen"></i>
+                                            </a>
+                                            <form action="{% url 'delete_experience' experience.id %}" method="POST" style="display:inline;">
+                                                {% csrf_token %}
+                                                <button type="submit" class="btn btn-sm bg-danger-light"
+                                                onclick="return confirm('Deseja realmente excluir esta experiência?');">
+                                                <i class="fas fa-trash"></i>
+                                            </button>
+                                        </form>
+                                    </div>
                                         </td>
                                     </tr>
                                     {% empty %}

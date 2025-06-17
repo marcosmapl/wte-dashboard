@@ -128,7 +128,7 @@
                         <div class="col-12 col-sm-2">
                            <div class="form-group">
                               <label>Nº Adultos</label>
-                              <input id="booking_number_adults" type="number" min="1" step="1" class="form-control" name="booking_number_adults" value="{{ booking.number_adults|default_if_none:1 }}" required>
+                              <input id="booking_number_adults" type="number" min="1" step="1" class="form-control" name="booking_number_adults" value="{{ booking.number_adults }}" required>
                            </div>
                         </div>
                         
@@ -146,7 +146,7 @@
                                        <a class="dropdown-item">R$</a>
                                     </div>
                                  </div>
-                                 <input id="booking_price_adults" type="number" step="0.01" min="1.00" class="form-control" name="booking_price_adults" value="{{ booking.price_adults|default_if_none:1 }}" required>
+                                 <input id="booking_price_adults" type="number" step="0.01" min="1.00" class="form-control" name="booking_price_adults" value="{{ booking.price_adults_str }}" required>
                               </div>
                            </div>
                         </div>
@@ -156,7 +156,7 @@
                         <div class="col-12 col-sm-2">
                            <div class="form-group">
                               <label>Nº Crianças</label>
-                              <input id="booking_number_children" type="number" min="0" step="1" class="form-control" name="booking_number_children" value="{{ booking.number_children|default_if_none:0 }}">
+                              <input id="booking_number_children" type="number" min="0" step="1" class="form-control" name="booking_number_children" value="{{ booking.number_children }}">
                            </div>
                         </div>
                         <div class="col-12 col-sm-3">
@@ -173,7 +173,7 @@
                                        <a class="dropdown-item">R$</a>
                                     </div>
                                  </div>
-                                 <input id="booking_price_children" type="number" step="0.01" min="0.00" class="form-control" name="booking_price_children" value="{{ booking.price_children|default_if_none:0 }}">
+                                 <input id="booking_price_children" type="number" step="0.01" min="0.00" class="form-control" name="booking_price_children" value="{{ booking.price_children_str }}">
                               </div>
                            </div>
                         </div>
@@ -189,7 +189,7 @@
                                        %
                                     </button>
                                  </div>
-                                 <input id="booking_discount" type="number" step="0.01" min="0.00" class="form-control" name="booking_discount" value="{{ booking.discount|default_if_none:0 }}">
+                                 <input id="booking_discount" type="number" step="0.01" min="0.00" class="form-control" name="booking_discount" value="{{ booking.discount_str }}">
                               </div>
                            </div>
                         </div>
@@ -206,7 +206,7 @@
                                     </button>
                                  </div>
                               
-                                 <input id="booking_total" type="number" step="0.01" min="1.00" class="form-control" name="booking_total" value="{{ booking.total|default_if_none:1 }}" required readonly>
+                                 <input id="booking_total" type="number" step="0.01" min="1.00" class="form-control" name="booking_total" value="{{ booking.total_str }}" required readonly>
 
                                  <!-- Botão com ícone de calculadora -->
                                  <div class="input-group-append">

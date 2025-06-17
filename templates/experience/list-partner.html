@@ -33,6 +33,7 @@
                                         <th>Contacto Fixo</th>
                                         <th>Contacto Móvel</th>
                                         <th>Website</th>
+                                        <th>Situação</th>
                                         <th class="text-right">Ações</th>
                                     </tr>
                                 </thead>
@@ -45,6 +46,7 @@
                                         <td>{{ partner.contact_phone1 }}</td>
                                         <td><a href="https://wa.me/{{ partner.contact_phone2 }}" target="_blank">{{ partner.contact_phone2 }}</a></td>
                                         <td><a href="{{ partner.website }}" target="_blank">Website</a></td>
+                                        <td>{{ partner.status }}</td>
                                         <td class="text-right">
                                             <div class="actions">
                                                 <a href="{% url 'edit_partner' partner.id %}"

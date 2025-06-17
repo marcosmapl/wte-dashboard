@@ -20,9 +20,9 @@ class InvoiceStatus(models.TextChoices):
 
 class CustomerInvoice(models.Model):
     code = models.CharField(max_length=13, db_index=True, unique=True)
-    emission_date = models.DateField()
-    payment_date = models.DateField()
-    paid_date = models.DateField()
+    emission_date = models.DateTimeField()
+    payment_date = models.DateTimeField()
+    paid_date = models.DateTimeField()
     total_amount = models.DecimalField(max_digits=10, decimal_places=2)
     file_link = models.TextField()
     payment_method = models.CharField(max_length=50, choices=PaymentMethod.choices, default=PaymentMethod.BANK_TRANSFER)
@@ -35,13 +35,33 @@ class CustomerInvoice(models.Model):
     
     def __str__(self):
         return f"{self.code} - {self.booking.client_name}"
+    
+    @property
+    def emission_date_str(self):
+        return self.emission_date.strftime("%Y-%m-%d")
+    
+    @property
+    def payment_date_str(self):
+        return self.payment_date.strftime("%Y-%m-%d")
+    
+    @property
+    def paid_date_str(self):
+        return self.paid_date.strftime("%Y-%m-%d")
+
+    @property
+    def total_amount_str(self):
+        return str(self.total_amount).replace(",", ".")
+    
+    @property
+    def total_amount_money(self):
+        return "Є " + str(self.total_amount).replace(",", ".")
 
 
 class PartnerInvoice(models.Model):
     code = models.CharField(max_length=13, db_index=True, unique=True)
-    emission_date = models.DateField()
-    payment_date = models.DateField()
-    paid_date = models.DateField()
+    emission_date = models.DateTimeField()
+    payment_date = models.DateTimeField()
+    paid_date = models.DateTimeField()
     file_link = models.TextField()
     total_amount = models.DecimalField(max_digits=10, decimal_places=2)
     payment_method = models.CharField(max_length=50, choices=PaymentMethod.choices, default=PaymentMethod.BANK_TRANSFER)
@@ -54,3 +74,31 @@ class PartnerInvoice(models.Model):
 
     def __str__(self):
         return f"{self.code} - {self.booking.partner.name}"
+    
+    @property
+    def created_at_str(self):
+        return self.created_at.strftime("%Y-%m-%d")
+    
+    @property
+    def updated_at_str(self):
+        return self.updated_at.strftime("%Y-%m-%d")
+    
+    @property
+    def emission_date_str(self):
+        return self.emission_date.strftime("%Y-%m-%d")
+    
+    @property
+    def payment_date_str(self):
+        return self.payment_date.strftime("%Y-%m-%d")
+    
+    @property
+    def paid_date_str(self):
+        return self.paid_date.strftime("%Y-%m-%d")
+    
+    @property
+    def total_amount_str(self):
+        return str(self.total_amount).replace(",", ".")
+    
+    @property
+    def total_amount_money(self):
+        return "Є " + str(self.total_amount).replace(",", ".")

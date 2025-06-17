@@ -43,3 +43,32 @@ class Booking(models.Model):
 
     def __str__(self):
         return f"{self.code} - {self.client_name}"
+    
+    @property
+    def experience_date_str(self):
+        return self.experience_date.strftime("%Y-%m-%d")
+    
+    @property
+    def created_at_str(self):
+        return self.created_at.strftime("%Y-%m-%d")
+    
+    @property
+    def updated_at_str(self):
+        return self.updated_at.strftime("%Y-%m-%d")
+    
+    @property
+    def total_str(self):
+        return str(self.total).replace(',', '.')
+    
+    @property
+    def price_adults_str(self):
+        return str(self.price_adults).replace(',', '.')
+    
+    @property
+    def price_children_str(self):
+        return str(self.price_children).replace(',', '.')
+    
+    @property
+    def discount_str(self):
+        return str(self.discount).replace(',', '.')
+    

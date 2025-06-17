@@ -30,11 +30,12 @@
                                         <!-- <th>ID</th> -->
                                         <th>Código</th>
                                         <th>Cliente</th>
-                                        <th>Contacto</th>
                                         <th>Email</th>
+                                        <th>Contacto</th>
                                         <th>Experiência</th>
                                         <th>Parceiro</th>
                                         <th>Data</th>
+                                        <th>Situação</th>
                                         <th class="text-right">Ações</th>
                                     </tr>
                                 </thead>
@@ -48,7 +49,8 @@
                                         <td><a href="https://wa.me/{{ booking.client_phone }}" target="_blank">{{ booking.client_phone }}</a></td>
                                         <td>{{ booking.experience.title }}</td>
                                         <td>{{ booking.partner.name }}</td>
-                                        <td>{{ booking.experience_date }}</td>
+                                        <td>{{ booking.experience_date_str }}</td>
+                                        <td>{{ booking.status }}</td>
                                         <td class="text-right">
                                             <div class="actions">
                                                 <a href="{% url 'edit_booking' booking.id %}"

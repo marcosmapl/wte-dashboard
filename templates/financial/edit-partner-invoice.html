@@ -7,10 +7,10 @@
       <div class="page-header">
          <div class="row align-items-center">
             <div class="col-12 col-sm-6">
-               <h3 class="page-title">Serviços</h3>
+               <h3 class="page-title">Financeiro</h3>
                <ul class="breadcrumb">
-                  <li class="breadcrumb-item"><a href="{% url 'list_partner' %}">Parceiros</a></li>
-                  <li class="breadcrumb-item active">Edição</li>
+                  <li class="breadcrumb-item"><a href="{% url 'list_partner_invoice' %}">Fatura (Cliente)</a></li>
+                  <li class="breadcrumb-item active">Editar Fatura</li>
                </ul>
             </div>
             <!-- Error and success messages -->
@@ -32,26 +32,83 @@
          <div class="col-sm-12">
             <div class="card">
                <div class="card-body">
-                  <form method="POST" action="{% url 'edit_partner' partner.id %}" enctype="multipart/form-data">
+                  <form method="POST" action="{% url 'edit_partner_invoice' partner_invoice.id %}"
+                     enctype="multipart/form-data">
                      {% csrf_token %}
                      <div class="row">
                         <div class="col-12">
-                           <h5 class="form-title"><span>Informações Gerais</span></h5>
+                           <h5 class="form-title"><span>Dados da Fatura</span></h5>
                         </div>
-                        <div class="col-12 col-sm-8">
+                        <div class="col-12 col-sm-5">
                            <div class="form-group">
-                              <label>Nome</label>
-                              <input type="text" class="form-control" name="name" placeholder="Nome do parceiro"
-                                 value="{{ partner.name|default_if_none:'' }}" required>
+                              <label>Código</label>
+                              <input type="text" class="form-control" name="partner_invoice_code" value="{{ partner_invoice.code }}" placeholder="WTE0000000000" required>
+                           </div>
+                        </div>
+                        <div class="col-12 col-sm-3">
+                           <div class="form-group">
+                              <label>Data Emissão</label>
+                              <input type="datetime-local" class="form-control" name="partner_invoice_emission_date" value="{{ partner_invoice.emission_date|date:'Y-m-d\\TH:i' }}" required>
+                           </div>
+                        </div>
+                        <div class="col-12 col-sm-3">
+                           <div class="form-group">
+                              <label>Valor Total</label>
+                              <div class="input-group">
+                                 <div class="input-group-prepend">
+                                    <button class="btn btn-secondary dropdown-toggle" type="button" data-toggle="dropdown" aria-expanded="false">
+                                       €
+                                    </button>
+                                    <div class="dropdown-menu">
+                                       <a class="dropdown-item">€</a>
+                                       <a class="dropdown-item">$</a>
+                                       <a class="dropdown-item">R$</a>
+                                    </div>
+                                 </div>
+                                 <input id="partner_invoice_total_amount" type="number" step="0.01" min="1.00" class="form-control" value="{{ partner_invoice.total_amount_str }}" name="partner_invoice_total_amount" required>
+                              </div>
+                           </div>
+                        </div>
+                        <div class="col-12 col-sm-9">
+                           <div class="form-group">
+                              <label>Link do Arquivo</label>
+                              <input type="text" class="form-control" name="partner_invoice_file_link" value="{{ partner_invoice.file_link }}" placeholder="URL do arquivo">
                            </div>
                         </div>
 
+                        <div class="col-12">
+                           <h5 class="form-title"><span>Dados do Pagamento</span></h5>
+                        </div>
                         <div class="col-12 col-sm-3">
                            <div class="form-group">
+                              <label>Data de Vencimento</label>
+                              <input type="datetime-local" class="form-control" name="partner_invoice_payment_date" value="{{ partner_invoice.payment_date|date:'Y-m-d\\TH:i' }}" required>
+                           </div>
+                        </div>
+                        <div class="col-12 col-sm-3">
+                           <div class="form-group">
+                              <label>Data de Pagamento</label>
+                              <input type="datetime-local" class="form-control" name="partner_invoice_paid_date" value="{{ partner_invoice.paid_date|date:'Y-m-d\\TH:i'|default_if_none:'' }}">
+                           </div>
+                        </div>
+                        <div class="col-12 col-sm-3">
+                           <div class="form-group">
+                              <label>Método de Pagamento</label>
+                              <select class="form-control" name="partner_invoice_payment_method" required>
+                                 {% for value, label in payment_method_options %}
+                                 <option value="{{ value }}" {% if value == payment_method_selected %}selected{% endif %}>
+                                    {{ label }}
+                                 </option>
+                                 {% endfor %}
+                              </select>
+                           </div>
+                        </div>
+                        <div class="col-12 col-sm-2">
+                           <div class="form-group">
                               <label>Status</label>
-                              <select class="form-control" name="status" required>
+                              <select class="form-control" name="partner_invoice_status" required>
                                  {% for value, label in status_options %}
-                                 <option value="{{ value }}" {% if value==status_selected %}selected{% endif %}>
+                                 <option value="{{ value }}" {% if value == status_selected %}selected{% endif %}>
                                     {{ label }}
                                  </option>
                                  {% endfor %}
@@ -60,60 +117,21 @@
                         </div>
 
                         <div class="col-12">
-                           <h5 class="form-title"><span>Informações Contacto</span></h5>
-                        </div>
-                        <div class="col-12 col-sm-5">
-                           <div class="form-group">
-                              <label>Email</label>
-                              <div>
-                                 <input type="text" class="form-control" name="contact_email"
-                                    placeholder="Endereço de email do parceiro"
-                                    value="{{ partner.contact_email|default_if_none:'' }}" required>
-                              </div>
-                           </div>
-                        </div>
-                        <div class="col-12 col-sm-3">
-                           <div class="form-group">
-                              <label>Contacto Fixo</label>
-                              <div>
-                                 <input type="text" class="form-control" name="contact_phone1"
-                                    placeholder="Contacto Fixo do parceiro"
-                                    value="{{ partner.contact_phone1|default_if_none:'' }}" required>
-                              </div>
-                           </div>
-                        </div>
-                        <div class="col-12 col-sm-3">
-                           <div class="form-group">
-                              <label>Contacto Móvel</label>
-                              <div>
-                                 <input type="text" class="form-control" name="contact_phone2"
-                                    placeholder="Contacto Móvel do parceiro"
-                                    value="{{ partner.contact_phone2|default_if_none:'' }}">
-                              </div>
-                           </div>
-                        </div>
-                        <div class="col-12 col-sm-10">
-                           <div class="form-group">
-                              <label>Website</label>
-                              <div>
-                                 <input type="text" class="form-control" name="website"
-                                    placeholder="Website do parceiro" value="{{ partner.website|default_if_none:'' }}">
-                              </div>
-                           </div>
-                        </div>
-
-                        <div class="col-12">
-                           <h5 class="form-title"><span>Outras Informações</span></h5>
+                           <h5 class="form-title"><span>Dados da Reserva</span></h5>
                         </div>
                         <div class="col-12 col-sm-9">
                            <div class="form-group">
-                              <label>Morada</label>
-                              <div>
-                                 <input type="text" class="form-control" name="address" placeholder="Morada do parceiro"
-                                    value="{{ partner.address|default_if_none:'' }}" required>
-                              </div>
+                              <label>Reserva</label>
+                              <select class="form-control" name="partner_invoice_booking" required>
+                                 {% for b in booking_list %}
+                                 <option value="{{ b.id }}" {% if b == booking_selected %}selected{% endif %}>
+                                    {{ b }}
+                                 </option>
+                                 {% endfor %}
+                              </select>
                            </div>
                         </div>
+                        
                         <div class="col-12">
                            <h5 class="form-title"><span></span></h5>
                         </div>
@@ -125,9 +143,9 @@
                         </div>
                         <div class="col-sm-3">
                            <strong>Cadastrado em:</strong>
-                           <span class="text-muted">{{ partner.created_at|default_if_none:'' }}</span><br>
+                           <span class="text-muted">{{ partner_invoice.created_at|default_if_none:'' }}</span><br>
                            <strong>Atualizado em:</strong>
-                           <span class="text-muted">{{ partner.modified_at|default_if_none:''}}</span>
+                           <span class="text-muted">{{ partner_invoice.modified_at|default_if_none:''}}</span>
                         </div>
                      </div>
                   </form>
@@ -155,7 +173,7 @@
 
 <script type="text/javascript">
    function go_to_list_view() {
-      document.location.href = "{% url 'list_partner' %}"
+      document.location.href = "{% url 'list_partner_invoice' %}"
    }
 </script>
 
