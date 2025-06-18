@@ -1,5 +1,6 @@
 from django.forms import ValidationError
 from django.shortcuts import render, redirect
+from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 
 from django.shortcuts import get_object_or_404
@@ -9,8 +10,12 @@ from experience.models import Experience, Partner
 from home_auth.models import WineUser
 
 
-# Create your views here.
+@login_required
 def list_booking_view(request):
+    user = request.user
+    if not user.is_active or not user.is_booking_agent:
+        return redirect('index')
+
     booking_list = Booking.objects.select_related('experience', 'partner').all()
     # print(f"Booking list: {booking_list}")
     context = {
@@ -20,7 +25,12 @@ def list_booking_view(request):
     return render(request, "booking/list-booking.html", context)
 
 
+@login_required
 def add_booking_view(request):
+    user = request.user
+    if not user.is_active or not user.is_booking_agent:
+        return redirect('index')
+
     if request.method == "POST":
         # print(f"Request POST data: {request.POST}")
         
@@ -79,9 +89,14 @@ def add_booking_view(request):
     
     # TODO: add error message popup
     return render(request, "booking/add-booking.html", context)
-              
 
+
+@login_required
 def edit_booking_view(request, id):
+    user = request.user
+    if not user.is_active or not user.is_booking_agent:
+        return redirect('index')
+
     booking = Booking.objects.select_related('experience', 'partner').get(id=id)
     
     if request.method == "POST":
@@ -142,7 +157,12 @@ def edit_booking_view(request, id):
     return render(request, "booking/edit-booking.html", context)
 
 
+@login_required
 def delete_booking_view(request, id):
+    user = request.user
+    if not user.is_active or not user.is_booking_agent:
+        return redirect('index')
+    
     if request.method == "POST":
         booking = get_object_or_404(Booking, id=id)
         # Verifica se o objeto existe
@@ -154,7 +174,3 @@ def delete_booking_view(request, id):
             messages.success(request, "Reserva excluída com sucesso.")    
     
     return redirect('list_booking')
-
-
-def search_experience(request):
-    pass

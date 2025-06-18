@@ -1,10 +1,8 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login, logout
 from .models import WineUser, PasswordResetRequest
-from django.utils import timezone
 from django.contrib import messages
 from django.core.mail import send_mail
-from django.conf import settings
 from django.utils.crypto import get_random_string
 
 
@@ -14,7 +12,6 @@ def signup_view(request):
         last_name = request.POST['last_name']
         email = request.POST['email']
         password = request.POST['password']
-        role = request.POST.get('role')  # Get role from the form (student, teacher, or admin)
         
         # Create the user
         user = WineUser.objects.create_user(
@@ -46,7 +43,6 @@ def login_view(request):
         
         user = authenticate(request, username=username, password=password)
         if user is not None:
-            print(user)
             login(request, user)
             messages.success(request, 'Login successful!')
             return redirect('dashboard_general')

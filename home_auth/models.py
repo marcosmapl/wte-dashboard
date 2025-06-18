@@ -8,7 +8,6 @@ from django.conf import settings
 from django.utils.crypto import get_random_string
 from django.utils import timezone
 
-import uuid
 
 class WineUser(AbstractUser):
     username = models.CharField(max_length=100, unique=True, db_index=True)

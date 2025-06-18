@@ -1,14 +1,17 @@
 from django.forms import ValidationError
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib import messages
+from django.contrib.auth.decorators import login_required
 
-from django.shortcuts import get_object_or_404
-
-# from .forms import ExperienceForm
 from .models import Experience, ExperienceStatus, ExperienceCategory, Partner, PartnerStatus
 
 # EXPERIENCE VIEWS
+@login_required
 def list_experience(request):
+    user = request.user
+    if not user.is_active or not user.is_booking_agent:
+        return redirect('index')
+
     experience_list = Experience.objects.all().order_by('title')
 
     context = {
@@ -17,8 +20,13 @@ def list_experience(request):
     }
     return render(request, "experience/list-experience.html", context)
        
-              
+
+@login_required        
 def add_experience(request):
+    user = request.user
+    if not user.is_active or not user.is_booking_agent:
+        return redirect('index')
+
     if request.method == "POST":
         # print(f"Request POST data: {request.POST}")
 
@@ -64,8 +72,14 @@ def add_experience(request):
 
     # TODO: add error message popup
     return render(request, "experience/add-experience.html", context)
-              
+
+
+@login_required
 def edit_experience(request, id):
+    user = request.user
+    if not user.is_active or not user.is_booking_agent:
+        return redirect('index')
+
     experience = Experience.objects.select_related('created_by', 'updated_by').get(id=id)
     
     if request.method == "POST":
@@ -109,7 +123,14 @@ def edit_experience(request, id):
     
     return render(request, "experience/edit-experience.html", context)
 
+
+@login_required
 def delete_experience(request, id):
+    user = request.user
+    if not user.is_active or not user.is_booking_agent:
+        return redirect('index')
+
+
     if request.method == "POST":
         experience = get_object_or_404(Experience, id=id)
         # Verifica se o objeto existe
@@ -124,7 +145,12 @@ def delete_experience(request, id):
 
 
 # PARTNER VIEWS
+@login_required
 def list_partner(request):
+    user = request.user
+    if not user.is_active or not user.is_booking_agent:
+        return redirect('index')
+    
     partner_list = Partner.objects.all().order_by('name')
     
     context = {
@@ -133,8 +159,13 @@ def list_partner(request):
     }
     return render(request, "experience/list-partner.html", context)
        
-              
+
+@login_required 
 def add_partner(request):
+    user = request.user
+    if not user.is_active or not user.is_booking_agent:
+        return redirect('index')
+
     if request.method == "POST":
         # print(f"Request POST data: {request.POST}")
 
@@ -177,7 +208,12 @@ def add_partner(request):
     return render(request, "experience/add-partner.html", context)
 
 
+@login_required 
 def edit_partner(request, id):
+    user = request.user
+    if not user.is_active or not user.is_booking_agent:
+        return redirect('index')
+
     partner = Partner.objects.get(id=id)
     
     if request.method == "POST":
@@ -220,7 +256,12 @@ def edit_partner(request, id):
     return render(request, "experience/edit-partner.html", context)
 
 
+@login_required 
 def delete_partner(request, id):
+    user = request.user
+    if not user.is_active or not user.is_booking_agent:
+        return redirect('index')
+
     if request.method == "POST":
         partner = get_object_or_404(Partner, id=id)
         

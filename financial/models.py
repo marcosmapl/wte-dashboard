@@ -4,11 +4,12 @@ from booking.models import Booking
 from home_auth.models import WineUser
 
 class PaymentMethod(models.TextChoices):
-    BANK_TRANSFER = 'Referência Multibanco', 'Referência Multibanco'
     CREDIT_CARD = 'Cartão de Crédito', 'Cartão de Crédito'
     DEBIT_CARD = 'Cartão de Débito', 'Cartão de Débito'
-    MBWAY = 'MB WAY', 'MB WAY'
     CASH = 'Dinheiro', 'Dinheiro'
+    IBAN = 'IBAN', 'IBAN'
+    MBWAY = 'MB WAY', 'MB WAY'
+    BANK_TRANSFER = 'Referência Multibanco', 'Referência Multibanco'
 
 
 class InvoiceStatus(models.TextChoices):
@@ -55,6 +56,15 @@ class BaseInvoice(models.Model):
     @property
     def total_amount_money(self):
         return "Є " + str(self.total_amount).replace(",", ".")
+    
+    @property
+    def status_color(self):
+        return {
+            'Pendente': '#f9e79f',
+            'Pago': '#abebc6',
+            'Cancelado': '#f5b7b1',
+            'Vencido': '#f9e79f',
+        }.get(self.status, '#e5e7e9')
 
 
 class CustomerInvoice(BaseInvoice):

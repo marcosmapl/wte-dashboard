@@ -46,7 +46,12 @@
                                         <td>{{ invoice.payment_date_str }}</td>
                                         <td>{{ invoice.paid_date_str }}</td>
                                         <td>{{ invoice.total_amount_money }}</td>
-                                        <td>{{ invoice.status }}</td>
+                                        <td>
+                                            <span
+                                                style="background-color: {{ invoice.status_color }}; padding: 5px 10px; border-radius: 5px; font-weight: bold;">
+                                                {{ invoice.status }}
+                                            </span> 
+                                        </td>
                                         <td class="text-right">
                                             <div class="actions">
                                                 <a href="{% url 'edit_customer_invoice' invoice.id %}"

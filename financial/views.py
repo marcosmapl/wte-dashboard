@@ -1,13 +1,18 @@
 from django.forms import ValidationError
 from django.shortcuts import get_object_or_404, render, redirect
 from django.contrib import messages
+from django.contrib.auth.decorators import login_required
 
 from booking.models import Booking
 from financial.models import CustomerInvoice, InvoiceStatus, PartnerInvoice, PaymentMethod
-from home_auth.models import WineUser
 
 
+@login_required
 def list_customer_invoice_view(request):
+    user = request.user
+    if not user.is_active or not user.is_general_manager:
+        return redirect('index')
+
     invoice_list = CustomerInvoice.objects.select_related('booking').all()
     # print(f"Booking list: {booking_list}")
     context = {
@@ -17,7 +22,12 @@ def list_customer_invoice_view(request):
     return render(request, "financial/list-customer-invoice.html", context)
 
 
+@login_required
 def add_customer_invoice_view(request):
+    user = request.user
+    if not user.is_active or not user.is_general_manager:
+        return redirect('index')
+
     if request.method == "POST":
         # print(f"Request POST data: {request.POST}")
         print(request.POST)
@@ -71,7 +81,12 @@ def add_customer_invoice_view(request):
     return render(request, "financial/add-customer-invoice.html", context)
               
 
+@login_required
 def edit_customer_invoice_view(request, id):
+    user = request.user
+    if not user.is_active or not user.is_general_manager:
+        return redirect('index')
+
     invoice = CustomerInvoice.objects.select_related('booking').get(id=id)
     
     if request.method == "POST":
@@ -123,7 +138,12 @@ def edit_customer_invoice_view(request, id):
     return render(request, "financial/edit-customer-invoice.html", context)
 
 
+@login_required
 def delete_customer_invoice_view(request, id):
+    user = request.user
+    if not user.is_active or not user.is_general_manager:
+        return redirect('index')
+
     if request.method == "POST":
         invoice = get_object_or_404(CustomerInvoice, id=id)
         # Verifica se o objeto existe
@@ -137,7 +157,12 @@ def delete_customer_invoice_view(request, id):
     return redirect('list_customer_invoice')
 
 
+@login_required
 def list_partner_invoice_view(request):
+    user = request.user
+    if not user.is_active or not user.is_general_manager:
+        return redirect('index')
+    
     invoice_list = PartnerInvoice.objects.select_related('booking').all()
     # print(f"Booking list: {booking_list}")
     context = {
@@ -147,7 +172,12 @@ def list_partner_invoice_view(request):
     return render(request, "financial/list-partner-invoice.html", context)
 
 
+@login_required
 def add_partner_invoice_view(request):
+    user = request.user
+    if not user.is_active or not user.is_general_manager:
+        return redirect('index')
+    
     if request.method == "POST":
         # print(f"Request POST data: {request.POST}")
         print(request.POST)
@@ -198,7 +228,12 @@ def add_partner_invoice_view(request):
     return render(request, "financial/add-partner-invoice.html", context)
               
 
+@login_required
 def edit_partner_invoice_view(request, id):
+    user = request.user
+    if not user.is_active or not user.is_general_manager:
+        return redirect('index')
+
     invoice = PartnerInvoice.objects.select_related('booking').get(id=id)
     
     if request.method == "POST":
@@ -250,7 +285,12 @@ def edit_partner_invoice_view(request, id):
     return render(request, "financial/edit-partner-invoice.html", context)
 
 
+@login_required
 def delete_partner_invoice_view(request, id):
+    user = request.user
+    if not user.is_active or not user.is_general_manager:
+        return redirect('index')
+    
     if request.method == "POST":
         invoice = get_object_or_404(PartnerInvoice, id=id)
         # Verifica se o objeto existe
