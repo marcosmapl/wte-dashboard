@@ -1,9 +1,14 @@
-from django.shortcuts import render, redirect
+from django.contrib.auth.decorators import login_required
 from django.db.models import Sum, Q, Count
+from django.http import JsonResponse
+from django.shortcuts import render, redirect
+from django.template.loader import render_to_string
+from django.utils import timezone
 
 from booking.models import Booking, BookingStatus
 from financial.models import CustomerInvoice, PartnerInvoice
-from django.contrib.auth.decorators import login_required
+
+from datetime import timedelta
 
 
 @login_required
@@ -19,13 +24,51 @@ def dashboard_general(request):
     income_sum = CustomerInvoice.objects.aggregate(total=Sum('total_amount'))['total'] or 0
     outcome_sum = PartnerInvoice.objects.aggregate(total=Sum('total_amount'))['total'] or 0
     
+    interval = request.GET.get('interval', '7')  # padrão: 7 dias
+    try:
+        days = int(interval)
+    except ValueError:
+        days = 7
+        
+    today = timezone.now()
+    limit_date = today + timedelta(days=days)
+    
+    # Filtrar reservas futuras confirmadas dentro do intervalo
+    upcoming_bookings = Booking.objects.filter(
+        status=BookingStatus.CONFIRMED,
+        experience_date__range=(today, limit_date)
+    ).order_by('experience_date')
+    
     context = {
         'confirmed_count': confirmed_count,
         'canceled_count': canceled_count,
         'income_sum': income_sum,
         'outcome_sum': outcome_sum,
+        'interval': days,
+        'upcoming_bookings': upcoming_bookings,
     }
     return render(request, "dashboard/dashboard-general.html", context)
+
+
+@login_required
+def ajax_upcoming_bookings(request):
+    if not request.headers.get('x-requested-with') == 'XMLHttpRequest':
+        return JsonResponse({'error': 'Requisição inválida'}, status=400)
+    
+    days = int(request.GET.get('interval', 7))
+    today = timezone.now()
+    limit_date = today + timedelta(days=days)
+
+    bookings = Booking.objects.filter(
+        status=BookingStatus.CONFIRMED,
+        experience_date__range=(today, limit_date)
+    ).order_by('experience_date')
+
+    html = render_to_string("dashboard/partials/upcoming-bookings-tbody.html", {
+        'upcoming_bookings': bookings
+    })
+
+    return JsonResponse({'html': html})
 
 
 @login_required

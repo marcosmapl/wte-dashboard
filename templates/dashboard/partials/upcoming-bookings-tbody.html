@@ -1,0 +1,22 @@
+{% for booking in upcoming_bookings %}
+<tr>
+    <td class="text-nowrap">
+        <div><a href="{% url 'edit_booking' booking.id %}">
+                <span>
+                    {{ booking.code }}
+                </span>
+            </a>
+        </div>
+    </td>
+    <td class="text-nowrap">{{ booking.client_name }}</td>
+    <td class="text-center">{{ booking.number_adults|add:booking.number_children }}</td>
+    <td class="text-center">
+        <div>{{ booking.experience_date|date:"Y-m-d H:i" }}</div>
+    </td>
+    <td class="text-right">$ {{ booking.total_str }}</td>
+</tr>
+{% empty %}
+<tr>
+    <td colspan="5" class="text-center text-muted">Nenhuma experiência agendada para este período.</td>
+</tr>
+{% endfor %}
