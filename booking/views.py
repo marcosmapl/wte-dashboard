@@ -7,7 +7,6 @@ from django.shortcuts import get_object_or_404
 
 from booking.models import Booking, BookingChannel, BookingStatus
 from experience.models import Experience, Partner
-from home_auth.models import WineUser
 
 
 @login_required

@@ -59,28 +59,27 @@ class WineUser(AbstractUser):
         return "Nenhuma Função"
         
 
-
-class PasswordResetRequest(models.Model):
-    user = models.ForeignKey(WineUser, on_delete=models.CASCADE)
-    email = models.EmailField(max_length=255, unique=True, db_index=True)
-    token = models.CharField(max_length=32, default=get_random_string(32), editable=False, unique=True)
-    created_at = models.DateTimeField(auto_now_add=True)
+# class PasswordResetRequest(models.Model):
+#     user = models.ForeignKey(WineUser, on_delete=models.CASCADE)
+#     email = models.EmailField(max_length=255, unique=True, db_index=True)
+#     token = models.CharField(max_length=32, default='get_random_string(32)', editable=False, unique=True)
+#     created_at = models.DateTimeField(auto_now_add=True)
     
-    # Define token validity period (e.g., 1 hour)
-    TOKEN_VALIDITY_PERIOD = timezone.timedelta(hours=1)
+#     # Define token validity period (e.g., 1 hour)
+#     TOKEN_VALIDITY_PERIOD = timezone.timedelta(hours=1)
 
-    def is_valid(self):
-        return timezone.now() <= self.created_at + self.TOKEN_VALIDITY_PERIOD
+#     def is_valid(self):
+#         return timezone.now() <= self.created_at + self.TOKEN_VALIDITY_PERIOD
 
-    def send_reset_email(self):
-        reset_link = f"http://localhost:8000/authentication/reset-password/{self.token}/"
-        send_mail(
-            'Password Reset Request',
-            f'Click the following link to reset your password: {reset_link}',
-            settings.DEFAULT_FROM_EMAIL,
-            [self.email],
-            fail_silently=False,
-        )
+#     def send_reset_email(self):
+#         reset_link = f"http://localhost:8000/authentication/reset-password/{self.token}/"
+#         send_mail(
+#             'Password Reset Request',
+#             f'Click the following link to reset your password: {reset_link}',
+#             settings.DEFAULT_FROM_EMAIL,
+#             [self.email],
+#             fail_silently=False,
+#         )
         
 
 

@@ -1,9 +1,9 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login, logout
-from .models import WineUser, PasswordResetRequest
+from .models import WineUser
 from django.contrib import messages
-from django.core.mail import send_mail
-from django.utils.crypto import get_random_string
+# from django.core.mail import send_mail
+# from django.utils.crypto import get_random_string
 
 
 def signup_view(request):
@@ -62,37 +62,37 @@ def login_view(request):
     return render(request, 'authentication/login.html')  # Render login template
 
 
-def forgot_password_view(request):
-    if request.method == 'POST':
-        email = request.POST['email']
-        user = WineUser.objects.filter(email=email).first()
+# def forgot_password_view(request):
+#     if request.method == 'POST':
+#         email = request.POST['email']
+#         user = WineUser.objects.filter(email=email).first()
         
-        if user:
-            token = get_random_string(32)
-            reset_request = PasswordResetRequest.objects.create(user=user, email=email, token=token)
-            reset_request.send_reset_email()
-            messages.success(request, 'Reset link sent to your email.')
-        else:
-            messages.error(request, 'Email not found.')
+#         if user:
+#             token = get_random_string(32)
+#             reset_request = PasswordResetRequest.objects.create(user=user, email=email, token=token)
+#             reset_request.send_reset_email()
+#             messages.success(request, 'Reset link sent to your email.')
+#         else:
+#             messages.error(request, 'Email not found.')
     
-    return render(request, 'authentication/forgot-password.html')  # Render forgot password template
+#     return render(request, 'authentication/forgot-password.html')  # Render forgot password template
 
 
-def reset_password_view(request, token):
-    reset_request = PasswordResetRequest.objects.filter(token=token).first()
+# def reset_password_view(request, token):
+#     reset_request = PasswordResetRequest.objects.filter(token=token).first()
     
-    if not reset_request or not reset_request.is_valid():
-        messages.error(request, 'Invalid or expired reset link')
-        return redirect('index')
+#     if not reset_request or not reset_request.is_valid():
+#         messages.error(request, 'Invalid or expired reset link')
+#         return redirect('index')
 
-    if request.method == 'POST':
-        new_password = request.POST['new_password']
-        reset_request.user.set_password(new_password)
-        reset_request.user.save()
-        messages.success(request, 'Password reset successful')
-        return redirect('index')
+#     if request.method == 'POST':
+#         new_password = request.POST['new_password']
+#         reset_request.user.set_password(new_password)
+#         reset_request.user.save()
+#         messages.success(request, 'Password reset successful')
+#         return redirect('index')
 
-    return render(request, 'authentication/reset_password.html', {'token': token})  # Render reset password template
+#     return render(request, 'authentication/reset_password.html', {'token': token})  # Render reset password template
 
 
 def logout_view(request):
