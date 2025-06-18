@@ -1,0 +1,169 @@
+{% extends 'Home/base.html' %}
+{% load static %}
+{% block body %}
+
+<div class="page-wrapper">
+    <div class="content container-fluid">
+        <div class="page-header">
+            <div class="row align-items-center">
+                <div class="col-12 col-sm-6">
+                    <h3 class="page-title">Detalhes da Reserva</h3>
+                    <ul class="breadcrumb">
+                        <li class="breadcrumb-item"><a href="{% url 'list_booking' %}">Reservas</a></li>
+                        <li class="breadcrumb-item active">Visualização</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="row">
+                            <!-- BOOKING INFO -->
+                            <div class="col-12">
+                                <h5 class="form-title"><span>Identificação da Reserva</span></h5>
+                            </div>
+                            <div class="col-12 col-sm-6">
+                                <span>
+                                    <strong>Código:</strong>
+                                    {{ booking.code }}
+                                </span>
+                            </div>
+                            <div class="col-12 col-sm-3">
+                                <p></p>
+                                <strong>Status:</strong>
+                                <span
+                                    style="background-color: {{ booking.status_color }}; padding: 5px 5px; border-radius: 5px; font-weight: bold;">
+                                    {{ booking.status }}
+                                </span>
+                                </p>
+                            </div>
+
+                            <!-- CLIENT  INFO -->
+                            <div class="col-12 mt-3">
+                                <h5 class="form-title"><span>Cliente</span></h5>
+                            </div>
+                            <div class="col-12 col-sm-6">
+                                <p>
+                                    <strong>Nome:</strong>
+                                    {{ booking.client_name }}
+                                </p>
+                            </div>
+                            <div class="col-12 col-sm-3">
+                                <p>
+                                    <strong>NIF:</strong>
+                                    {{ booking.client_nif }}
+                                </p>
+                            </div>
+                            <div class="col-12 col-sm-6">
+                                <p>
+                                    <strong>Email:</strong>
+                                    <a href="mailto:{{ booking.client_email }}" target="_blank">
+                                        {{ booking.client_email }}
+                                    </a>
+                                </p>
+                            </div>
+                            <div class="col-12 col-sm-3">
+                                <p>
+                                    <strong>Telefone:</strong>
+                                    <a href="https://wa.me/{{ booking.client_phone }}" target="_blank">
+                                        {{ booking.client_phone }}
+                                    </a>
+                                </p>
+                            </div>
+
+                            <!-- EXPERIENCE  INFO -->
+                            <div class="col-12 mt-3">
+                                <h5 class="form-title"><span>Experiência</span></h5>
+                            </div>
+                            <div class="col-12 col-sm-6">
+                                <p><strong>Experiência:</strong>
+                                    <a href="{% url 'edit_experience' booking.experience.id %}">
+                                        {{ booking.experience }}
+                                    </a>
+                                </p>
+                            </div>
+                            <div class="col-12 col-sm-6">
+                                <p>
+                                    <strong>Parceiro:</strong>
+                                    <a href="{% url 'edit_partner' booking.partner.id %}">
+                                        {{ booking.partner }}
+                                    </a>
+                                </p>
+                            </div>
+                            <div class="col-12 col-sm-4">
+                                <p><strong>Data da Experiência:</strong> {{ booking.experience_date|date:"d/m/Y H:i" }}
+                                </p>
+                            </div>
+
+                            <!-- PRICE AND PEOPLE  INFO -->
+                            <div class="col-12 mt-3">
+                                <h5 class="form-title"><span>Participantes e Preços</span></h5>
+                            </div>
+                            <div class="col-12 col-sm-2">
+                                <p><strong>Adultos:</strong> {{ booking.number_adults }}</p>
+                            </div>
+                            <div class="col-12 col-sm-2">
+                                <p><strong>Preço Adulto:</strong> € {{ booking.price_adults_str }}</p>
+                            </div>
+                            <div class="col-12 col-sm-8">
+                            </div>
+                            <div class="col-12 col-sm-2">
+                                <p><strong>Crianças:</strong> {{ booking.number_children }}</p>
+                            </div>
+                            <div class="col-12 col-sm-2">
+                                <p><strong>Preço Criança:</strong> € {{ booking.price_children_str }}</p>
+                            </div>
+                            <div class="col-12 col-sm-8">
+                            </div>
+                            <div class="col-12 col-sm-2">
+                                <p><strong>Desconto:</strong> {{ booking.discount_str }}%</p>
+                            </div>
+                            <div class="col-12 col-sm-2">
+                                <p><strong>Total:</strong> € {{ booking.total_str }}</p>
+                            </div>
+
+                            <!-- OTHER INFO -->
+                            <div class="col-12 mt-3">
+                                <h5 class="form-title"><span>Outras Informações</span></h5>
+                            </div>
+                            <div class="col-12 col-sm-3">
+                                <p><strong>Canal:</strong> {{ booking.channel }}</p>
+                            </div>
+                            <div class="col-12 col-sm-4">
+                                <p><strong>Data de Cadastro:</strong> {{ booking.created_at|date:"d/m/Y H:i" }}
+                                </p>
+                            </div>
+                            <div class="col-12 col-sm-4">
+                                <p><strong>Data de Atualização:</strong> {{ booking.updated_at|date:"d/m/Y H:i" }}
+                                </p>
+                            </div>
+                        </div>
+
+                        <div class="mt-4">
+                            <a href="{% url 'edit_booking' booking.id %}" class="btn btn-primary">Editar</a>
+                            <a href="{% url 'list_booking' %}" class="btn btn-secondary">Voltar</a>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- jQuery (obrigatório) -->
+<script src="{%static 'assets/js/jquery-3.6.0.min.js' %}"></script>
+<script src="{%static 'assets/plugins/slimscroll/jquery.slimscroll.min.js' %}"></script>
+
+<!-- DataTables JS -->
+<script src="{%static 'assets/js/popper.min.js' %}"></script>
+<script src="{%static 'assets/plugins/bootstrap/js/bootstrap.min.js' %}"></script>
+<script src="{%static 'assets/plugins/datatables/datatables.min.js' %}"></script>
+<!-- <script src="{%static 'assets/plugins/datatables/jquery.dataTables.min.js' %}"></script> -->
+
+<script src="{%static 'assets/js/script.js' %}"></script>
+
+{% endblock %}
