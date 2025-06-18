@@ -1,7 +1,7 @@
 {% for booking in upcoming_bookings %}
 <tr>
     <td class="text-nowrap">
-        <div><a href="{% url 'edit_booking' booking.id %}">
+        <div><a href="{% url 'view_booking' booking.id %}">
                 <span>
                     {{ booking.code }}
                 </span>
@@ -13,7 +13,12 @@
     <td class="text-center">
         <div>{{ booking.experience_date|date:"Y-m-d H:i" }}</div>
     </td>
-    <td class="text-right">$ {{ booking.total_str }}</td>
+    <td class="text-right">
+        <span
+            style="background-color: {{ booking.status_color }}; padding: 5px 5px; border-radius: 5px; font-weight: bold;">
+            {{ booking.status }}
+        </span>
+    </td>
 </tr>
 {% empty %}
 <tr>

@@ -8,7 +8,7 @@ from django.utils import timezone
 from booking.models import Booking, BookingStatus
 from financial.models import CustomerInvoice, PartnerInvoice
 
-from datetime import timedelta
+from datetime import timedelta, datetime
 
 
 @login_required
@@ -35,17 +35,40 @@ def dashboard_general(request):
     
     # Filtrar reservas futuras confirmadas dentro do intervalo
     upcoming_bookings = Booking.objects.filter(
-        status=BookingStatus.CONFIRMED,
+        # status=BookingStatus.CONFIRMED,
         experience_date__range=(today, limit_date)
     ).order_by('experience_date')
     
+    try:
+        start_date = datetime.strptime(request.GET.get('start'), '%Y-%m-%d')
+        end_date = datetime.strptime(request.GET.get('end'), '%Y-%m-%d')
+    except (TypeError, ValueError):
+        # Fallback: últimos 30 dias
+        start_date = today
+        end_date = today + timezone.timedelta(days=7)
+
+    # Agrupar por status
+    list_bookings_by_status = (
+        Booking.objects
+        .filter(experience_date__range=(start_date, end_date))
+        .values('status')
+        .annotate(total=Count('id'))
+        .order_by('status')
+    )
+    
+    dict_bookings_by_status = {item['status']:item['total'] for item in list_bookings_by_status}
+    print(dict_bookings_by_status)
+    
     context = {
-        'confirmed_count': confirmed_count,
-        'canceled_count': canceled_count,
+        'confirmed_count': dict_bookings_by_status.get(BookingStatus.CONFIRMED.label, 0),
+        'canceled_count': dict_bookings_by_status.get(BookingStatus.CANCELLED_BY_CLIENT.label,0 ) + dict_bookings_by_status.get(BookingStatus.CANCELLED_BY_PARTNER.label, 0),
+        'pending_count': dict_bookings_by_status.get(BookingStatus.PENDING.label, 0),
         'income_sum': income_sum,
         'outcome_sum': outcome_sum,
         'interval': days,
         'upcoming_bookings': upcoming_bookings,
+        'start_date': start_date.date(),
+        'end_date': end_date.date(),
     }
     return render(request, "dashboard/dashboard-general.html", context)
 
@@ -60,7 +83,7 @@ def ajax_upcoming_bookings(request):
     limit_date = today + timedelta(days=days)
 
     bookings = Booking.objects.filter(
-        status=BookingStatus.CONFIRMED,
+        # status=BookingStatus.CONFIRMED,
         experience_date__range=(today, limit_date)
     ).order_by('experience_date')
 
