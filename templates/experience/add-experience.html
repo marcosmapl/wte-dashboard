@@ -35,20 +35,26 @@
                   <form method="POST" action="{% url 'add_experience' %}" enctype="multipart/form-data">
                      {% csrf_token %}
                      <div class="row">
+                        
+                        <!-- SECTION -->
                         <div class="col-12">
                            <h5 class="form-title"><span>Informações Gerais</span></h5>
                         </div>
-                        <div class="col-12 col-sm-6">
+
+                        <!-- EXPERIENCE TITLE -->
+                        <div class="col-xl-10 col-sm-6">
                            <div class="form-group">
-                              <label>Título</label>
-                              <input type="text" class="form-control" name="title" placeholder="Título da experiência"
+                              <label for="experience-title">Título</label>
+                              <input id="experience-title" type="text" class="form-control" name="experience-title" placeholder="Título da experiência"
                                  value="{{ experience.title|default_if_none:'' }}" required>
                            </div>
                         </div>
-                        <div class="col-12 col-sm-3">
+
+                        <!-- EXPERIENCE CATEGORY -->
+                        <div class="col-xl-4 col-sm-6">
                            <div class="form-group">
-                              <label>Categoria</label>
-                              <select class="form-control" name="category" required>
+                              <label for="experience-category">Categoria</label>
+                              <select id="experience-category" class="form-control" name="experience-category" required>
                                  {% for value, label in category_options %}
                                  <option value="{{ value }}" {% if value == category_selected %}selected{% endif %}>
                                     {{ label }}
@@ -57,10 +63,12 @@
                               </select>
                            </div>
                         </div>
-                        <div class="col-12 col-sm-2">
+
+                        <!-- EXPERIENCE CATEGORY -->
+                        <div class="col-xl-3 col-sm-6">
                            <div class="form-group">
-                              <label>Status</label>
-                              <select class="form-control" name="status" required>
+                              <label for="experience-status">Situação</label>
+                              <select id="experience-status" class="form-control" name="experience-status" required>
                                  {% for value, label in status_options %}
                                  <option value="{{ value }}" {% if value == status_selected %}selected{% endif %}>
                                     {{ label }}
@@ -73,11 +81,13 @@
                         <div class="col-12">
                            <h5 class="form-title"><span>Referência Web</span></h5>
                         </div>
-                        <div class="col-12 col-sm-9">
+
+                        <!-- EXPERIENCE WORDPRESS ULR -->
+                        <div class="col-xl-10 col-sm-6">
                            <div class="form-group">
-                              <label>Wordpress</label>
+                              <label for="experience-wordpress-url">Wordpress</label>
                               <div>
-                                 <input type="text" class="form-control" name="wordpress_url"
+                                 <input id="experience-wordpress-url" type="text" class="form-control" name="experience-wordpress-url"
                                     placeholder="Endereço da página Wordpress"
                                     value="{{ experience.wordpress_url|default_if_none:'' }}" required>
                               </div>
@@ -112,21 +122,26 @@
                         <div class="col-12">
                            <h5 class="form-title"><span>Outras Informações</span></h5>
                         </div>
-                        <div class="col-12 col-sm-6">
+
+
+                        <!-- EXPERIENCE NOTES -->
+                        <div class="col-xl-8 col-sm-6">
                            <div class="form-group">
-                              <label>Anotações</label>
-                              <textarea class="form-control" name="notes" placeholder="Observações sobre a experiência"
-                                 rows="8">{{ experience.notes|default_if_none:'' }}</textarea>
+                              <label for="experience-notes">Anotações</label>
+                              <textarea id="experience-notes" class="form-control" name="experience-notes" placeholder="Observações sobre a experiência"
+                                 rows="5">{{ experience.notes|default_if_none:'' }}</textarea>
                            </div>
                         </div>
+
+                        <!-- CONTROL BUTTONS -->
                         <div class="col-12">
                            <h5 class="form-title"><span></span></h5>
                         </div>
-                        <div class="col-12">
+                        <div class="col-xl-2 col-sm-2">
+                           <button type="submit" class="btn btn-primary w-75">Salvar</button>
                         </div>
-                        <div class="col-sm-9">
-                           <button type="submit" class="btn btn-primary">Salvar</button>
-                           <button onclick="go_to_list_view()" class="btn btn-secondary">Voltar</button>
+                        <div class="col-xl-2 col-sm-2">
+                           <button onclick="history.back()" class="btn btn-secondary w-75">Voltar</button>
                         </div>
                      </div>
                   </form>
