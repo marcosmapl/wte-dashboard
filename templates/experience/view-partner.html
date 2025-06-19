@@ -1,0 +1,140 @@
+{% extends 'Home/base.html' %}
+{% load static %}
+{% block body %}
+
+<div class="page-wrapper">
+   <div class="content container-fluid">
+      <div class="page-header">
+         <div class="row align-items-center">
+            <div class="col-12 col-sm-6">
+               <h3 class="page-title">Serviços</h3>
+               <ul class="breadcrumb">
+                  <li class="breadcrumb-item"><a href="{% url 'list_experience' %}">Parceiros</a></li>
+                  <li class="breadcrumb-item active">Visualização</li>
+               </ul>
+            </div>
+         </div>
+      </div>
+      <div class="row">
+         <div class="col-sm-12">
+            <div class="card">
+               <div class="card-body">
+                  <div class="row">
+                     
+                     <!-- SECTION -->
+                     <div class="col-12 mt-3">
+                        <h5 class="form-title"><span>Informações Gerais</span></h5>
+                     </div>
+
+                     <!-- PARTNER NAME -->
+                     <div class="col-xl-6 col-sm-6">
+                        <span>
+                           <strong>Nome:</strong>
+                           {{ partner.name }}
+                        </span>
+                     </div>
+
+                     <!-- PARTNER STATUS -->
+                     <div class="col-xl-2 col-sm-6">
+                        <span>
+                           <strong>Situação:</strong>
+                           <span
+                              style="background-color: {{ partner.status_color }}; padding: 0px 0px; border-radius: 5px; font-weight: bold;">
+                              {{ partner.status }}
+                           </span>
+                        </span>
+                     </div>
+
+                     <!-- SECTION -->
+                     <div class="col-12 mt-4">
+                        <h5 class="form-title"><span>Informações Contacto</span></h5>
+                     </div>
+
+                     <!-- PARTNER EMAIL -->
+                     <div class="col-xl-6 col-sm-6">
+                        <span>
+                           <strong>Email:</strong>
+                           <a href="mailto:{{ partner.contact_email }}">{{ partner.contact_email }}</a>
+                        </span>
+                     </div>
+
+                     <!-- PARTNER CONTACT FIXO -->
+                     <div class="col-xl-6 col-sm-6">
+                        <span>
+                           <strong>Contacto Fixo:</strong>
+                           {{ partner.contact_phone1 }}
+                        </span>
+                     </div>
+
+                     <!-- PARTNER WEBSITE -->
+                     <div class="col-xl-6 col-sm-6 mt-3">
+                        <span>
+                           <strong>Website:</strong>
+                           {{ partner.website }}
+                        </span>
+                     </div>
+
+                     <!-- PARTNER CONTACT MÓVEL -->
+                     <div class="col-xl-6 col-sm-6 mt-3">
+                        <span>
+                           <strong>Contacto Móvel:</strong>
+                           <a href="https://wa.me/{{ partner.contact_phone2|default_if_none:'' }}" target="_blank">
+                              {{ partner.contact_phone2|default_if_none:'' }}
+                           </a>
+                        </span>
+                     </div>
+
+                     <div class="col-12 mt-4">
+                        <h5 class="form-title"><span>Outras Informações</span></h5>
+                     </div>
+
+                     <!-- PARTNER ADDRESS -->
+                     <div class="col-xl-10 col-sm-6 mb-3">
+                        <span>
+                           <strong>Morada:</strong>
+                           {{ partner.address|default_if_none:'' }}
+                        </span>
+                     </div>
+
+                     <div class="col-xl-10 col-sm-6 mb-3">
+                        <span>
+                           <strong>Data de Cadastro:</strong> {{ partner.created_at_str }}
+                        </span>
+                     </div>
+
+                     <div class="col-xl-12 col-sm-6">
+                        <span>
+                           <strong>Data de Atualização:</strong> {{ partner.updated_at_str }}
+                        </span>
+                     </div>
+
+                     <!-- CONTROL BUTTONS -->
+                     <div class="col-12 mt-4">
+                        <h5 class="form-title"><span></span></h5>
+                     </div>
+                     <div class="col-xl-2 col-sm-2">
+                        <a href="{% url 'edit_partner' id=partner.id %}" class="btn btn-primary w-75">Editar</a>
+                     </div>
+                     <div class="col-xl-2 col-sm-2">
+                        <button onclick="history.back()" class="btn btn-secondary w-75">Voltar</button>
+                     </div>
+
+                  </div>
+               </div>
+            </div>
+         </div>
+      </div>
+   </div>
+</div>
+
+<!-- jQuery (obrigatório) -->
+<script src="{%static 'assets/js/jquery-3.6.0.min.js' %}"></script>
+<script src="{%static 'assets/plugins/slimscroll/jquery.slimscroll.min.js' %}"></script>
+
+<!-- DataTables JS -->
+<script src="{%static 'assets/js/popper.min.js' %}"></script>
+<script src="{%static 'assets/plugins/bootstrap/js/bootstrap.min.js' %}"></script>
+
+<script src="{%static 'assets/js/script.js' %}"></script>
+
+{% endblock %}

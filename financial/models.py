@@ -1,5 +1,6 @@
 from django.db import models
 
+from WineTour import settings
 from booking.models import Booking
 from home_auth.models import WineUser
 
@@ -39,15 +40,15 @@ class BaseInvoice(models.Model):
 
     @property
     def emission_date_str(self):
-        return self.emission_date.strftime("%Y-%m-%d")
+        return self.emission_date.strftime(settings.DATETIME_FORMAT_STR)
 
     @property
     def payment_date_str(self):
-        return self.payment_date.strftime("%Y-%m-%d")
+        return self.payment_date.strftime(settings.DATETIME_FORMAT_STR)
 
     @property
     def paid_date_str(self):
-        return self.paid_date.strftime("%Y-%m-%d")
+        return self.paid_date.strftime(settings.DATETIME_FORMAT_STR)
 
     @property
     def total_amount_str(self):

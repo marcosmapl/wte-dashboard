@@ -1,4 +1,5 @@
 from django.db import models
+from WineTour import settings
 
 from experience.models import Experience, Partner
 from home_auth.models import WineUser
@@ -47,15 +48,15 @@ class Booking(models.Model):
     
     @property
     def experience_date_str(self):
-        return self.experience_date.strftime("%Y-%m-%d")
+        return self.experience_date.strftime(settings.DATETIME_FORMAT_STR)
     
     @property
     def created_at_str(self):
-        return self.created_at.strftime("%Y-%m-%d")
+        return self.created_at.strftime(settings.DATETIME_FORMAT_STR)
     
     @property
     def updated_at_str(self):
-        return self.updated_at.strftime("%Y-%m-%d")
+        return self.updated_at.strftime(settings.DATETIME_FORMAT_STR)
     
     @property
     def total_str(self):

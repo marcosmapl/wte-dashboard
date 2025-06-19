@@ -3,6 +3,7 @@ from django.core.validators import MinValueValidator, MaxValueValidator, RegexVa
 # Create your models here.
 
 from django.db import models
+from WineTour import settings
 from home_auth.models import WineUser
 
 class ExperienceStatus(models.TextChoices):
@@ -56,6 +57,15 @@ class Experience(models.Model):
         return self.title
     
     @property
+    def created_at_str(self):
+        return self.created_at.strftime(settings.DATETIME_FORMAT_STR)
+    
+    @property
+    def updated_at_str(self):
+        return self.updated_at.strftime(settings.DATETIME_FORMAT_STR)
+    
+    
+    @property
     def status_color(self):
         return {
             'Disponível': '#abebc6',
@@ -82,7 +92,18 @@ class Partner(models.Model):
     created_by = models.ForeignKey(WineUser, on_delete=models.SET_NULL, null=True, db_index=True, related_name='part_created_by')
     updated_at = models.DateTimeField(auto_now=True)
     updated_by = models.ForeignKey(WineUser, on_delete=models.SET_NULL, null=True, db_index=True, related_name='part_updated_by')
+        
+    def __str__(self):
+        return self.name
     
+    @property
+    def created_at_str(self):
+        return self.created_at.strftime(settings.DATETIME_FORMAT_STR)
+    
+    @property
+    def updated_at_str(self):
+        return self.updated_at.strftime(settings.DATETIME_FORMAT_STR)
+
     @property
     def status_color(self):
         print(self)
@@ -92,6 +113,3 @@ class Partner(models.Model):
             'Excluído': '#f5b7b1',
             'Inativo': '#d5d8dc',
         }.get(self.status, '#abebc6')
-        
-    def __str__(self):
-        return self.name

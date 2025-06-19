@@ -52,7 +52,7 @@
                         <!-- BOKKING STATUS -->
                         <div class="col-xl-2 col-sm-6">
                            <div class="form-group">
-                              <label for="booking_status">Status</label>
+                              <label for="booking_status">Situação</label>
                               <select id="booking_status" class="form-control" name="booking_status" required>
                                  {% for value, label in status_options %}
                                  <option value="{{ value }}" {% if value == status_selected %}selected{% endif %}>

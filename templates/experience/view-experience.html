@@ -65,16 +65,27 @@
                         </span>
                      </div>
 
-                     <div class="col-xl-12 mt-3">
+                     <div class="col-xl-12 mt-4">
                         <h5 class="form-title"><span>Outras Informações</span></h5>
                      </div>
 
                      <!-- EXPERIENCE NOTES -->
-                     <div class="col-xl-8 col-sm-6 mt-3">
+                     <div class="col-xl-8 col-sm-6 mb-5">
                         <span>
                            <strong>Anotações:</strong>
                            {{ experience.notes|default_if_none:'' }}
                         </span>
+                     </div>
+
+                     <div class="col-xl-12 col-sm-12">
+                        <p>
+                           <strong>Data de Cadastro:</strong> {{ experience.created_at_str }}
+                        </p>
+                     </div>
+
+                     <div class="col-xl-12 col-sm-12">
+                        <p><strong>Data de Atualização:</strong> {{ experience.updated_at_str }}
+                        </p>
                      </div>
 
                      <!-- CONTROL BUTTONS -->

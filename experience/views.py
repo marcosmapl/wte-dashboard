@@ -284,3 +284,13 @@ def delete_partner(request, id):
             partner.delete()
     
     return redirect('list_partner')
+
+
+@login_required
+def view_partner(request, id):
+    user = request.user
+    if not user.is_active or not user.is_booking_agent:
+        return redirect('index')
+    
+    partner = Partner.objects.get(id=id)
+    return render(request, 'experience/view-partner.html', {'partner': partner})

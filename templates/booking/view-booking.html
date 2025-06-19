@@ -135,11 +135,12 @@
                                 <p><strong>Canal:</strong> {{ booking.channel }}</p>
                             </div>
                             <div class="col-xl-12 col-sm-12">
-                                <p><strong>Data de Cadastro:</strong> {{ booking.created_at|date:"d/m/Y H:i" }}
+                                <p>
+                                    <strong>Data de Cadastro:</strong> {{ booking.created_at_str }}
                                 </p>
                             </div>
                             <div class="col-xl-12 col-sm-12">
-                                <p><strong>Data de Atualização:</strong> {{ booking.updated_at|date:"d/m/Y H:i" }}
+                                <p><strong>Data de Atualização:</strong> {{ booking.updated_at_str }}
                                 </p>
                             </div>
 

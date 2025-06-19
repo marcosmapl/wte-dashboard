@@ -47,14 +47,16 @@
                                                 {{ partner.contact_email }}
                                             </a>
                                         </td>
-                                        <td>{{ partner.contact_phone1 }}</td>
                                         <td>
-                                            <a href="https://wa.me/{{ partner.contact_phone2 }}" target="_blank">
-                                                {{ partner.contact_phone2 }}
+                                            {{ partner.contact_phone1 }}
+                                        </td>
+                                        <td>
+                                            <a href="https://wa.me/{{ partner.contact_phone2|default_if_none:'' }}" target="_blank">
+                                                {{ partner.contact_phone2|default_if_none:'' }}
                                             </a>
                                         </td>
                                         <td>
-                                            <a href="{{ partner.website }}" target="_blank">Website</a>
+                                            <a href="{{ partner.website }}" target="_blank">Link</a>
                                         </td>
                                         <td>
                                             <span
@@ -64,6 +66,10 @@
                                         </td>
                                         <td class="text-right">
                                             <div class="actions">
+                                                <a href="{% url 'view_partner' id=partner.id %}"
+                                                    class="btn btn-sm bg-info-light mr-2">
+                                                    <i class="fas fa-eye"></i>
+                                                </a>
                                                 <a href="{% url 'edit_partner' partner.id %}"
                                                     class="btn btn-sm bg-success-light mr-2">
                                                     <i class="fas fa-pen"></i>
