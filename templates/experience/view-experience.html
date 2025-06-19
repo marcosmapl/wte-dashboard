@@ -1,0 +1,115 @@
+{% extends 'Home/base.html' %}
+{% load static %}
+{% block body %}
+
+<div class="page-wrapper">
+    <div class="content container-fluid">
+        <div class="page-header">
+            <div class="row align-items-center">
+                <div class="col-12 col-sm-6">
+                    <h3 class="page-title">Serviços</h3>
+                    <ul class="breadcrumb">
+                        <li class="breadcrumb-item"><a href="{% url 'list_experience' %}">Experiências</a></li>
+                        <li class="breadcrumb-item active">Detalhamento</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="row">
+
+                            <!-- EXPERIENCE INFO -->
+                            <div class="col-12">
+                                <h5 class="form-title"><span>Informações Gerais</span></h5>
+                            </div>
+                            <div class="col-xl-7 col-sm-6">
+                                <div class="mb-3">
+                                    <strong>Título:</strong>
+                                    <span>
+                                        {{ experience.title }}
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="col-xl-3 col-sm-3">
+                                <div class="mb-3">
+                                    <strong>Categoria:</strong>
+                                    <span>
+                                        {{ experience.category }}
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="col-xl-2 col-sm-2">
+                                <div class="mb-3">
+                                    <strong>Status:</strong>
+                                    <span
+                                        style="background-color: {{ experience.status_color }}; padding: 5px 5px; border-radius: 5px; font-weight: bold;">
+                                        {{ experience.status }}
+                                    </span>
+                                </div>
+                            </div>
+
+                            <div class="col-12">
+                                <h5 class="form-title"><span>Referência Web</span></h5>
+                            </div>
+                            <div class="col-12 col-sm-8">
+                                <div class="mb-3">
+                                    <strong>Wordpress:</strong>
+                                    <span>
+                                        <a href="{{ experience.wordpress_url|default_if_none:'' }}" target="_blank">
+                                            {{ experience.wordpress_url|default_if_none:'' }}
+                                        </a>
+                                    </span>
+                                </div>
+                            </div>
+
+                            <div class="col-12">
+                                <h5 class="form-title"><span>Outras Informações</span></h5>
+                            </div>
+                            <div class="col-12 col-sm-6">
+                                <div class="mb-3">
+                                    <label><strong>Anotações:</strong></label>
+                                    <p>{{ experience.notes|default_if_none:''|linebreaksbr }}</p>
+                                </div>
+                            </div>
+                            <div class="col-sm-3">
+                                <strong>Cadastrado em:</strong>
+                                <span class="text-muted">{{ experience.created_at|date:"d/m/Y H:i" }}</span><br>
+                                <strong>Atualizado em:</strong>
+                                <span class="text-muted">{{ experience.modified_at|date:"d/m/Y H:i" }}</span>
+                            </div>
+
+                            <div class="col-12">
+                                <h5 class="form-title"><span></span></h5>
+                            </div>
+                            <div class="col-12">
+                            </div>
+                            <div class="col-xl-2 col-sm-2">
+                                <a href="{% url 'edit_experience' experience.id %}" class="btn btn-primary">Editar</a>
+                            </div>
+                            <div class="col-xl-2 col-sm-2">
+                                <button onclick="history.back()" class="btn btn-secondary w-50">Voltar</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer style="text-align: center;">
+        <p>Copyright © 2025 - Wine Tour Experience.</p>
+    </footer>
+</div>
+
+<!-- jQuery (obrigatório) -->
+<script src="{% static 'assets/js/jquery-3.6.0.min.js' %}"></script>
+<script src="{% static 'assets/plugins/slimscroll/jquery.slimscroll.min.js' %}"></script>
+<script src="{% static 'assets/js/popper.min.js' %}"></script>
+<script src="{% static 'assets/plugins/bootstrap/js/bootstrap.min.js' %}"></script>
+<script src="{% static 'assets/js/script.js' %}"></script>
+
+{% endblock %}

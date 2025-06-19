@@ -144,6 +144,12 @@ def delete_experience(request, id):
     return redirect('list_experience')
 
 
+@login_required
+def view_experience(request, id):
+    experience = Experience.objects.get(id=id)
+    return render(request, 'experience/view-experience.html', {'experience': experience})
+
+
 # PARTNER VIEWS
 @login_required
 def list_partner(request):

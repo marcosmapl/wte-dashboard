@@ -69,7 +69,11 @@
                                                 {{ booking.client_phone }}
                                             </a>
                                         </td> -->
-                                        <td>{{ booking.experience.title }}</td>
+                                        <td>
+                                            <a href="{% url 'view_experience' id=booking.experience.id %}">
+                                                {{ booking.experience.title }}
+                                            </a>
+                                        </td>
                                         <td>{{ booking.partner.name }}</td>
                                         <td>{{ booking.experience_date_str }}</td>
                                         <td>
