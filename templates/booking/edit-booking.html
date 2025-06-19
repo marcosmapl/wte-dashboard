@@ -158,9 +158,7 @@
                                        <a class="dropdown-item">R$</a>
                                     </div> -->
                                  </div>
-                                 <input id="booking_price_adults" type="number" step="0.01" min="1.00"
-                                 class="form-control" name="booking_price_adults"
-                                 value="{{ booking.price_adults_str }}" required>
+                                 <input id="booking_price_adults" type="number" step="0.01" min="1.00" class="form-control" name="booking_price_adults" value="{{ booking.price_adults_str }}" required>
                               </div>
                            </div>
                         </div>
@@ -211,13 +209,11 @@
                                     <span class="btn btn-secondary"> € </span>
                                  </div>
 
-                                 <input id="booking_total" type="number" step="0.01" min="1.00" class="form-control"
-                                       name="booking_total" value="{{ booking.total_str }}" required readonly>
+                                 <input id="booking_total" type="number" step="0.01" min="1.00" class="form-control" name="booking_total" value="{{ booking.total_str }}" required readonly>
 
                                  <!-- Botão com ícone de calculadora -->
                                  <div class="input-group-append">
-                                    <button class="btn btn-primary" type="button" onclick="calculateTotal()"
-                                       title="Calcular Total">
+                                    <button class="btn btn-primary" type="button" onclick="calculateTotal()" title="Calcular Total">
                                        <i class="fas fa-calculator"></i>
                                     </button>
                                  </div>
