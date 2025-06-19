@@ -21,27 +21,29 @@
                 <div class="card">
                     <div class="card-body">
                         <div class="row">
+
                             <!-- BOOKING INFO -->
-                            <div class="col-xl-12">
+                            <div class="col-12 mt-3">
                                 <h5 class="form-title"><span>Identificação da Reserva</span></h5>
                             </div>
+
                             <div class="col-xl-6 col-sm-6">
                                 <span>
                                     <strong>Código:</strong>
                                     {{ booking.code }}
                                 </span>
                             </div>
+                            
                             <div class="col-xl-6 col-sm-3">
                                 <strong>Status:</strong>
                                 <span
                                     style="background-color: {{ booking.status_color }}; padding: 5px 5px; border-radius: 5px; font-weight: bold;">
                                     {{ booking.status }}
                                 </span>
-                                </p>
                             </div>
 
                             <!-- CLIENT  INFO -->
-                            <div class="col-xl-12 mt-3">
+                            <div class="col-xl-12 mt-4">
                                 <h5 class="form-title"><span>Cliente</span></h5>
                             </div>
                             <div class="col-xl-6 col-sm-6">
@@ -74,11 +76,12 @@
                             </div>
 
                             <!-- EXPERIENCE  INFO -->
-                            <div class="col-12 mt-3">
+                            <div class="col-12 mt-4">
                                 <h5 class="form-title"><span>Experiência</span></h5>
                             </div>
                             <div class="col-12 col-sm-6">
-                                <p><strong>Experiência:</strong>
+                                <p>
+                                    <strong>Experiência:</strong>
                                     <a href="{% url 'edit_experience' booking.experience.id %}">
                                         {{ booking.experience }}
                                     </a>
@@ -98,7 +101,7 @@
                             </div>
 
                             <!-- PRICE AND PEOPLE  INFO -->
-                            <div class="col-12 mt-3">
+                            <div class="col-12 mt-4">
                                 <h5 class="form-title"><span>Participantes e Preços</span></h5>
                             </div>
                             <div class="col-xl-6 col-sm-2">
@@ -125,7 +128,7 @@
                             </div>
 
                             <!-- OTHER INFO -->
-                            <div class="col-xl-12 col-sm-12 mt-3">
+                            <div class="col-xl-12 col-sm-12 mt-4">
                                 <h5 class="form-title"><span>Outras Informações</span></h5>
                             </div>
                             <div class="col-xl-12 col-sm-12">
@@ -140,7 +143,7 @@
                                 </p>
                             </div>
 
-                            <div class="col-12">
+                            <div class="col-12 mt-3 ">
                                 <h5 class="form-title"><span></span></h5>
                             </div>
                             <div class="col-xl-2 col-sm-2">

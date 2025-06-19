@@ -52,11 +52,15 @@
                                         </td>
                                         <td class="text-right">
                                             <div class="actions">
-                                                <a href="{% url 'edit_experience' experience.id %}"
+                                                <a href="{% url 'view_experience' id=experience.id %}"
+                                                    class="btn btn-sm bg-info-light mr-2">
+                                                    <i class="fas fa-eye"></i>
+                                                </a>
+                                                <a href="{% url 'edit_experience' id=experience.id %}"
                                                     class="btn btn-sm bg-success-light mr-2">
                                                     <i class="fas fa-pen"></i>
                                                 </a>
-                                                <form action="{% url 'delete_experience' experience.id %}" method="POST"
+                                                <form action="{% url 'delete_experience' id=experience.id %}" method="POST"
                                                     style="display:inline;">
                                                     {% csrf_token %}
                                                     <button type="submit" class="btn btn-sm bg-danger-light"

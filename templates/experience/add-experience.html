@@ -44,8 +44,8 @@
                         <!-- EXPERIENCE TITLE -->
                         <div class="col-xl-10 col-sm-6">
                            <div class="form-group">
-                              <label for="experience-title">Título</label>
-                              <input id="experience-title" type="text" class="form-control" name="experience-title" placeholder="Título da experiência"
+                              <label for="experience_title">Título</label>
+                              <input id="experience_title" type="text" class="form-control" name="experience_title" placeholder="Título da experiência"
                                  value="{{ experience.title|default_if_none:'' }}" required>
                            </div>
                         </div>
@@ -53,8 +53,8 @@
                         <!-- EXPERIENCE CATEGORY -->
                         <div class="col-xl-4 col-sm-6">
                            <div class="form-group">
-                              <label for="experience-category">Categoria</label>
-                              <select id="experience-category" class="form-control" name="experience-category" required>
+                              <label for="experience_category">Categoria</label>
+                              <select id="experience_category" class="form-control" name="experience_category" required>
                                  {% for value, label in category_options %}
                                  <option value="{{ value }}" {% if value == category_selected %}selected{% endif %}>
                                     {{ label }}
@@ -67,8 +67,8 @@
                         <!-- EXPERIENCE CATEGORY -->
                         <div class="col-xl-3 col-sm-6">
                            <div class="form-group">
-                              <label for="experience-status">Situação</label>
-                              <select id="experience-status" class="form-control" name="experience-status" required>
+                              <label for="experience_status">Situação</label>
+                              <select id="experience_status" class="form-control" name="experience_status" required>
                                  {% for value, label in status_options %}
                                  <option value="{{ value }}" {% if value == status_selected %}selected{% endif %}>
                                     {{ label }}
@@ -85,9 +85,9 @@
                         <!-- EXPERIENCE WORDPRESS ULR -->
                         <div class="col-xl-10 col-sm-6">
                            <div class="form-group">
-                              <label for="experience-wordpress-url">Wordpress</label>
+                              <label for="experience_wordpress_url">Wordpress</label>
                               <div>
-                                 <input id="experience-wordpress-url" type="text" class="form-control" name="experience-wordpress-url"
+                                 <input id="experience_wordpress_url" type="text" class="form-control" name="experience_wordpress_url"
                                     placeholder="Endereço da página Wordpress"
                                     value="{{ experience.wordpress_url|default_if_none:'' }}" required>
                               </div>
@@ -127,8 +127,8 @@
                         <!-- EXPERIENCE NOTES -->
                         <div class="col-xl-8 col-sm-6">
                            <div class="form-group">
-                              <label for="experience-notes">Anotações</label>
-                              <textarea id="experience-notes" class="form-control" name="experience-notes" placeholder="Observações sobre a experiência"
+                              <label for="experience_notes">Anotações</label>
+                              <textarea id="experience_notes" class="form-control" name="experience_notes" placeholder="Observações sobre a experiência"
                                  rows="5">{{ experience.notes|default_if_none:'' }}</textarea>
                            </div>
                         </div>
@@ -165,11 +165,5 @@
 <script src="{%static 'assets/plugins/bootstrap/js/bootstrap.min.js' %}"></script>
 
 <script src="{%static 'assets/js/script.js' %}"></script>
-
-<script type="text/javascript">
-   function go_to_list_view() {
-      document.location.href = "{% url 'list_experience' %}"
-   }
-</script>
 
 {% endblock %}

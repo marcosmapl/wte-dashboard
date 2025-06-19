@@ -32,16 +32,16 @@ def add_experience(request):
 
         # Criação do objeto
         experience = Experience(
-            title=request.POST.get('title'),
+            title=request.POST.get('experience_title'),
             # description=request.POST.get('description'),
             # departure_place=request.POST.get('departure_place'),
             # latitude=request.POST.get('latitude'),
             # longitude=request.POST.get('longitude'),
             # maps_url=request.POST.get('maps_url'),
-            wordpress_url=request.POST.get('wordpress_url'),
-            category=request.POST.get('category', ExperienceCategory.SEM_CATEGORIA),
-            status=request.POST.get('status', ExperienceStatus.AVAILABLE),
-            notes=request.POST.get('notes'),
+            wordpress_url=request.POST.get('experience_wordpress_url'),
+            category=request.POST.get('experience_category', ExperienceCategory.SEM_CATEGORIA),
+            status=request.POST.get('experience_status', ExperienceStatus.AVAILABLE),
+            notes=request.POST.get('experience_notes'),
             created_by=request.user,
             updated_by=request.user
         )
@@ -86,11 +86,11 @@ def edit_experience(request, id):
         # print(f"Request POST data: {request.POST}")
 
         # Atualiza os campos do objeto
-        experience.title = request.POST.get('title')
-        experience.wordpress_url = request.POST.get('wordpress_url')
-        experience.category = request.POST.get('category')
-        experience.status = request.POST.get('status')
-        experience.notes = request.POST.get('notes')
+        experience.title = request.POST.get('experience_title')
+        experience.wordpress_url = request.POST.get('experience_wordpress_url')
+        experience.category = request.POST.get('experience_category')
+        experience.status = request.POST.get('experience_status')
+        experience.notes = request.POST.get('experience_notes')
         experience.updated_by = request.user
         experience.updated_at = None # Reseta o campo modified_at para que seja atualizado no save()
         
@@ -146,6 +146,10 @@ def delete_experience(request, id):
 
 @login_required
 def view_experience(request, id):
+    user = request.user
+    if not user.is_active or not user.is_booking_agent:
+        return redirect('index')
+    
     experience = Experience.objects.get(id=id)
     return render(request, 'experience/view-experience.html', {'experience': experience})
 

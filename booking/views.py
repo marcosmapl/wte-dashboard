@@ -177,5 +177,9 @@ def delete_booking_view(request, id):
 
 @login_required
 def view_booking(request, booking_id):
+    user = request.user
+    if not user.is_active or not user.is_booking_agent:
+        return redirect('index')
+    
     booking = Booking.objects.select_related('experience', 'partner').get(id=booking_id)
     return render(request, 'booking/view-booking.html', {'booking': booking})
