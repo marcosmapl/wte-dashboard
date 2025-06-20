@@ -1,0 +1,203 @@
+{% extends 'Home/base.html' %}
+{% load static %}
+{% block body %}
+
+<div class="page-wrapper">
+   <div class="content container-fluid">
+      <div class="page-header">
+         <div class="row align-items-center">
+            <div class="col-12 col-sm-6">
+               <h3 class="page-title">Financeiro</h3>
+               <ul class="breadcrumb">
+                  <li class="breadcrumb-item"><a href="{% url 'list_customer_invoice' %}">Faturas (Cliente)</a></li>
+                  <li class="breadcrumb-item active">Visualização</li>
+               </ul>
+            </div>
+         </div>
+      </div>
+      <div class="row">
+         <div class="col-sm-12">
+            <div class="card">
+               <div class="card-body">
+                  <div class="row">
+                     
+                     <!-- SECTION -->
+                     <div class="col-12 mt-3">
+                        <h5 class="form-title"><span>Dados da Fatura</span></h5>
+                     </div>
+
+                     <!-- INVOICE CODE -->
+                     <div class="col-xl-5 col-sm-6 mb-3">
+                        <span>
+                           <strong>Código:</strong>
+                           {{ invoice.code }}
+                        </span>
+                     </div>
+
+                     <!-- INVOICE EMISSION DATE -->
+                     <div class="col-xl-6 col-sm-6 mb-3">
+                        <span>
+                           <strong>Data Emissão:</strong>
+                           {{ invoice.emission_date_str }}
+                        </span>
+                     </div>
+
+                     <div class="col-12"></div>
+
+                     <!-- INVOICE FILE LINK -->
+                     <div class="col-xl-5 col-sm-6">
+                        <span>
+                           <strong>Link do Arquivo:</strong>
+                           <a href="{{ invoice.file_link }}">Link</a>
+                        </span>
+                     </div>
+                     
+                     <!-- INVOICE PAYMENT DATE -->
+                     <div class="col-xl-7 col-sm-6">
+                        <span>
+                           <strong>Data Vencimento:</strong>
+                           {{ invoice.payment_date_str }}
+                        </span>
+                     </div>
+
+                     <div class="col-12 mt-3">
+                        <h5 class="form-title"><span>Dados do Pagamento</span></h5>
+                     </div>
+                     
+                     <!-- INVOICE SERVICE VALUE -->
+                     <div class="col-xl-5 col-sm-6 mb-3">
+                        <span>
+                           <strong>Valor Serviço:</strong>
+                           {{ invoice.service_value_money }}
+                        </span>
+                     </div>
+                     
+                     <!-- INVOICE TAXES VALUE -->
+                     <div class="col-xl-7 col-sm-6 mb-3">
+                        <span>
+                           <strong>Valor Imposto:</strong>
+                           {{ invoice.taxes_value_money }}
+                        </span>
+                     </div>
+
+                     <!-- INVOICE DISCOUNT VALUE -->
+                     <div class="col-xl-5 col-sm-6 mb-3">
+                        <span>
+                           <strong>Valor Desconto:</strong>
+                           {{ invoice.discount_value_money }}
+                        </span>
+                     </div>
+                     
+                     <!-- INVOICE TOTAL VALUE -->
+                     <div class="col-xl-7 col-sm-6 mb-3">
+                        <span>
+                           <strong>Valor Total:</strong>
+                           {{ invoice.total_amount_money }}
+                        </span>
+                     </div>
+
+                     <!-- INVOICE STATUS -->
+                     <div class="col-xl-5 col-sm-6 mb-3">
+                        <span>
+                           <strong>Situação:</strong>
+                           <span style="background-color: {{ invoice.status_color }}; padding: 5px 10px; border-radius: 5px; font-weight: bold;">
+                              {{ invoice.status }}
+                           </span>
+                        </span>
+                     </div>
+                     
+                     <!-- INVOICE PAID DATE -->
+                     <div class="col-xl-7 col-sm-6 mb-3">
+                        <span>
+                           <strong>Data de Pagamento:</strong>
+                           {{ invoice.paid_date_str }}
+                        </span>
+                     </div>
+                     
+                     <!-- INVOICE PAYMENT METHOD -->
+                     <div class="col-xl-12 col-sm-6">
+                        <span>
+                           <strong>Método de Pagamento:</strong>
+                           {{ invoice.payment_method }}
+                        </span>
+                     </div>
+                     
+                     <!-- SECTION -->
+                     <div class="col-12 mt-4">
+                        <h5 class="form-title"><span>Dados da Reserva</span></h5>
+                     </div>
+                     
+                     <!-- INVOICE BOOKING CODE -->
+                     <div class="col-xl-5 col-sm-6 mb-3">
+                        <span>
+                           <strong>Código Reserva:</strong>
+                           <a href="{% url 'view_booking' id=invoice.booking.id %}">
+                              {{ invoice.booking.code }}
+                           </a>
+                        </span>
+                     </div>
+                     
+                     <!-- INVOICE BOOKING DATE -->
+                     <div class="col-xl-7 col-sm-6 mb-3">
+                        <span>
+                           <strong>Data Reserva:</strong>
+                           {{ invoice.booking.created_at_str }}
+                        </span>
+                     </div>
+                     
+                     <!-- INVOICE BOOKING CLIENT NAME -->
+                     <div class="col-xl-12 col-sm-6">
+                        <span>
+                           <strong>Nome Cliente:</strong>
+                           {{ invoice.booking.client_name }}
+                        </span>
+                     </div>
+
+                     <!-- SECTION -->
+                     <div class="col-xl-12 mt-4">
+                        <h5 class="form-title"><span>Outras Informações</span></h5>
+                     </div>
+                     
+                     <!-- INVOICE CREATED AT DATE -->
+                     <div class="col-xl-12 col-sm-12">
+                        <p>
+                           <strong>Data de Cadastro:</strong> {{ invoice.created_at_str }}
+                        </p>
+                     </div>
+                     
+                     <!-- INVOICE UPDATED AT DATE -->
+                     <div class="col-xl-12 col-sm-12">
+                        <p><strong>Data de Atualização:</strong> {{ invoice.updated_at_str }}
+                        </p>
+                     </div>
+
+                     <!-- CONTROL BUTTONS -->
+                     <div class="col-12 mt-3">
+                        <h5 class="form-title"><span></span></h5>
+                     </div>
+                     <div class="col-xl-2 col-sm-2">
+                        <a href="{% url 'edit_customer_invoice' id=invoice.id %}" class="btn btn-primary w-75">Editar</a>
+                     </div>
+                     <div class="col-xl-2 col-sm-2">
+                        <button onclick="history.back()" class="btn btn-secondary w-75">Voltar</button>
+                     </div>
+
+                  </div>
+               </div>
+            </div>
+         </div>
+      </div>
+   </div>
+</div>
+
+<!-- jQuery (obrigatório) -->
+<script src="{%static 'assets/js/jquery-3.6.0.min.js' %}"></script>
+<script src="{%static 'assets/plugins/slimscroll/jquery.slimscroll.min.js' %}"></script>
+
+<!-- DataTables JS -->
+<script src="{%static 'assets/js/popper.min.js' %}"></script>
+<script src="{%static 'assets/plugins/bootstrap/js/bootstrap.min.js' %}"></script>
+
+<script src="{%static 'assets/js/script.js' %}"></script>
+
+{% endblock %}

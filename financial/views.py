@@ -16,7 +16,6 @@ def list_customer_invoice_view(request):
     invoice_list = CustomerInvoice.objects.select_related('booking').all()
     # print(f"Booking list: {booking_list}")
     context = {
-        'page_mode': 'list',
         'invoice_list': invoice_list,
     }
     return render(request, "financial/list-customer-invoice.html", context)
@@ -33,15 +32,18 @@ def add_customer_invoice_view(request):
         print(request.POST)
         # Criação do objeto
         invoice = CustomerInvoice(
-            code=request.POST.get('customer_invoice_code'),
-            emission_date=request.POST.get('customer_invoice_emission_date'),
-            payment_date=request.POST.get('customer_invoice_payment_date'),
-            paid_date=request.POST.get('customer_invoice_paid_date'),
-            total_amount=request.POST.get('customer_invoice_total_amount'),
-            file_link=request.POST.get('customer_invoice_file_link'),
-            payment_method=request.POST.get('customer_invoice_payment_method', PaymentMethod.BANK_TRANSFER),
-            status=request.POST.get('customer_invoice_status', InvoiceStatus.PENDING),
-            booking=Booking.objects.get(id=request.POST.get('customer_invoice_booking')),
+            code=request.POST.get('invoice_code'),
+            emission_date=request.POST.get('invoice_emission_date'),
+            payment_date=request.POST.get('invoice_payment_date'),
+            paid_date=request.POST.get('invoice_paid_date'),
+            service_value=request.POST.get('invoice_service_value'),
+            taxes_value=request.POST.get('invoice_taxes_value'),
+            discount_value=request.POST.get('invoice_discount_value'),
+            total_amount=request.POST.get('invoice_total_amount'),
+            file_link=request.POST.get('invoice_file_link'),
+            payment_method=request.POST.get('invoice_payment_method', PaymentMethod.BANK_TRANSFER),
+            status=request.POST.get('invoice_status', InvoiceStatus.PENDING),
+            booking=Booking.objects.get(id=request.POST.get('invoice_booking')),
             created_by=request.user,
             updated_by=request.user,
         )
@@ -93,15 +95,18 @@ def edit_customer_invoice_view(request, id):
         # print(f"Request POST data: {request.POST}")
 
         # Atualiza os campos do objeto
-        invoice.code = request.POST.get('customer_invoice_code')
-        invoice.emission_date = request.POST.get('customer_invoice_emission_date')
-        invoice.payment_date = request.POST.get('customer_invoice_payment_date')
-        invoice.paid_date = request.POST.get('customer_invoice_paid_date')
-        invoice.total_amount = request.POST.get('customer_invoice_total_amount')
-        invoice.file_link = request.POST.get('customer_invoice_file_link')
-        invoice.payment_method = request.POST.get('customer_invoice_payment_method')
-        invoice.status = request.POST.get('customer_invoice_status')
-        invoice.booking = Booking.objects.get(id=request.POST.get('customer_invoice_booking'))
+        invoice.code = request.POST.get('invoice_code')
+        invoice.emission_date = request.POST.get('invoice_emission_date')
+        invoice.payment_date = request.POST.get('invoice_payment_date')
+        invoice.paid_date = request.POST.get('invoice_paid_date')
+        invoice.service_value = request.POST.get('invoice_service_value')
+        invoice.taxes_value = request.POST.get('invoice_taxes_value')
+        invoice.discount_value = request.POST.get('invoice_discount_value')
+        invoice.total_amount = request.POST.get('invoice_total_amount')
+        invoice.file_link = request.POST.get('invoice_file_link')
+        invoice.payment_method = request.POST.get('invoice_payment_method')
+        invoice.status = request.POST.get('invoice_status')
+        invoice.booking = Booking.objects.get(id=request.POST.get('invoice_booking'))
         invoice.created_by = request.user
         invoice.updated_by = request.user
         invoice.updated_at = None # Reseta o campo modified_at para que seja atualizado no save()
@@ -113,7 +118,7 @@ def edit_customer_invoice_view(request, id):
             # Salva o objeto no banco de dados
             invoice.save()
             
-            messages.success(request, "Reserva atualizada com sucesso.")
+            messages.success(request, "Fatura atualizada com sucesso.")
             return redirect('list_customer_invoice')
         except ValidationError as e:
             for field, errors in e.message_dict.items():
@@ -125,8 +130,7 @@ def edit_customer_invoice_view(request, id):
     # print(f"Experience details: {experience.category}, {experience.status}")
     b_list = Booking.objects.all().order_by('code')
     context = {
-        'page_mode': 'edit',
-        'customer_invoice': invoice,
+        'invoice': invoice,
         'booking_list': b_list,
         'booking_selected': b_list[0] if b_list else None,
         'payment_method_options': PaymentMethod.choices,
@@ -158,6 +162,16 @@ def delete_customer_invoice_view(request, id):
 
 
 @login_required
+def customer_invoice_view(request, id):
+    user = request.user
+    if not user.is_active or not user.is_booking_agent:
+        return redirect('index')
+    
+    invoice = CustomerInvoice.objects.select_related('booking').get(id=id)
+    return render(request, 'financial/view-customer-invoice.html', {'invoice': invoice})
+
+
+@login_required
 def list_partner_invoice_view(request):
     user = request.user
     if not user.is_active or not user.is_general_manager:
@@ -166,7 +180,6 @@ def list_partner_invoice_view(request):
     invoice_list = PartnerInvoice.objects.select_related('booking').all()
     # print(f"Booking list: {booking_list}")
     context = {
-        'page_mode': 'list',
         'invoice_list': invoice_list,
     }
     return render(request, "financial/list-partner-invoice.html", context)
@@ -183,15 +196,18 @@ def add_partner_invoice_view(request):
         print(request.POST)
         # Criação do objeto
         invoice = PartnerInvoice(
-            code=request.POST.get('partner_invoice_code'),
-            emission_date=request.POST.get('partner_invoice_emission_date'),
-            payment_date=request.POST.get('partner_invoice_payment_date'),
-            paid_date=request.POST.get('partner_invoice_paid_date'),
-            total_amount=request.POST.get('partner_invoice_total_amount'),
-            file_link=request.POST.get('partner_invoice_file_link'),
-            payment_method=request.POST.get('partner_invoice_payment_method', PaymentMethod.BANK_TRANSFER),
-            status=request.POST.get('partner_invoice_status', InvoiceStatus.PENDING),
-            booking=Booking.objects.get(id=request.POST.get('partner_invoice_booking')),
+            code=request.POST.get('invoice_code'),
+            emission_date=request.POST.get('invoice_emission_date'),
+            payment_date=request.POST.get('invoice_payment_date'),
+            paid_date=request.POST.get('invoice_paid_date'),
+            service_value=request.POST.get('invoice_service_value'),
+            taxes_value=request.POST.get('invoice_taxes_value'),
+            discount_value=request.POST.get('invoice_discount_value'),
+            total_amount=request.POST.get('invoice_total_amount'),
+            file_link=request.POST.get('invoice_file_link'),
+            payment_method=request.POST.get('invoice_payment_method', PaymentMethod.BANK_TRANSFER),
+            status=request.POST.get('invoice_status', InvoiceStatus.PENDING),
+            booking=Booking.objects.get(id=request.POST.get('invoice_booking')),
             created_by=request.user,
             updated_by=request.user,
         )
@@ -240,15 +256,18 @@ def edit_partner_invoice_view(request, id):
         # print(f"Request POST data: {request.POST}")
 
         # Atualiza os campos do objeto
-        invoice.code = request.POST.get('partner_invoice_code')
-        invoice.emission_date = request.POST.get('partner_invoice_emission_date')
-        invoice.payment_date = request.POST.get('partner_invoice_payment_date')
-        invoice.paid_date = request.POST.get('partner_invoice_paid_date')
-        invoice.total_amount = request.POST.get('partner_invoice_total_amount')
-        invoice.file_link = request.POST.get('partner_invoice_file_link')
-        invoice.payment_method = request.POST.get('partner_invoice_payment_method')
-        invoice.status = request.POST.get('partner_invoice_status')
-        invoice.booking = Booking.objects.get(id=request.POST.get('partner_invoice_booking'))
+        invoice.code = request.POST.get('invoice_code')
+        invoice.emission_date = request.POST.get('invoice_emission_date')
+        invoice.payment_date = request.POST.get('invoice_payment_date')
+        invoice.paid_date = request.POST.get('invoice_paid_date')
+        invoice.service_value = request.POST.get('invoice_service_value')
+        invoice.taxes_value = request.POST.get('invoice_taxes_value')
+        invoice.discount_value = request.POST.get('invoice_discount_value')
+        invoice.total_amount = request.POST.get('invoice_total_amount')
+        invoice.file_link = request.POST.get('invoice_file_link')
+        invoice.payment_method = request.POST.get('invoice_payment_method')
+        invoice.status = request.POST.get('invoice_status')
+        invoice.booking = Booking.objects.get(id=request.POST.get('invoice_booking'))
         invoice.created_by = request.user
         invoice.updated_by = request.user
         invoice.updated_at = None # Reseta o campo modified_at para que seja atualizado no save()
@@ -260,7 +279,7 @@ def edit_partner_invoice_view(request, id):
             # Salva o objeto no banco de dados
             invoice.save()
             
-            messages.success(request, "Reserva atualizada com sucesso.")
+            messages.success(request, "Fatura atualizada com sucesso.")
             return redirect('list_partner_invoice')
         except ValidationError as e:
             for field, errors in e.message_dict.items():
@@ -272,8 +291,7 @@ def edit_partner_invoice_view(request, id):
     # print(f"Experience details: {experience.category}, {experience.status}")
     b_list = Booking.objects.all().order_by('code')
     context = {
-        'page_mode': 'edit',
-        'partner_invoice': invoice,
+        'invoice': invoice,
         'booking_list': b_list,
         'booking_selected': b_list[0] if b_list else None,
         'payment_method_options': PaymentMethod.choices,
@@ -302,3 +320,12 @@ def delete_partner_invoice_view(request, id):
             messages.success(request, "Fatura excluída com sucesso.")    
     
     return redirect('list_partner_invoice')
+
+@login_required
+def partner_invoice_view(request, id):
+    user = request.user
+    if not user.is_active or not user.is_booking_agent:
+        return redirect('index')
+    
+    invoice = PartnerInvoice.objects.select_related('booking').get(id=id)
+    return render(request, 'financial/view-partner-invoice.html', {'invoice': invoice})

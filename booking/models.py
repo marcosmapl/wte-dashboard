@@ -4,7 +4,6 @@ from WineTour import settings
 from experience.models import Experience, Partner
 from home_auth.models import WineUser
 
-# Create your models here.
 
 class BookingChannel(models.TextChoices):
     EMAIL = 'Email', 'Email'
@@ -42,7 +41,7 @@ class Booking(models.Model):
     created_by = models.ForeignKey(WineUser, on_delete=models.SET_NULL, null=True, db_index=True, related_name='bkg_created_by')
     updated_at = models.DateTimeField(auto_now=True)
     updated_by = models.ForeignKey(WineUser, on_delete=models.SET_NULL, null=True, db_index=True, related_name='bkg_updated_by')
-
+    
     def __str__(self):
         return f"{self.code} - {self.client_name}"
     

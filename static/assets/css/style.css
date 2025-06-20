@@ -1790,7 +1790,8 @@ footer p {
     padding: 0;
 }
 .page-header .breadcrumb a {
-	color: #333;
+	color: #ebbd52;
+	font-weight: 600;
 }
 .page-title {
 	font-size: 28px;

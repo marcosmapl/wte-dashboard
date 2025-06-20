@@ -26,10 +26,13 @@ class BaseInvoice(models.Model):
     payment_date = models.DateTimeField()
     paid_date = models.DateTimeField()
     file_link = models.TextField()
-    total_amount = models.DecimalField(max_digits=10, decimal_places=2)
+    service_value = models.DecimalField(max_digits=10, decimal_places=2, null=False, default=1.0)
+    taxes_value = models.DecimalField(max_digits=10, decimal_places=2, null=False, default=0.0)
+    discount_value = models.DecimalField(max_digits=10, decimal_places=2, null=False, default=0.0)
+    total_amount = models.DecimalField(max_digits=10, decimal_places=2, null=False, default=1.0)
     payment_method = models.CharField(max_length=50, choices=PaymentMethod.choices, default=PaymentMethod.BANK_TRANSFER)
     status = models.CharField(max_length=30, choices=InvoiceStatus.choices, default=InvoiceStatus.PENDING)
-    booking = models.ForeignKey(Booking, on_delete=models.SET_NULL, null=True, db_index=True)
+    booking = models.ForeignKey(Booking, on_delete=models.CASCADE, null=False, db_index=True)
     created_at = models.DateTimeField(auto_now_add=True)
     created_by = models.ForeignKey(WineUser, on_delete=models.SET_NULL, null=True, db_index=True, related_name="%(class)s_created_by")
     updated_at = models.DateTimeField(auto_now=True)
@@ -51,12 +54,44 @@ class BaseInvoice(models.Model):
         return self.paid_date.strftime(settings.DATETIME_FORMAT_STR)
 
     @property
+    def service_value_str(self):
+        return str(self.service_value).replace(",", ".")
+
+    @property
+    def service_value_money(self):
+        return "Є " + str(self.service_value).replace(",", ".")
+
+    @property
+    def taxes_value_str(self):
+        return str(self.taxes_value).replace(",", ".")
+
+    @property
+    def taxes_value_money(self):
+        return "Є " + str(self.taxes_value).replace(",", ".")
+
+    @property
+    def discount_value_str(self):
+        return str(self.discount_value).replace(",", ".")
+
+    @property
+    def discount_value_money(self):
+        return "Є " + str(self.discount_value).replace(",", ".")
+
+    @property
     def total_amount_str(self):
         return str(self.total_amount).replace(",", ".")
 
     @property
     def total_amount_money(self):
         return "Є " + str(self.total_amount).replace(",", ".")
+    
+    @property
+    def created_at_str(self):
+        return self.created_at.strftime(settings.DATETIME_FORMAT_STR)
+    
+    @property
+    def updated_at_str(self):
+        return self.updated_at.strftime(settings.DATETIME_FORMAT_STR)
     
     @property
     def status_color(self):

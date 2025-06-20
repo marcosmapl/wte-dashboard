@@ -288,6 +288,7 @@
 <script src="{%static 'assets/plugins/bootstrap/js/bootstrap.min.js' %}"></script>
 
 <script src="{%static 'assets/js/script.js' %}"></script>
+<script src="{%static 'assets/js/financeUtils.js' %}"></script>
 
 <script type="text/javascript">
    document.addEventListener("DOMContentLoaded", function () {
@@ -307,20 +308,6 @@
          experienceDateInput.min = minDateTime;
       }
    });
-
-   function calculateTotal() {
-      const numAdults = parseFloat(document.getElementById('booking_number_adults').value) || 0;
-      const priceAdult = parseFloat(document.getElementById('booking_price_adults').value) || 0;
-      const numChildren = parseFloat(document.getElementById('booking_number_children').value) || 0;
-      const priceChild = parseFloat(document.getElementById('booking_price_children').value) || 0;
-      const discount = parseFloat(document.getElementById('booking_discount').value) || 0;
-
-      const subtotal = (numAdults * priceAdult) + (numChildren * priceChild);
-      const total = subtotal - discount;
-
-      console.log(total.toFixed(2));
-      document.getElementById('booking_total').value = total.toFixed(2);
-   }
 </script>
 
 

@@ -161,11 +161,6 @@
                               <div class="input-group">
                                  <div class="input-group-prepend">
                                     <span class="btn btn-secondary"> € </span>
-                                    <!-- <div class="dropdown-menu">
-                                       <a class="dropdown-item">€</a>
-                                       <a class="dropdown-item">$</a>
-                                       <a class="dropdown-item">R$</a>
-                                    </div> -->
                                  </div>
                                  <input id="booking_price_adults" type="number" step="0.01" min="1.00" class="form-control" value="1" name="booking_price_adults" required>
                               </div>
@@ -221,7 +216,7 @@
 
                                  <!-- Botão com ícone de calculadora -->
                                  <div class="input-group-append">
-                                    <button class="btn btn-primary" type="button" onclick="calculateTotal()" title="Calcular Total">
+                                    <button class="btn btn-primary" type="button" onclick="calculate_booking_total()" title="Calcular Total">
                                        <i class="fas fa-calculator"></i>
                                     </button>
                                  </div>
@@ -277,6 +272,7 @@
 <script src="{%static 'assets/plugins/bootstrap/js/bootstrap.min.js' %}"></script>
 
 <script src="{%static 'assets/js/script.js' %}"></script>
+<script src="{%static 'assets/js/financeUtils.js' %}"></script>
 
 <script type="text/javascript">
    document.addEventListener("DOMContentLoaded", function () {
@@ -296,25 +292,6 @@
          experienceDateInput.min = minDateTime;
       }
    });
-
-
-   function go_to_list_view() {
-      document.location.href = "{% url 'list_experience' %}"
-   }
-
-   function calculateTotal() {
-      const numAdults = parseFloat(document.getElementById('booking_number_adults').value) || 0;
-      const priceAdult = parseFloat(document.getElementById('booking_price_adults').value) || 0;
-      const numChildren = parseFloat(document.getElementById('booking_number_children').value) || 0;
-      const priceChild = parseFloat(document.getElementById('booking_price_children').value) || 0;
-      const discount = parseFloat(document.getElementById('booking_discount').value) || 0;
-      
-      const subtotal = (numAdults * priceAdult) + (numChildren * priceChild);
-      const total = subtotal - discount;
-      
-      console.log(total.toFixed(2));
-      document.getElementById('booking_total').value = total.toFixed(2);
-  }
 </script>
 
 
