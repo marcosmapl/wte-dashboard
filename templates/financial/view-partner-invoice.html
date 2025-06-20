@@ -131,8 +131,8 @@
                      <div class="col-xl-5 col-sm-6 mb-3">
                         <span>
                            <strong>Código Reserva:</strong>
-                           <a href="{% url 'view_booking' id=invoice.booking.id %}">
-                              {{ invoice.booking.code }}
+                           <a href="{% url 'view_booking' id=invoice.pi_booking.id %}">
+                              {{ invoice.pi_booking.code }}
                            </a>
                         </span>
                      </div>
@@ -141,7 +141,7 @@
                      <div class="col-xl-7 col-sm-6 mb-3">
                         <span>
                            <strong>Data Reserva:</strong>
-                           {{ invoice.booking.created_at_str }}
+                           {{ invoice.pi_booking.created_at_str }}
                         </span>
                      </div>
                      
@@ -149,7 +149,7 @@
                      <div class="col-xl-12 col-sm-6">
                         <span>
                            <strong>Nome Cliente:</strong>
-                           {{ invoice.booking.client_name }}
+                           {{ invoice.pi_booking.client_name }}
                         </span>
                      </div>
 

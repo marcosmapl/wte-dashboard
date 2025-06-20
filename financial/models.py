@@ -1,6 +1,7 @@
 from django.db import models
 
 from WineTour import settings
+from booking.models import Booking
 from home_auth.models import WineUser
 
 class PaymentMethod(models.TextChoices):
@@ -102,12 +103,16 @@ class BaseInvoice(models.Model):
 
 
 class CustomerInvoice(BaseInvoice):
+
+    booking = models.OneToOneField(Booking, on_delete=models.CASCADE, related_name='customer_invoice')
     
     def __str__(self):
-        return f"{self.code} - {self.booking.client_name}"
+        return f"Fatura cliente ({self.code} - {self.emission_date_str})"
 
 
 class PartnerInvoice(BaseInvoice):
-    
+
+    booking = models.OneToOneField(Booking, on_delete=models.CASCADE, related_name='partner_invoice')
+
     def __str__(self):
-        return f"{self.code} - {self.booking.partner.name}"
+        return f"Fatura parceiro ({self.code} - {self.emission_date_str})"

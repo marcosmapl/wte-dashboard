@@ -183,6 +183,4 @@ def view_booking(request, id):
     
     booking = Booking.objects.select_related('experience', 'partner').get(id=id)
 
-    print(type(booking.customer_invoice))
-    print(booking)
     return render(request, 'booking/view-booking.html', {'booking': booking})

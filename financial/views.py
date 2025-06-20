@@ -13,8 +13,8 @@ def list_customer_invoice_view(request):
     if not user.is_active or not user.is_general_manager:
         return redirect('index')
 
-    invoice_list = CustomerInvoice.objects.select_related('booking').all()
-    # print(f"Booking list: {booking_list}")
+    invoice_list = CustomerInvoice.objects.all()
+
     context = {
         'invoice_list': invoice_list,
     }
@@ -45,6 +45,7 @@ def add_customer_invoice_view(request, booking_id):
             file_link=request.POST.get('invoice_file_link'),
             payment_method=request.POST.get('invoice_payment_method', PaymentMethod.BANK_TRANSFER),
             status=request.POST.get('invoice_status', InvoiceStatus.PENDING),
+            booking=Booking.objects.get(id=booking_id),
             created_by=request.user,
             updated_by=request.user,
         )
@@ -160,8 +161,12 @@ def customer_invoice_view(request, id):
     if not user.is_active or not user.is_booking_agent:
         return redirect('index')
     
-    invoice = CustomerInvoice.objects.select_related('booking').get(id=id)
-    return render(request, 'financial/view-customer-invoice.html', {'invoice': invoice})
+    invoice = CustomerInvoice.objects.get(id=id)
+    print(invoice)
+    return render(request, 'financial/view-customer-invoice.html', {
+        'invoice': invoice,
+        'booking': invoice.booking
+    })
 
 
 @login_required
@@ -170,8 +175,8 @@ def list_partner_invoice_view(request):
     if not user.is_active or not user.is_general_manager:
         return redirect('index')
     
-    invoice_list = PartnerInvoice.objects.select_related('booking').all()
-    # print(f"Booking list: {booking_list}")
+    invoice_list = PartnerInvoice.objects.all()
+
     context = {
         'invoice_list': invoice_list,
     }
@@ -202,6 +207,7 @@ def add_partner_invoice_view(request, booking_id):
             file_link=request.POST.get('invoice_file_link'),
             payment_method=request.POST.get('invoice_payment_method', PaymentMethod.BANK_TRANSFER),
             status=request.POST.get('invoice_status', InvoiceStatus.PENDING),
+            booking=Booking.objects.get(id=booking_id),
             created_by=request.user,
             updated_by=request.user,
         )
@@ -313,5 +319,8 @@ def partner_invoice_view(request, id):
     if not user.is_active or not user.is_booking_agent:
         return redirect('index')
     
-    invoice = PartnerInvoice.objects.select_related('booking').get(id=id)
-    return render(request, 'financial/view-partner-invoice.html', {'invoice': invoice})
+    invoice = PartnerInvoice.objects.get(id=id)
+    return render(request, 'financial/view-partner-invoice.html', {
+        'invoice': invoice,
+        'booking': invoice.booking,
+    })
