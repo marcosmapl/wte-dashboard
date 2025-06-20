@@ -1,53 +1,50 @@
-console.log("Script carregado corretamente.");
+document.addEventListener("DOMContentLoaded", () => {
 
-document.addEventListener("DOMContentLoaded", function () {
-  const select = document.getElementById("interval-select");
+  async function fetchAndUpdate(endpoint, interval, targetId) {
+    const target = document.getElementById(targetId);
+    if (!target) return;
 
-  function getCookie(name) {
-    let cookieValue = null;
-    if (document.cookie && document.cookie !== "") {
-      const cookies = document.cookie.split(";");
-      for (let i = 0; i < cookies.length; i++) {
-        const cookie = cookies[i].trim();
-        if (cookie.substring(0, name.length + 1) === name + "=") {
-          cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
-          break;
-        }
+    // Exibe indicador de carregamento
+    const originalContent = target.innerHTML;
+    target.innerHTML = '<div class="d-flex justify-content-center"><div class="spinner-grow text-primary" role="status"><span class="sr-only">Loading...</span></div></div>';
+
+    try {
+      const response = await fetch(`${endpoint}?interval=${interval}`);
+      if (!response.ok) {
+        throw new Error(`Erro na requisição AJAX: ${response.status}`);
       }
+
+      const data = await response.json();
+
+      if (data.html && data.html !== originalContent) {
+        target.innerHTML = data.html;
+      } else {
+        target.innerHTML = "<p>Sem dados para exibir.</p>";
+      }
+
+    } catch (error) {
+      console.error("Erro na requisição:", error);
+      target.innerHTML = "<p>Erro ao carregar os dados.</p>";
     }
-    return cookieValue;
   }
 
-  const csrftoken = getCookie("csrftoken");
+  function setupIntervalSelect(selectId, endpoint, targetId) {
+    const select = document.getElementById(selectId);
+    if (!select) return;
 
-  if (select) {
+    let lastValue = null;
+
     select.addEventListener("change", function () {
-      const days = this.value;
-      console.log("Intervalo selecionado:", days);
+      const interval = this.value;
+      if (interval === lastValue) return;
+      lastValue = interval;
 
-      fetch(`/dashboard/upcoming-bookings/?interval=${days}`, {
-        method: "GET",
-        headers: {
-          "X-Requested-With": "XMLHttpRequest",
-          "X-CSRFToken": csrftoken,
-        },
-      })
-        .then((response) => {
-          if (!response.ok) {
-            throw new Error("Erro na requisição AJAX: " + response.status);
-          }
-          return response.json();
-        })
-        .then((data) => {
-          const tbody = document.getElementById("upcoming-bookings-table");
-          if (tbody) {
-            console.log("Atualizando tabela:");
-            tbody.innerHTML = data.html;
-          }
-        })
-        .catch((error) => {
-          console.error("Erro na requisição:", error);
-        });
+      fetchAndUpdate(endpoint, interval, targetId);
     });
   }
+
+  // Inicialização dos seletores
+  setupIntervalSelect("upcoming-interval-select", "/dashboard/upcoming-bookings/", "upcoming-bookings-table");
+  setupIntervalSelect("general-count-interval-select", "/dashboard/general_count/", "general-count-monitor");
+
 });

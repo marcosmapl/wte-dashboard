@@ -31,13 +31,11 @@
                         <ul class="list-inline-group text-right mb-0 pl-0">
                            <li class="list-inline-item">
                               <div class="form-group mb-0 amount-spent-select">
-                                 <select class="form-control form-control-sm">
-                                    <option>Hoje</option>
-                                    <option>Semana</option>
-                                    <option>Mês</option>
-                                    <option>Trimestre</option>
-                                    <option>Semestre</option>
-                                    <option>Ano</option>
+                                 <select id="general-count-interval-select" class="form-control form-control-sm">
+                                    <option value="0">Hoje</option>
+                                    <option value="7" selected>7 Dias</option>
+                                    <option value="30">30 dias</option>
+                                    <option value="90">90 dias</option>
                                  </select>
                               </div>
                            </li>
@@ -45,84 +43,8 @@
                      </div>
                   </div>
                </div>
-               <div class="card-body">
-                  <div class="row">
-                     <div class="col-xl col-sm-6 col-12 d-flex">
-                        <div class="card bg-one w-100">
-                           <div class="card-body">
-                              <div class="db-widgets d-flex justify-content-between align-items-center">
-                                 <div class="db-icon">
-                                    <i class="fas fa-bell"></i>
-                                 </div>
-                                 <div class="db-info">
-                                    <h3>€ {{ confirmed_count }}</h3>
-                                    <h6>Confirmados</h6>
-                                 </div>
-                              </div>
-                           </div>
-                        </div>
-                     </div>
-                     <div class="col-xl col-sm-6 col-12 d-flex">
-                        <div class="card bg-two w-100">
-                           <div class="card-body">
-                              <div class="db-widgets d-flex justify-content-between align-items-center">
-                                 <div class="db-icon">
-                                    <i class="fas fa-hourglass-half"></i>
-                                 </div>
-                                 <div class="db-info">
-                                    <h3>€ {{ pending_count }}</h3>
-                                    <h6>Pendentes</h6>
-                                 </div>
-                              </div>
-                           </div>
-                        </div>
-                     </div>
-                     <div class="col-xl col-sm-6 col-12 d-flex">
-                        <div class="card bg-three w-100">
-                           <div class="card-body">
-                              <div class="db-widgets d-flex justify-content-between align-items-center">
-                                 <div class="db-icon">
-                                    <i class="fas fa-bell-slash"></i>
-                                 </div>
-                                 <div class="db-info">
-                                    <h3>€ {{ canceled_count }}</h3>
-                                    <h6>Cancelamentos</h6>
-                                 </div>
-                              </div>
-                           </div>
-                        </div>
-                     </div>
-                     <div class="col-xl col-sm-6 col-12 d-flex">
-                        <div class="card bg-four w-100">
-                           <div class="card-body">
-                              <div class="db-widgets d-flex justify-content-between align-items-center">
-                                 <div class="db-icon">
-                                    <i class="fas fa-file-invoice-dollar"></i>
-                                 </div>
-                                 <div class="db-info">
-                                    <h3>€ {{ income_sum }}</h3>
-                                    <h6>Faturamento</h6>
-                                 </div>
-                              </div>
-                           </div>
-                        </div>
-                     </div>
-                     <div class="col-xl col-sm-6 col-12 d-flex">
-                        <div class="card bg-five w-100">
-                           <div class="card-body">
-                              <div class="db-widgets d-flex justify-content-between align-items-center">
-                                 <div class="db-icon">
-                                    <i class="fas fa-building"></i>
-                                 </div>
-                                 <div class="db-info">
-                                    <h3>€ {{ outcome_sum }}</h3>
-                                    <h6>Parceiros</h6>
-                                 </div>
-                              </div>
-                           </div>
-                        </div>
-                     </div>
-                  </div>
+               <div id="general-count-monitor" class="card-body">
+                 {% include "dashboard/partials/general-count-monitor.html" %} 
                </div>
             </div>
          </div>
@@ -142,12 +64,10 @@
                            <li class="list-inline-item">
                               <div class="form-group mb-0 amount-spent-select">
                                  <select class="form-control form-control-sm">
-                                    <option>Hoje</option>
-                                    <option>Semana</option>
-                                    <option>Mês</option>
-                                    <option>Trimestre</option>
-                                    <option>Semestre</option>
-                                    <option>Ano</option>
+                                    <option value="0">Hoje</option>
+                                    <option value="7" selected>7 Dias</option>
+                                    <option value="30">30 dias</option>
+                                    <option value="90">90 dias</option>
                                  </select>
                               </div>
                            </li>
@@ -172,12 +92,10 @@
                            <li class="list-inline-item">
                               <div class="form-group mb-0 amount-spent-select">
                                  <select class="form-control form-control-sm">
-                                    <option>Ano</option>
-                                    <option>Semestre</option>
-                                    <option>Trimestre</option>
-                                    <option>Mês</option>
-                                    <option>Semana</option>
-                                    <option>Hoje</option>
+                                    <option value="0">Hoje</option>
+                                    <option value="7" selected>7 Dias</option>
+                                    <option value="30">30 dias</option>
+                                    <option value="90">90 dias</option>
                                  </select>
                               </div>
                            </li>
@@ -197,31 +115,22 @@
          <div class="col-md-6 d-flex">
             <div class="card flex-fill">
                <div class="card-header d-flex justify-content-between align-items-center">
-                  <h5 class="card-title mb-0">Próximas Experiências</h5>
-                  <form id="interval-form">
-                     <select name="interval" class="form-control form-control-sm" id="interval-select">
-                        <!-- <option value="0">Hoje</option> -->
+                  <div class="col-xl-9">
+                     <h5 class="card-title mb-0">Próximas Experiências</h5>
+                  </div>
+                  <div class="col-xl-3">
+                     <select name="upcoming-interval-select" class="form-control form-control-sm" id="upcoming-interval-select">
+                        <option value="0">Hoje</option>
                         <option value="7" selected>7 dias</option>
                         <option value="30">30 dias</option>
                         <option value="90">90 dias</option>
                      </select>
-                  </form>
+                  </div>
                </div>
                <div class="card-body">
                   <div class="table-responsive">
-                     <table class="table table-hover table-center">
-                        <thead class="thead-light">
-                           <tr>
-                              <th>ID</th>
-                              <th>Cliente</th>
-                              <th class="text-center">Pessoas</th>
-                              <th class="text-center">Data</th>
-                              <th class="text-right">Situação</th>
-                           </tr>
-                        </thead>
-                        <tbody id="upcoming-bookings-table">
-                           {% include "dashboard/partials/upcoming-bookings-tbody.html" %}
-                        </tbody>
+                     <table id="upcoming-bookings-table" class="table table-hover table-center">
+                        {% include "dashboard/partials/upcoming-bookings-tbody.html" %}
                      </table>
                   </div>
                </div>
@@ -271,37 +180,6 @@
          </div>
       </div>
 
-      <!-- SOCIAL MEDIAS -->
-      <!-- <div class="row">
-         <div class="col-xl-3 col-sm-6 col-12">
-            <div class="card flex-fill fb sm-box">
-               <i class="fab fa-facebook"></i>
-               <h6>50,095</h6>
-               <p>Likes</p>
-            </div>
-         </div>
-         <div class="col-xl-3 col-sm-6 col-12">
-            <div class="card flex-fill twitter sm-box">
-               <i class="fab fa-twitter"></i>
-               <h6>48,596</h6>
-               <p>Follows</p>
-            </div>
-         </div>
-         <div class="col-xl-3 col-sm-6 col-12">
-            <div class="card flex-fill insta sm-box">
-               <i class="fab fa-instagram"></i>
-               <h6>52,085</h6>
-               <p>Follows</p>
-            </div>
-         </div>
-         <div class="col-xl-3 col-sm-6 col-12">
-            <div class="card flex-fill linkedin sm-box">
-               <i class="fab fa-linkedin-in"></i>
-               <h6>69,050</h6>
-               <p>Follows</p>
-            </div>
-         </div>
-      </div> -->
    </div>
    <footer>
       <p>Copyright © 2025 - Wine Tour Experience.</p>
@@ -323,8 +201,9 @@
 <script src="{%static 'assets/plugins/apexchart/chart-data.js' %}"></script>
 <script src="{%static 'assets/js/script.js' %}"></script>
 <script src="{% static 'assets/js/dashboard-upcoming.js' %}"></script>
+<script src="{% static 'assets/js/dashboard-upcoming.js' %}"></script>
 
-<script>
+<!-- <script>
    $(document).ready(function () {
       $("#tableData").DataTable({
          language: {
@@ -337,6 +216,6 @@
          },
       });
    });
-</script>
+</script> -->
 
 {% endblock %}

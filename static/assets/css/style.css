@@ -811,7 +811,8 @@ button.bg-danger:hover {
 .card {
     border: 1px solid #ececf5;
     box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.03);
-    margin-bottom: 1.875rem;
+    margin-top: 0.975rem;
+    margin-bottom: 0.975rem;
 }
 .card-body {
 	padding: 1.5rem;
@@ -1323,7 +1324,7 @@ div.dataTables_wrapper div.dataTables_info {
     height: 60px;
     padding: 0 20px;
     position: relative;
-    width: 280px;
+    width: 250px;
     z-index: 1;
     transition: all 0.2s ease-in-out;
     background-color: #f7f7fa;
@@ -1573,7 +1574,7 @@ footer p {
     position: fixed;
     top: 60px;
     transition: all 0.2s ease-in-out 0s;
-    width: 280px;
+    width: 250px;
     z-index: 1001;	
 }
 .sidebar.opened {
@@ -1770,7 +1771,7 @@ footer p {
 	min-height: 100vh;
 }
 .page-wrapper {
-	margin-left: 320px;
+	margin-left: 260px;
 	padding-top: 60px;
 	position: relative;
 	transition: all 0.4s ease;

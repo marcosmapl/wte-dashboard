@@ -6,7 +6,7 @@ from django.template.loader import render_to_string
 from django.utils import timezone
 
 from booking.models import Booking, BookingStatus
-from financial.models import CustomerInvoice, PartnerInvoice
+from financial.models import CustomerInvoice, InvoiceStatus, PartnerInvoice
 
 from datetime import timedelta, datetime
 
@@ -17,10 +17,6 @@ def dashboard_general(request):
     if not user.is_active or not user.is_general_manager:
         return redirect('index')
 
-    confirmed_count = Booking.objects.filter(status=BookingStatus.CONFIRMED).count()
-    canceled_count = Booking.objects.filter(
-        Q(status=BookingStatus.CANCELLED_BY_PARTNER) | Q(status=BookingStatus.CANCELLED_BY_CLIENT)
-    ).count()
     income_sum = CustomerInvoice.objects.aggregate(total=Sum('total_amount'))['total'] or 0
     outcome_sum = PartnerInvoice.objects.aggregate(total=Sum('total_amount'))['total'] or 0
     
@@ -57,7 +53,6 @@ def dashboard_general(request):
     )
     
     dict_bookings_by_status = {item['status']:item['total'] for item in list_bookings_by_status}
-    print(dict_bookings_by_status)
     
     context = {
         'confirmed_count': dict_bookings_by_status.get(BookingStatus.CONFIRMED.label, 0),
@@ -75,8 +70,8 @@ def dashboard_general(request):
 
 @login_required
 def ajax_upcoming_bookings(request):
-    if not request.headers.get('x-requested-with') == 'XMLHttpRequest':
-        return JsonResponse({'error': 'Requisição inválida'}, status=400)
+    # if not request.headers.get('x-requested-with') == 'XMLHttpRequest':
+    #     return JsonResponse({'error': 'Requisição inválida'}, status=400)
     
     days = int(request.GET.get('interval', 7))
     today = timezone.now()
@@ -89,6 +84,45 @@ def ajax_upcoming_bookings(request):
 
     html = render_to_string("dashboard/partials/upcoming-bookings-tbody.html", {
         'upcoming_bookings': bookings
+    })
+
+    return JsonResponse({'html': html})
+
+
+@login_required
+def ajax_general_monitor_count(request):
+    days = int(request.GET.get('interval', 7))
+    
+    today = timezone.now()
+    limit_date = today + timedelta(days=days)
+
+    income_sum = CustomerInvoice.objects.filter(
+        status=InvoiceStatus.PAID,
+        paid_date__range=(today, limit_date)
+    ).aggregate(total_sum=Sum('total_amount'))['total_sum'] or 0
+
+    outcome_sum = PartnerInvoice.objects.filter(
+        status=InvoiceStatus.PAID,
+        paid_date__range=(today, limit_date)
+    ).aggregate(total_sum=Sum('total_amount'))['total_sum'] or 0
+ 
+    # Agrupar por status
+    list_bookings_by_status = (
+        Booking.objects
+        .filter(experience_date__range=(today, limit_date))
+        .values('status')
+        .annotate(total=Count('id'))
+        .order_by('status')
+    )
+
+    dict_bookings_by_status = {item['status']:item['total'] for item in list_bookings_by_status}
+
+    html = render_to_string("dashboard/partials/general-count-monitor.html", {
+        'confirmed_count': dict_bookings_by_status.get(BookingStatus.CONFIRMED.label, 0),
+        'canceled_count': dict_bookings_by_status.get(BookingStatus.CANCELLED_BY_CLIENT.label,0 ) + dict_bookings_by_status.get(BookingStatus.CANCELLED_BY_PARTNER.label, 0),
+        'pending_count': dict_bookings_by_status.get(BookingStatus.PENDING.label, 0),
+        'income_sum': income_sum,
+        'outcome_sum': outcome_sum,
     })
 
     return JsonResponse({'html': html})

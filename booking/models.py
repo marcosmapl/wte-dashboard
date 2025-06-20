@@ -80,5 +80,5 @@ class Booking(models.Model):
             'Pendente': '#f9e79f',
             'Confirmado': '#abebc6',
             'Cancelado (Cliente)': '#f5b7b1',
-            'Cancelado (Parceiro)': '#d5d8dc',
-        }.get(self.status, '#e5e7e9')
+            'Cancelado (Parceiro)': '#f5b7b1',
+        }.get(self.status, '#d5d8dc')

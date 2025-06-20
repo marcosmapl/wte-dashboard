@@ -1,27 +1,38 @@
-{% for booking in upcoming_bookings %}
-<tr>
-    <td class="text-nowrap">
-        <div><a href="{% url 'view_booking' booking.id %}">
-                <span>
-                    {{ booking.code }}
-                </span>
-            </a>
-        </div>
-    </td>
-    <td class="text-nowrap">{{ booking.client_name }}</td>
-    <td class="text-center">{{ booking.number_adults|add:booking.number_children }}</td>
-    <td class="text-center">
-        <div>{{ booking.experience_date|date:"Y-m-d H:i" }}</div>
-    </td>
-    <td class="text-right">
-        <span
-            style="background-color: {{ booking.status_color }}; padding: 5px 5px; border-radius: 5px; font-weight: bold;">
-            {{ booking.status }}
-        </span>
-    </td>
-</tr>
-{% empty %}
-<tr>
-    <td colspan="5" class="text-center text-muted">Nenhuma experiência agendada para este período.</td>
-</tr>
-{% endfor %}
+<thead class="thead-light">
+    <tr>
+        <th>ID</th>
+        <th>Cliente</th>
+        <th class="text-center">Pessoas</th>
+        <th class="text-center">Data</th>
+        <th class="text-right">Situação</th>
+    </tr>
+</thead>
+<tbody >
+    {% for booking in upcoming_bookings %}
+    <tr>
+        <td class="text-nowrap">
+            <div><a href="{% url 'view_booking' booking.id %}">
+                    <span>
+                        {{ booking.code }}
+                    </span>
+                </a>
+            </div>
+        </td>
+        <td class="text-nowrap">{{ booking.client_name }}</td>
+        <td class="text-center">{{ booking.number_adults|add:booking.number_children }}</td>
+        <td class="text-center">
+            <div>{{ booking.experience_date|date:"Y-m-d H:i" }}</div>
+        </td>
+        <td class="text-right">
+            <span
+                style="background-color: {{ booking.status_color }}; padding: 5px 5px; border-radius: 5px; font-weight: bold;">
+                {{ booking.status }}
+            </span>
+        </td>
+    </tr>
+    {% empty %}
+    <tr>
+        <td colspan="5" class="text-center text-muted">Nenhuma experiência agendada para este período.</td>
+    </tr>
+    {% endfor %}
+</tbody>
