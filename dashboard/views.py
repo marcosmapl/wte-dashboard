@@ -1,9 +1,14 @@
 from django.contrib.auth.decorators import login_required
 from django.db.models import Sum, Q, Count
+from django.db.models.functions import TruncDate
+from django.forms import DateField, DateTimeField
 from django.http import JsonResponse
 from django.shortcuts import render, redirect
 from django.template.loader import render_to_string
 from django.utils import timezone
+from django.utils.dateparse import parse_date
+from django.utils.timezone import make_aware
+from django.views.decorators.http import require_GET
 
 from booking.models import Booking, BookingStatus
 from financial.models import CustomerInvoice, InvoiceStatus, PartnerInvoice
@@ -126,6 +131,56 @@ def ajax_general_monitor_count(request):
     })
 
     return JsonResponse({'html': html})
+
+
+require_GET
+def ajax_bookings_by_status_and_day(request):
+    start_date = parse_date(request.GET.get("start"))
+    end_date = parse_date(request.GET.get("end"))
+
+    if not start_date or not end_date or start_date > end_date:
+        return JsonResponse({"error": "Parâmetros de data inválidos."}, status=400)
+
+    # Converter para datetime aware com fuso horário
+    start_dt = make_aware(datetime.combine(start_date, datetime.min.time()))
+    end_dt = make_aware(datetime.combine(end_date, datetime.max.time()))
+
+    # Lista de dias no intervalo
+    num_days = (end_date - start_date).days + 1
+    day_list = [(start_date + timedelta(days=i)).strftime("%d-%m-%Y") for i in range(num_days)]
+
+    # Inicializa estrutura de resposta
+    result = {
+        "days": day_list,
+        BookingStatus.CONFIRMED.label: [0] * num_days,
+        BookingStatus.PENDING.label: [0] * num_days,
+        BookingStatus.CANCELLED_BY_CLIENT.label: [0] * num_days,
+        BookingStatus.CANCELLED_BY_PARTNER.label: [0] * num_days,
+    }
+
+    # Query agregada por dia e status
+    bookings = (
+        Booking.objects
+        .filter(experience_date__range=(start_dt, end_dt), experience_date__isnull=False)
+        .annotate(day=TruncDate('experience_date', output_field=DateField()))
+        .values('day', 'status')
+        .annotate(count=Count('id'))
+    )
+
+    for entry in bookings:
+        day = entry.get("day")
+        if day is None:
+            continue
+
+        day_str = day.strftime("%d-%m-%Y")
+        status = entry["status"]
+        count = entry["count"]
+
+        if day_str in result["days"] and status in result:
+            index = result["days"].index(day_str)
+            result[status][index] += count
+
+    return JsonResponse(result)
 
 
 @login_required
