@@ -19,7 +19,7 @@
          <div class="col-sm-12">
             <div class="card">
                <div class="card-body">
-                  <form method="POST" action="{% url 'add_partner_invoice' %}" enctype="multipart/form-data">
+                  <form method="POST" action="{% url 'add_partner_invoice' booking_id=booking.id %}" enctype="multipart/form-data">
                      {% csrf_token %}
                      <div class="row">
                         
@@ -169,16 +169,24 @@
                            <h5 class="form-title"><span>Dados da Reserva</span></h5>
                         </div>
 
+                        <div class="col-5 col-sm-6">
+                           <div class="form-group">
+                              <label for="">Código Reserva</label>
+                              <input class="form-control" id="invoice_booking_code" value="{{ booking.code }}" readonly>
+                           </div>
+                        </div>
+                        
+                        <div class="col-7 col-sm-6">
+                           <div class="form-group">
+                              <label for="">Data Reserva</label>
+                              <input class="form-control" id="invoice_booking_created_at" value="{{ booking.created_at_str }}" readonly>
+                           </div>
+                        </div>
+
                         <div class="col-12 col-sm-6">
                            <div class="form-group">
-                              <label>Reserva</label>
-                              <select class="form-control" name="invoice_booking" required>
-                                 {% for b in booking_list %}
-                                 <option value="{{ b.id }}" {% if b == booking_selected %}selected{% endif %}>
-                                    {{ b }}
-                                 </option>
-                                 {% endfor %}
-                              </select>
+                              <label for="">Nome Cliente</label>
+                              <input class="form-control" id="invoice_booking_client_name" value="{{ booking.client_name }}" readonly>
                            </div>
                         </div>
 

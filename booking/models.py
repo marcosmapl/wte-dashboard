@@ -2,6 +2,7 @@ from django.db import models
 from WineTour import settings
 
 from experience.models import Experience, Partner
+from financial.models import CustomerInvoice, PartnerInvoice
 from home_auth.models import WineUser
 
 
@@ -35,8 +36,10 @@ class Booking(models.Model):
     discount = models.DecimalField(max_digits=10, decimal_places=2, default=0)
     channel = models.CharField(max_length=20, choices=BookingChannel.choices, default=BookingChannel.WORDPRESS)
     status = models.CharField(max_length=30, choices=BookingStatus.choices, default=BookingStatus.PENDING)
-    experience = models.ForeignKey(Experience, on_delete=models.SET_NULL, null=True, db_index=True)
-    partner = models.ForeignKey(Partner, on_delete=models.SET_NULL, null=True, db_index=True)
+    experience = models.ForeignKey(Experience, on_delete=models.SET_NULL, null=True, db_index=True, related_name='e_booking')
+    partner = models.ForeignKey(Partner, on_delete=models.SET_NULL, null=True, db_index=True, related_name='p_booking')
+    customer_invoice = models.ForeignKey(CustomerInvoice, on_delete=models.SET_NULL, null=True, db_index=True, related_name='ci_booking')
+    partner_invoice = models.ForeignKey(PartnerInvoice, on_delete=models.SET_NULL, null=True, db_index=True, related_name='pi_booking')
     created_at = models.DateTimeField(auto_now_add=True)
     created_by = models.ForeignKey(WineUser, on_delete=models.SET_NULL, null=True, db_index=True, related_name='bkg_created_by')
     updated_at = models.DateTimeField(auto_now=True)

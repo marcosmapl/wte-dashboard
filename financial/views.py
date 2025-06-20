@@ -22,10 +22,12 @@ def list_customer_invoice_view(request):
 
 
 @login_required
-def add_customer_invoice_view(request):
+def add_customer_invoice_view(request, booking_id):
     user = request.user
     if not user.is_active or not user.is_general_manager:
         return redirect('index')
+    
+    booking=Booking.objects.get(id=booking_id)
 
     if request.method == "POST":
         # print(f"Request POST data: {request.POST}")
@@ -43,7 +45,6 @@ def add_customer_invoice_view(request):
             file_link=request.POST.get('invoice_file_link'),
             payment_method=request.POST.get('invoice_payment_method', PaymentMethod.BANK_TRANSFER),
             status=request.POST.get('invoice_status', InvoiceStatus.PENDING),
-            booking=Booking.objects.get(id=request.POST.get('invoice_booking')),
             created_by=request.user,
             updated_by=request.user,
         )
@@ -68,11 +69,8 @@ def add_customer_invoice_view(request):
             messages.error(request, f"Erro inesperado: {str(e)}")
             print(e)
 
-    b_list = Booking.objects.all().order_by('code')
-
     context = {
-        'booking_list': b_list,
-        'booking_selected': b_list[0] if b_list else None,
+        'booking': booking,
         'payment_method_options': PaymentMethod.choices,
         'payment_method_selected': PaymentMethod.BANK_TRANSFER,
         'status_options': InvoiceStatus.choices,
@@ -106,7 +104,6 @@ def edit_customer_invoice_view(request, id):
         invoice.file_link = request.POST.get('invoice_file_link')
         invoice.payment_method = request.POST.get('invoice_payment_method')
         invoice.status = request.POST.get('invoice_status')
-        invoice.booking = Booking.objects.get(id=request.POST.get('invoice_booking'))
         invoice.created_by = request.user
         invoice.updated_by = request.user
         invoice.updated_at = None # Reseta o campo modified_at para que seja atualizado no save()
@@ -127,12 +124,8 @@ def edit_customer_invoice_view(request, id):
         except Exception as e:
             messages.error(request, f"Erro inesperado: {str(e)}")
     
-    # print(f"Experience details: {experience.category}, {experience.status}")
-    b_list = Booking.objects.all().order_by('code')
     context = {
         'invoice': invoice,
-        'booking_list': b_list,
-        'booking_selected': b_list[0] if b_list else None,
         'payment_method_options': PaymentMethod.choices,
         'payment_method_selected': str(invoice.payment_method),
         'status_options': InvoiceStatus.choices,
@@ -186,11 +179,13 @@ def list_partner_invoice_view(request):
 
 
 @login_required
-def add_partner_invoice_view(request):
+def add_partner_invoice_view(request, booking_id):
     user = request.user
     if not user.is_active or not user.is_general_manager:
         return redirect('index')
     
+    booking=Booking.objects.get(id=booking_id)
+
     if request.method == "POST":
         # print(f"Request POST data: {request.POST}")
         print(request.POST)
@@ -207,7 +202,6 @@ def add_partner_invoice_view(request):
             file_link=request.POST.get('invoice_file_link'),
             payment_method=request.POST.get('invoice_payment_method', PaymentMethod.BANK_TRANSFER),
             status=request.POST.get('invoice_status', InvoiceStatus.PENDING),
-            booking=Booking.objects.get(id=request.POST.get('invoice_booking')),
             created_by=request.user,
             updated_by=request.user,
         )
@@ -229,11 +223,8 @@ def add_partner_invoice_view(request):
         except Exception as e:
             messages.error(request, f"Erro inesperado: {str(e)}")
 
-    b_list = Booking.objects.all().order_by('code')
-
     context = {
-        'booking_list': b_list,
-        'booking_selected': b_list[0] if b_list else None,
+        'booking': booking,
         'payment_method_options': PaymentMethod.choices,
         'payment_method_selected': PaymentMethod.BANK_TRANSFER,
         'status_options': InvoiceStatus.choices,
@@ -267,7 +258,6 @@ def edit_partner_invoice_view(request, id):
         invoice.file_link = request.POST.get('invoice_file_link')
         invoice.payment_method = request.POST.get('invoice_payment_method')
         invoice.status = request.POST.get('invoice_status')
-        invoice.booking = Booking.objects.get(id=request.POST.get('invoice_booking'))
         invoice.created_by = request.user
         invoice.updated_by = request.user
         invoice.updated_at = None # Reseta o campo modified_at para que seja atualizado no save()
@@ -288,12 +278,8 @@ def edit_partner_invoice_view(request, id):
         except Exception as e:
             messages.error(request, f"Erro inesperado: {str(e)}")
     
-    # print(f"Experience details: {experience.category}, {experience.status}")
-    b_list = Booking.objects.all().order_by('code')
     context = {
         'invoice': invoice,
-        'booking_list': b_list,
-        'booking_selected': b_list[0] if b_list else None,
         'payment_method_options': PaymentMethod.choices,
         'payment_method_selected': str(invoice.payment_method),
         'status_options': InvoiceStatus.choices,

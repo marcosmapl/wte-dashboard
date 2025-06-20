@@ -1,7 +1,6 @@
 from django.db import models
 
 from WineTour import settings
-from booking.models import Booking
 from home_auth.models import WineUser
 
 class PaymentMethod(models.TextChoices):
@@ -32,7 +31,6 @@ class BaseInvoice(models.Model):
     total_amount = models.DecimalField(max_digits=10, decimal_places=2, null=False, default=1.0)
     payment_method = models.CharField(max_length=50, choices=PaymentMethod.choices, default=PaymentMethod.BANK_TRANSFER)
     status = models.CharField(max_length=30, choices=InvoiceStatus.choices, default=InvoiceStatus.PENDING)
-    booking = models.ForeignKey(Booking, on_delete=models.CASCADE, null=False, db_index=True)
     created_at = models.DateTimeField(auto_now_add=True)
     created_by = models.ForeignKey(WineUser, on_delete=models.SET_NULL, null=True, db_index=True, related_name="%(class)s_created_by")
     updated_at = models.DateTimeField(auto_now=True)

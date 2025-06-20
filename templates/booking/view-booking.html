@@ -151,6 +151,20 @@
                                 <a href="{% url 'edit_booking' booking.id %}" class="btn btn-primary w-75">Editar</a>
                             </div>
                             <div class="col-xl-2 col-sm-2">
+                                {% if booking.customer_invoice %}
+                                    <a href="{% url 'view_customer_invoice' id=booking.customer_invoice.id %}" class="btn btn-info w-75">Fatura (Cliente)</a>
+                                {% else %}
+                                    <a href="{% url 'add_customer_invoice' booking_id=booking.id %}" class="btn btn-info w-75">Fatura (Cliente)</a>
+                                {% endif %}
+                            </div>
+                            <div class="col-xl-2 col-sm-2">
+                                {% if booking.partner_invoice %}
+                                    <a href="{% url 'view_partner_invoice' id=booking.partner_invoice.id %}" class="btn btn-info w-75">Fatura (Parceiro)</a>
+                                {% else %}
+                                    <a href="{% url 'add_partner_invoice' booking_id=booking.id %}" class="btn btn-info w-75">Fatura (Parceiro)</a>
+                                {% endif %}
+                            </div>
+                            <div class="col-xl-2 col-sm-2">
                                 <button onclick="history.back()" class="btn btn-secondary w-75">Voltar</button>
                             </div>
 
